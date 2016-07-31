@@ -27,7 +27,7 @@ public class CommonExceptionHandler implements HandlerExceptionResolver {
     } else {
       mav = new ModelAndView("common/exception");
     }
-    logger.error(ex.getLocalizedMessage());
+    logger.error(ex.getLocalizedMessage(), ex);
     mav.addObject("ex", ex);
     return mav;
   }

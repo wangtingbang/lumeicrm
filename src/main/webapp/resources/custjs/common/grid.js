@@ -1,6 +1,7 @@
 (function($) {
   $.fn.igrid = function(options) {
 	  var settings = $.extend({}, $.fn.igrid.defaults, options);
+	  settings = $.extend({}, settings, {limit:settings.rowlist[0]});
 	  return this.each(function() {
 		     var $this=$(this);
 		     $this.data("settings",settings);
@@ -20,10 +21,10 @@
 	
 	function render($this, data){
 		var settings = $this.data("settings");
-		var pagefn = doT.template($('#'+settings.temp).text());
+		var pagefn = doT.template($('#'+settings.temp).html());
 		$this.html(pagefn({'data':data.result}));
 		var pageData = $.extend({}, settings, {firstpage:data.page==1, page:data.page,  limit:data.limit, total:data.total, totalPage:data.totalPage, pageArray:calpage(data.page, data.totalPage)});
-		var pagebarfn = doT.template($('#pagination_bar_temp').text());
+		var pagebarfn = doT.template($('#pagination_bar_temp').html());
 		$this.append(pagebarfn(pageData));
 		
 		$this.find("ul li ").not(".disabled").find("a").click(function(){
@@ -42,18 +43,45 @@
 			settings.page=1;
 			load($this);
 		});
+
+		$this.find("th.sorting").click(function(){
+			var d = $(this).attr("data")||null;
+			var settings = $this.data("settings");
+			settings.orderColumn=d;
+			if($(this).hasClass("sorting_desc")){
+				settings.orderDesc=false;
+			}else{
+				settings.orderDesc=true;
+			}
+			settings.page=1;
+			load($this);
+		});
+
+		$this.find("th.sorting").each(function(){
+			var settings = $this.data("settings");
+			if($(this).attr("data")==settings.orderColumn){
+				if(settings.orderDesc){
+					$(this).removeClass("sorting_asc").addClass("sorting_desc");
+				}else{
+					$(this).removeClass("sorting_desc").addClass("sorting_asc");
+				}
+			}else{
+				$(this).
+				removeClass("sorting_desc").removeClass("sorting_asc");
+			}
+		})
 	}
-  	
+
   function load($this) {
 	  var settings = $this.data("settings");
-	  var param=$.extend({}, settings.param, {page:settings.page,  limit:settings.limit, order: settings.order, ordername:settings.ordername});
+	  var param=$.extend({}, settings.param, {page:settings.page,  limit:settings.limit, orderDesc: settings.orderDesc, orderColumn:settings.orderColumn});
 	  $.ipost(
 			  settings.url,
 			  param,
 			  function(result){
 				  render($this, result);
 				  if(settings.afterRender!=null && typeof(settings.afterRender)=='function'){
-					  settings.afterRender(result.result);
+					  settings.afterRender(result.result,result);
 				  }
 			  },
 			  function(msg){
@@ -69,9 +97,9 @@
      rowlist: [10,20,30],
      url:null,
      param:null,
-     order:null,
-     ordername:null,
+     orderDesc:false,
+     orderColumn:null,
      temp:null,
      afterRender:null
   };
-})(jQuery); 
+})(jQuery);

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
 	<jmxConfigurator />
-	<property name="LOG_HOME" value="log/jq-p2p-pos" />
-	<property name="LOG_NAME" value="jq-p2p-pos" />
+	<property name="LOG_HOME" value="log/lumeicrm" />
+	<property name="LOG_NAME" value="lumeicrm" />
 	<appender name="console" class="ch.qos.logback.core.ConsoleAppender">
 	<Encoding>UTF-8</Encoding>
 	<layout class="ch.qos.logback.classic.PatternLayout">

@@ -76,139 +76,87 @@
 			<Column ss:Width="146.6362" />
 			<Column ss:Width="215.6031" />
 			<Column ss:Span="1021" ss:Width="64.0063" />
+			
 			<Row ss:Height="12.8126">
 				<Cell ss:StyleID="ce1">
-					<Data ss:Type="String">角色</Data>
+					<Data ss:Type="String">订单ID</Data>
 				</Cell>
 				<Cell ss:StyleID="ce1">
-					<Data ss:Type="String">权限</Data>
+					<Data ss:Type="String">产品名称</Data>
 				</Cell>
-				<Cell ss:Index="1024" ss:StyleID="ce1" />
+				<Cell ss:StyleID="ce1">
+					<Data ss:Type="String">手机号码</Data>
+				</Cell>
+				<Cell ss:StyleID="ce1">
+					<Data ss:Type="String">用户名称</Data>
+				</Cell>
+				<Cell ss:StyleID="ce1">
+					<Data ss:Type="String">4S店名称</Data>
+				</Cell>
+				<Cell ss:StyleID="ce1">
+					<Data ss:Type="String">操作</Data>
+				</Cell>
+				<Cell ss:StyleID="ce1">
+					<Data ss:Type="String">本金</Data>
+				</Cell>
+				<Cell ss:StyleID="ce1">
+					<Data ss:Type="String">用户收益</Data>
+				</Cell>
+				<Cell ss:StyleID="ce1">
+					<Data ss:Type="String">平台折扣收益</Data>
+				</Cell>
+				<Cell ss:StyleID="ce1">
+					<Data ss:Type="String">平台投资收益</Data>
+				</Cell>
+				<Cell ss:StyleID="ce1">
+					<Data ss:Type="String">门店收益</Data>
+				</Cell>
+				<Cell ss:StyleID="ce1">
+					<Data ss:Type="String">创建</Data>
+				</Cell>
 			</Row>
+			
+  <#list result as obj>
 			<Row ss:Height="12.8126">
 				<Cell ss:StyleID="ce1">
-					<Data ss:Type="String">系统管理员</Data>
+					<Data ss:Type="String">${obj.id!''}</Data>
 				</Cell>
-				<Cell ss:StyleID="ce2">
-					<Data ss:Type="String">ALL</Data>
+				<Cell ss:StyleID="ce1">
+					<Data ss:Type="String">${obj.productName!''}</Data>
 				</Cell>
-				<Cell ss:Index="1024" ss:StyleID="ce1" />
+				<Cell ss:StyleID="ce1">
+					<Data ss:Type="String">${obj.userPhone!''}</Data>
+				</Cell>
+				<Cell ss:StyleID="ce1">
+					<Data ss:Type="String">${obj.userName!''}</Data>
+				</Cell>
+				<Cell ss:StyleID="ce1">
+					<Data ss:Type="String">${obj.storeName!''}</Data>
+				</Cell>
+				<Cell ss:StyleID="ce1">
+					<Data ss:Type="String"><#if obj.opType == 1>提现</#if><#if obj.opType == 2>消费</#if></Data>
+				</Cell>
+				<Cell ss:StyleID="ce1">
+					<Data ss:Type="Number">${(obj.amount/10000)?string('#.##')}</Data>
+				</Cell>
+				<Cell ss:StyleID="ce1">
+					<Data ss:Type="Number">${(obj.userProfit/10000)?string('#.##')}</Data>
+				</Cell>
+				<Cell ss:StyleID="ce1">
+					<Data ss:Type="Number">${(obj.dccjProfit/10000)?string('#.##')}</Data>
+				</Cell>
+				<Cell ss:StyleID="ce1">
+					<Data ss:Type="Number">${(obj.dccjInvestProfit/10000)?string('#.##')}</Data>
+				</Cell>
+				<Cell ss:StyleID="ce1">
+					<Data ss:Type="Number">${(obj.storeProfit/10000)?string('#.##')}</Data>
+				</Cell>
+				<Cell ss:StyleID="ce1">
+					<Data ss:Type="String">${(obj.createTime?string("yyyy-MM-dd HH:mm:ss"))!''}</Data>
+				</Cell>
 			</Row>
-			<Row ss:Height="14.9102">
-				<Cell ss:StyleID="ce1">
-					<Data ss:Type="String">固定收益理财产品发布岗</Data>
-				</Cell>
-				<Cell ss:StyleID="ce1">
-					<ss:Data xmlns="http://www.w3.org/TR/REC-html40" ss:Type="String">
-						固定收益理财产品项目发起
-						<Font html:Face="Arial" html:Size="10">, </Font>
-						<Font html:Face="Droid Sans Fallback" html:Size="10">惠养车项目发起
-						</Font>
-					</ss:Data>
-				</Cell>
-				<Cell ss:Index="1024" ss:StyleID="ce1" />
-			</Row>
-			<Row ss:Height="14.9102">
-				<Cell ss:StyleID="ce1">
-					<Data ss:Type="String">固定收益理财产品审核岗</Data>
-				</Cell>
-				<Cell ss:StyleID="ce1">
-					<ss:Data xmlns="http://www.w3.org/TR/REC-html40" ss:Type="String">
-						固定收益理财产品审核上线
-						<Font html:Face="Arial" html:Size="10">, </Font>
-						<Font html:Face="Droid Sans Fallback" html:Size="10">惠养车审核上线
-						</Font>
-					</ss:Data>
-				</Cell>
-				<Cell ss:Index="1024" ss:StyleID="ce1" />
-			</Row>
-			<Row ss:Height="12.8126">
-				<Cell ss:StyleID="ce1">
-					<Data ss:Type="String">固定收益理财资金维护岗</Data>
-				</Cell>
-				<Cell ss:StyleID="ce1">
-					<Data ss:Type="String">固定收益理财产品还款</Data>
-				</Cell>
-				<Cell ss:Index="1024" ss:StyleID="ce1" />
-			</Row>
-			<Row ss:Height="12.8126">
-				<Cell ss:StyleID="ce1">
-					<Data ss:Type="String">固定收益理财资金审核岗</Data>
-				</Cell>
-				<Cell ss:StyleID="ce1">
-					<Data ss:Type="String">固定收益理财产品还款审批</Data>
-				</Cell>
-				<Cell ss:Index="1024" ss:StyleID="ce1" />
-			</Row>
-			<Row ss:Height="12.8126">
-				<Cell ss:StyleID="ce1">
-					<Data ss:Type="String">惠养车用户资金维护岗</Data>
-				</Cell>
-				<Cell ss:StyleID="ce1">
-					<Data ss:Type="String">惠养车投资人收益划付</Data>
-				</Cell>
-				<Cell ss:Index="1024" ss:StyleID="ce1" />
-			</Row>
-			<Row ss:Index="8" ss:Height="14.9102">
-				<Cell ss:StyleID="ce1">
-					<Data ss:Type="String">惠养车平台资金维护岗</Data>
-				</Cell>
-				<Cell ss:StyleID="ce1">
-					<ss:Data xmlns="http://www.w3.org/TR/REC-html40" ss:Type="String">
-						惠养车平台投资收益划付
-						<Font html:Face="Arial" html:Size="10">, </Font>
-						<Font html:Face="Droid Sans Fallback" html:Size="10">惠养车平台收益划付
-						</Font>
-					</ss:Data>
-				</Cell>
-				<Cell ss:Index="1024" ss:StyleID="ce1" />
-			</Row>
-			<Row ss:Height="14.9102">
-				<Cell ss:StyleID="ce1">
-					<Data ss:Type="String">惠养车门店资金维护岗</Data>
-				</Cell>
-				<Cell ss:StyleID="ce1">
-					<ss:Data xmlns="http://www.w3.org/TR/REC-html40" ss:Type="String">
-						惠养车
-						<Font html:Face="Arial" html:Size="10">4S</Font>
-						<Font html:Face="Droid Sans Fallback" html:Size="10">店收益划付</Font>
-					</ss:Data>
-				</Cell>
-				<Cell ss:Index="1024" ss:StyleID="ce1" />
-			</Row>
-			<Row ss:Height="12.8126">
-				<Cell ss:StyleID="ce1">
-					<Data ss:Type="String">门店管理岗</Data>
-				</Cell>
-				<Cell ss:StyleID="ce1">
-					<Data ss:Type="String">门店信息</Data>
-				</Cell>
-				<Cell ss:Index="1024" ss:StyleID="ce1" />
-			</Row>
-			<Row ss:Height="12.8126">
-				<Cell ss:StyleID="ce1">
-					<Data ss:Type="String">门店消费维护岗</Data>
-				</Cell>
-				<Cell ss:StyleID="ce1">
-					<Data ss:Type="String">惠养车消费记录</Data>
-				</Cell>
-				<Cell ss:Index="1024" ss:StyleID="ce1" />
-			</Row>
-			<Row ss:Height="12.8126">
-				<Cell ss:StyleID="ce1">
-					<Data ss:Type="String">身份认证审核岗</Data>
-				</Cell>
-				<Cell ss:StyleID="ce1">
-					<Data ss:Type="String">审核港澳台用户身份</Data>
-				</Cell>
-				<Cell ss:Index="1024" ss:StyleID="ce1" />
-			</Row>
-			<Row ss:Height="12.8126">
-				<Cell ss:Index="1024" ss:StyleID="ce1" />
-			</Row>
-			<Row ss:Index="1048576" ss:Height="12.8126">
-				<Cell ss:Index="1024" ss:StyleID="ce1" />
-			</Row>
+  </#list>
+  			
 		</Table>
 		<x:WorksheetOptions />
 	</ss:Worksheet>

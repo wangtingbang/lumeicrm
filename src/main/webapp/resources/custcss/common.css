@@ -1,0 +1,7 @@
+th.sorting{cursor: pointer;}
+th.sorting:after{float: right;display: inline;font-family: FontAwesome;font-size: 13px;font-weight: normal;color: #555;content: "\f0dc";}
+th.sorting_desc:after {content: "\f0dd";}
+th.sorting_asc:after {content: "\f0de";}
+.formTable{width:100%;border-collapse: collapse;}
+.formTable td{font-size:14px;height: 40px;border:solid 1px #CCCCCC;padding-left: 10px;padding-right: 10px;}
+.formTable td.fieldTd{background-color:#EEEEEE ;text-align: right;}

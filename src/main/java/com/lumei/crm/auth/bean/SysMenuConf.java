@@ -34,6 +34,10 @@ public class SysMenuConf {
         if (null == id || "".equals(id)) {
           continue;
         }
+        String hidden = element.attributeValue("hidden");
+        if ("hidden".equals(hidden)) {
+          continue;
+        }
         SysMenu menu = new SysMenu();
         menu.setId(id);
         String name = element.attributeValue("name");

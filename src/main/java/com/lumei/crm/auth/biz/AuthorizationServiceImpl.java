@@ -1,19 +1,19 @@
 package com.lumei.crm.auth.biz;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
 
+import org.dom4j.Document;
+import org.dom4j.Element;
+import org.dom4j.io.SAXReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.lumei.crm.auth.bean.SysMenuConf;
 import com.lumei.crm.auth.dao.OpAuthUserDao;
 import com.lumei.crm.auth.dao.OpAuthUserRoleDao;
 import com.lumei.crm.auth.entity.TOpAuthUser;
@@ -21,7 +21,6 @@ import com.lumei.crm.auth.entity.TOpAuthUserRole;
 import com.lumei.crm.commons.mybatis.support.Example;
 import com.lumei.crm.support.security.bean.RoleUrl;
 import com.lumei.crm.support.security.bean.ShiroLoginUser;
-import com.lumei.crm.support.security.service.FilterChainsService;
 import com.lumei.crm.support.security.service.ShiroAuthorizationService;
 
 /**
@@ -77,22 +76,25 @@ public class AuthorizationServiceImpl implements ShiroAuthorizationService {
     List<RoleUrl> list = new LinkedList<RoleUrl>();
     Properties properties = new Properties();
     try {
-      InputStream is =
-          new FileInputStream(new File(FilterChainsService.class.getClassLoader()
-              .getResource("conf/lumei/properties/Dyna_auth.properties").getPath()));
-      properties.load(is);
-    } catch (IOException e) {
-      logger.error("");
-    }
-    for (Iterator its = properties.keySet().iterator(); its.hasNext();) {
-      String key = (String) its.next();
-      String[] strs = properties.getProperty(key).trim().split(",");
-      for (int i = 0; i < strs.length; i++) {
-        RoleUrl e = new RoleUrl();
-        e.setUrl(key);
-        e.setRole(strs[i]);
-        list.add(e);
+      String path =
+          SysMenuConf.class.getClassLoader().getResource("conf/op/xml/sys-menu.xml").getPath();
+      File configFile = new File(path);
+      SAXReader saxReader = new SAXReader();
+      Document doc = saxReader.read(configFile);
+      List<Element> menus = doc.selectNodes("/menu-conf/menu");
+      for (Element element : menus) {
+        String url = element.attributeValue("url");
+        List<Element> roles = element.element("roles").elements("role");
+        for (Element element2 : roles) {
+          String role = element2.attributeValue("name");
+          RoleUrl e = new RoleUrl();
+          e.setUrl(url);
+          e.setRole(role);
+          list.add(e);
+        }
       }
+    } catch (Exception e) {
+      logger.error(e.getLocalizedMessage(), e);
     }
     return list;
   }

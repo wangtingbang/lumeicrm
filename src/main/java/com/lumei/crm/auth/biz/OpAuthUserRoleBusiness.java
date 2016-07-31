@@ -74,4 +74,10 @@ public class OpAuthUserRoleBusiness extends CommonBusiness<OpAuthUserRole, TOpAu
     return result;
   }
 
+  public int deleteHard(String id) {
+    TOpAuthUserRole record = new TOpAuthUserRole();
+    record.setId(id);
+    return opAuthUserRoleDao.deleteByPrimaryKeyHard(record);
+  }
+
 }

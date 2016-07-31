@@ -74,18 +74,14 @@ public class AuthController {
     try {
       UsernamePasswordToken token = new UsernamePasswordToken(loginName, password);
       currentUser.login(token);
-      loadSessionData(loginName, request);  
+      loadSessionData(loginName, request);
     } catch (LockedAccountException e) {
       model.addAttribute("errorMsg", "用户锁定，请联系管理员!");
       return "common/login";
-    } catch (IncorrectCredentialsException e) {
-      model.addAttribute("errorMsg", "用户名或密码错误!");
-      return "common/login";
-    } catch (UnknownAccountException e) {
+    } catch (UnknownAccountException | IncorrectCredentialsException e) {
       model.addAttribute("errorMsg", "用户名或密码错误!");
       return "common/login";
     } catch (AuthenticationException e) {
-      logger.error("error:{}", e);
       model.addAttribute("errorMsg", "用户认证错误!");
       return "common/login";
     } catch (Exception e) {
