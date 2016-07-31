@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<menu-conf>
+	<menu id="lumeiCrm" pid="" name="Lumei CRM" url="" icon="fa-credit-card"
+		  order="200">
+		<roles>
+			<role name="OP" />
+			<role name="AP" />
+			<role name="ADMIN" />
+		</roles>
+	</menu>
+	<menu id="cusotmerList" 
+		pid="lumeiCrm"
+		name="customers"
+		url="customer/op/list" icon="" order="210">
+		<roles>
+			<role name="OP" />
+			<role name="AP" />
+			<role name="ADMIN" />
+		</roles>
+	</menu>
+</menu-conf>

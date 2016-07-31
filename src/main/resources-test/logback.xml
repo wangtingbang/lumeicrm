@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<property name="LOG_NAME" value="jq-p2p-pos" />
+	<appender name="GELFLOG" class="me.moocar.logback.net.SocketEncoderAppender">
+		<!-- 配置日志服务器的ip -->
+        <remoteHost>192.168.99.210</remoteHost>
+        <port>12201</port>
+        <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+            <layout class="me.moocar.logbackgelf.GelfLayout">
+                <shortMessageLayout class="ch.qos.logback.classic.PatternLayout">
+                    <pattern>%rEx%m</pattern>
+                </shortMessageLayout>
+                <useLoggerName>true</useLoggerName>
+                <useThreadName>true</useThreadName>
+                <useMarker>true</useMarker>
+                <!-- 配置模块名称 -->
+                <host>${LOG_NAME}</host>
+                <staticAdditionalField>_facility:GELF</staticAdditionalField>
+            </layout>
+        </encoder>
+    </appender>
+    
+	<logger name="com.jq" level="DEBUG">
+		<appender-ref ref="GELFLOG" />
+	</logger>
+	<root level="INFO">
+		<appender-ref ref="GELFLOG" />
+	</root>
+	
+</configuration>

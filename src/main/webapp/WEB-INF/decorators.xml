@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<decorators defaultDir="/WEB-INF/page/common">
+	<excludes>
+		<pattern>/resources/*</pattern>
+		<pattern>/login</pattern>
+		<pattern>/authlogin</pattern>
+		<pattern>/uncaughtException</pattern>
+		<pattern>/resourceNotFound</pattern>
+		<pattern>/unauthorized</pattern>
+		<pattern>/ietest</pattern>
+		<pattern>/**/widget/*</pattern>
+		<pattern>/static/*</pattern>
+		<pattern>/prototype/*</pattern>
+		<pattern>/heartbeat</pattern>
+	</excludes>
+
+	<decorator name="main" page="main.jsp">
+		<pattern>/*</pattern>
+	</decorator>
+</decorators>
