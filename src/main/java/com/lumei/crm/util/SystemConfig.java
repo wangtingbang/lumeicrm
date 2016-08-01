@@ -7,8 +7,6 @@ public class SystemConfig {
 
   static {
     FILE_SERVER_ADDR = SystemProperties.get("file.server.addr");
-
-    System.out.println("====================>>>>>>>"+(SystemProperties.getProps()));
   }
 
 }

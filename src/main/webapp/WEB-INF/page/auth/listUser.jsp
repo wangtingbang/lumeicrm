@@ -9,11 +9,9 @@
 			<h1>
 			<small>
 				<i class="ace-icon fa fa-home home-icon"></i>
-				<a href="<%=request.getContextPath() %>/">主页</a>
+				<a href="<%=request.getContextPath() %>/">Home</a>
 				<i class="ace-icon fa fa-angle-double-right"></i>
-				<a href="#">系统管理</a>
-				<i class="ace-icon fa fa-angle-double-right"></i>
-				用户管理
+				User Config
 			</small>
 			</h1>
 		</div>
@@ -24,20 +22,20 @@
 		<form id="search_form" class="" action="#">
 		<div class="col-sm-2 form-group">
 			<a class="btn btn-sm btn-success" id="create_btn">
-				 <i class="ace-icon fa fa-plus bigger-110"></i> 新增
+				 <i class="ace-icon fa fa-plus bigger-110"></i> Add
 			</a>
 		</div>
 		<div class="col-sm-2 form-group">
 			<select id="search_option" class="form-control">
-				<option value="userName">用户名</option>
-				<option value="nickName">姓名</option>
+				<option value="userName">Username</option>
+				<option value="nickName">Nickname</option>
 			</select>
 		</div>
 		<div class="col-sm-4 form-group" id="search_input">
 		</div>
 		<div class="col-sm-2 form-group">
 			<a class="btn btn-info btn-sm" id="search_btn">
-				 <i class="ace-icon fa fa-search  bigger-110"></i> 查询
+				 <i class="ace-icon fa fa-search  bigger-110"></i> Find
 			</a>
 		</div>
 		</form>
@@ -52,21 +50,21 @@
 </div>
 </div>
 	<script id="search_userName_temp" type="text/x-dot-template">
-		<input type="text"  name="userName" class="form-control" placeholder="输入检索内容"/>
+		<input type="text"  name="userName" class="form-control" placeholder=""/>
 	</script>
 
 	<script id="search_nickName_temp" type="text/x-dot-template">
-		<input type="text"  name="nickName" class="form-control" placeholder="输入检索内容"/>
+		<input type="text"  name="nickName" class="form-control" placeholder=""/>
 	</script>
 
 <script id="grid_temp" type="text/x-dot-template">
 <table id="sample-table-1" class="table table-striped table-bordered table-hover">
 	<thead>
 		<tr>
-			<th>用户名</th>
-			<th>姓名</th>
-			<th>状态</th>
-			<th>操作</th>
+			<th>Username</th>
+			<th>Nickname</th>
+			<th>Status</th>
+			<th>Opts</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -80,25 +78,25 @@
 			</td>
 			<td>
 			<div class="action-buttons">
-						<a class="red" href="javascript:lockSubmit('{{=p.id }}');" data-rel="tooltip"  {{? p.enabled==1}} title="用户禁用" data-original-title="用户禁用">{{??}} title="用户启用" data-original-title="用户启用">{{?}}
+						<a class="red" href="javascript:lockSubmit('{{=p.id }}');" data-rel="tooltip"  {{? p.enabled==1}} title="lock" data-original-title="lock">{{??}} title="unlock" data-original-title="unlock">{{?}}
 							{{? p.enabled==1}}
-							<i class="ace-icon fa fa-unlock bigger-130"></i>   启用
+							<i class="ace-icon fa fa-unlock bigger-130"></i>   unlock
 							{{??}}
-							<i class="ace-icon fa fa-lock bigger-130"></i>   禁用
+							<i class="ace-icon fa fa-lock bigger-130"></i>   lock
 							{{?}}
 						</a>
 			</div>
 			</td>
 			<td>
 			<div class="hidden-sm hidden-xs action-buttons">
-				<a class="green col-xs-2" href="javascript:updateuser('{{=p.id }}','{{=p.userName }}','{{=p.nickName }}');" data-rel="tooltip" title="编辑用户" data-original-title="编辑用户">
-					<i class="ace-icon fa fa-pencil bigger-130"></i>   编辑用户
+				<a class="green col-xs-2" href="javascript:updateuser('{{=p.id }}','{{=p.userName }}','{{=p.nickName }}');" data-rel="tooltip" title="edit" data-original-title="edit">
+					<i class="ace-icon fa fa-pencil bigger-130"></i>   edit
 				</a>
-				<a class="orange col-xs-2" href="javascript:resetuserpwd('{{=p.id }}','{{=p.nickName }}');" data-rel="tooltip" title="重置密码" data-original-title="重置密码">
-					<i class="ace-icon fa fa-undo bigger-130"></i>   重置密码
+				<a class="orange col-xs-2" href="javascript:resetuserpwd('{{=p.id }}','{{=p.nickName }}');" data-rel="tooltip" title="reset password" data-original-title="reset password">
+					<i class="ace-icon fa fa-undo bigger-130"></i>   reset password
 				</a>
-				<a class="purple col-xs-2" href="javascript:userRole('{{=p.id }}','{{=p.nickName }}');" data-rel="tooltip" title="用户角色设置" data-original-title="用户角色设置">
-					<i class="ace-icon fa fa-group bigger-130"></i>   角色设置
+				<a class="purple col-xs-2" href="javascript:userRole('{{=p.id }}','{{=p.nickName }}');" data-rel="tooltip" title="roles" data-original-title="roles">
+					<i class="ace-icon fa fa-group bigger-130"></i>   roles
 				</a>
 			</div>
 			<div class="hidden-md hidden-lg">
@@ -108,18 +106,18 @@
 					</button>
 					<ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
 						<li>
-							<a class="green" href="javascript:updateuser('{{=p.id }}','{{=p.userName }}','{{=p.nickName }}');" data-rel="tooltip" title="编辑用户" data-original-title="编辑用户">
-								<i class="ace-icon fa fa-pencil bigger-130"></i>   编辑用户
+							<a class="green" href="javascript:updateuser('{{=p.id }}','{{=p.userName }}','{{=p.nickName }}');" data-rel="tooltip" title="edit" data-original-title="edit">
+								<i class="ace-icon fa fa-pencil bigger-130"></i>   edit
 							</a>
 						</li>
 						<li>
-							<a class="orange" href="javascript:resetuserpwd('{{=p.id }}','{{=p.nickName }}');" data-rel="tooltip" title="重置密码" data-original-title="重置密码">
-								<i class="ace-icon fa fa-undo bigger-130"></i>   重置密码
+							<a class="orange" href="javascript:resetuserpwd('{{=p.id }}','{{=p.nickName }}');" data-rel="tooltip" title="reset password" data-original-title="reset password">
+								<i class="ace-icon fa fa-undo bigger-130"></i>   reset password
 							</a>
 						</li>
 						<li>
-							<a class="purple" href="javascript:userRole('{{=p.id }}','{{=p.nickName }}');" data-rel="tooltip" title="用户角色设置" data-original-title="用户角色设置">
-								<i class="ace-icon fa fa-group bigger-130"></i>   角色设置
+							<a class="purple" href="javascript:userRole('{{=p.id }}','{{=p.nickName }}');" data-rel="tooltip" title="roles" data-original-title="roles">
+								<i class="ace-icon fa fa-group bigger-130"></i>   roles
 							</a>
 						</li>
 					</ul>
@@ -129,7 +127,7 @@
 		</tr>
 {{~}}
 {{? !it.data.length}}
-<tr ><td colspan="12">没有相关记录</td></tr>
+<tr ><td colspan="12">not found</td></tr>
 {{?}}
 	</tbody>
 </table>
@@ -138,13 +136,13 @@
 <script id="create_temp" type="text/x-dot-template">
 <form class="form-horizontal" id="createuserform">
 <div class="form-group">
-	<label class="col-sm-4 control-label no-padding-right" for="id">用户名</label>
+	<label class="col-sm-4 control-label no-padding-right" for="id">Username</label>
 	<div class="col-sm-8">
 		<input type="text" id="userName" name="userName" class="col-xs-12 col-sm-12" value=""/>
 	</div>
 </div>
 <div class="form-group">
-	<label class="col-sm-4 control-label no-padding-right" for="id">昵称</label>
+	<label class="col-sm-4 control-label no-padding-right" for="id">Nickname</label>
 	<div class="col-sm-8">
 		<input type="text" id="nickName" name="nickName" class="col-xs-12 col-sm-12" value=""/>
 	</div>
@@ -156,13 +154,13 @@
 <form class="form-horizontal" id="updateuserform">
 <input type="hidden" id="id" name="id" value="{{=it.id}}"/>
 <div class="form-group">
-	<label class="col-sm-4 control-label no-padding-right" for="id">用户名</label>
+	<label class="col-sm-4 control-label no-padding-right" for="id">Username</label>
 	<div class="col-sm-8">
 		<input type="text" id="userName" name="userName" class="col-xs-12 col-sm-12" value="{{=it.userName}}" readonly="readonly"/>
 	</div>
 </div>
 <div class="form-group">
-	<label class="col-sm-4 control-label no-padding-right" for="id">昵称</label>
+	<label class="col-sm-4 control-label no-padding-right" for="id">Nickname</label>
 	<div class="col-sm-8">
 		<input type="text" id="nickName" name="nickName" class="col-xs-12 col-sm-12" value="{{=it.nickName}}"/>
 	</div>
@@ -187,7 +185,7 @@
 			<div class="col-sm-4">
 				<div id="usrRoleBtn" class="btn btn-info btn-sm">
 				<i class="ace-icon fa fa-plus  bigger-110"></i>
-				添加
+				Add
 				</div>
 			</div>
 		</form>

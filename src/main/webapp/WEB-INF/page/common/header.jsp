@@ -40,7 +40,7 @@
 						<li>
 							<a href="javascript:resetpwd();">
 								<i class="ace-icon fa fa-cog"></i>
-								Set password
+								Reset Password
 							</a>
 						</li>
 						<li class="divider"></li>

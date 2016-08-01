@@ -77,7 +77,7 @@ public class AuthorizationServiceImpl implements ShiroAuthorizationService {
     Properties properties = new Properties();
     try {
       String path =
-          SysMenuConf.class.getClassLoader().getResource("conf/op/xml/sys-menu.xml").getPath();
+          SysMenuConf.class.getClassLoader().getResource("conf/lumei/xml/sys-menu.xml").getPath();
       File configFile = new File(path);
       SAXReader saxReader = new SAXReader();
       Document doc = saxReader.read(configFile);

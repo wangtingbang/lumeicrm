@@ -59,10 +59,6 @@ if (!StringUtils.isEmpty(xRequestedWith)) {
 		<script src="<%=request.getContextPath() %>/resources/js/html5shiv.js"></script>
 		<script src="<%=request.getContextPath() %>/resources/js/respond.min.js"></script>
 		<![endif]-->
-		<style type="text/css">
-		.light-login{background:url("resources/img/login-bg.jpg") no-repeat scroll center center / cover transparent;}
-		.login-container{margin-top:100px;}
-		</style>
 	</head>
 
 	<body class="login-layout light-login">
@@ -70,27 +66,27 @@ if (!StringUtils.isEmpty(xRequestedWith)) {
 			<div class="main-content">
 				<div class="row">
 					<div class="col-sm-10 col-sm-offset-1">
-						<div class="login-container">
+						<div class="login-container" style="margin-right: 10px;margin-top: 40px;">
 							<div class="center">
 								<h1>
 									<i class="ace-icon fa fa-leaf green"></i>
-									<span class="white" id="id-text2">Lumei CRM</span>
+									<span class="red">User</span>
+									<span class="white" id="id-text2">Login</span>
 								</h1>
 							</div>
 							<div class="space-6"></div>
 							<div class="position-relative">
 								<div id="login-box" class="login-box visible widget-box no-border">
-									<div class="main_mask"></div>
 									<div class="widget-body">
 										<div class="widget-main">
 											<h4 class="header blue lighter bigger">
 												<i class="ace-icon fa fa-coffee green"></i>
-												User Login
+												&copy;Lumei CRM
 											</h4>
 
 											<div class="space-6"></div>
 <!-- ################### -->
-											<form action="<%=request.getContextPath() %>/authlogin" method="post">
+											<form action="<%=request.getContextPath() %>/authlogin" onsubmit="return check();" method="post">
 												<fieldset>
 													<label class="block clearfix">
 														<span class="block input-icon input-icon-right">
@@ -104,15 +100,15 @@ if (!StringUtils.isEmpty(xRequestedWith)) {
 														<span class="block input-icon input-icon-right">
 															<input id="upwd" type="password" class="form-control" name="password" value="" placeholder="Password" onfocus="focusupwd();"/>
 															<span id="checkupwd"></span>
+															<i class="ace-icon fa fa-lock"></i>
+														</span>
+													</label>
+
 													<c:if test="${! empty errorMsg }">
 														<span id="checkuser">
 											    			<font color="red">${errorMsg }</font>
 														</span>
 													</c:if>
-															<i class="ace-icon fa fa-lock"></i>
-														</span>
-													</label>
-
 													<div class="space"></div>
 
 													<div class="clearfix">
@@ -133,6 +129,10 @@ if (!StringUtils.isEmpty(xRequestedWith)) {
 											<div class="space-6"></div>
 
 										</div><!-- /.widget-main -->
+
+										<div class="toolbar clearfix" style="height: 20px;">
+
+										</div>
 									</div><!-- /.widget-body -->
 								</div><!-- /.login-box -->
 							<!-- <div class="navbar-fixed-top align-right">

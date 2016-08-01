@@ -33,7 +33,6 @@ import com.lumei.crm.auth.biz.OpAuthUserBusiness;
 import com.lumei.crm.auth.biz.OpAuthUserRoleBusiness;
 import com.lumei.crm.auth.dto.OpAuthUser;
 import com.lumei.crm.commons.util.IpUtil;
-import com.lumei.crm.support.op.OpLoggerFactory;
 import com.lumei.crm.util.SessionUtil;
 import com.lumei.crm.util.Tree;
 
@@ -46,7 +45,7 @@ import com.lumei.crm.util.Tree;
 @Controller
 public class AuthController {
   private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
-  
+
   @Autowired
   OpAuthUserBusiness opAuthUserBusiness;
   @Autowired
@@ -55,34 +54,34 @@ public class AuthController {
   @RequestMapping(value = "authlogin", method = RequestMethod.GET)
   public String login() throws Exception {
     Subject currentUser = SecurityUtils.getSubject();
-    if(currentUser.isAuthenticated()){
-      return "redirect:/"; 
+    if (currentUser.isAuthenticated()) {
+      return "redirect:/";
     }
     return "redirect:/login";
   }
-  
+
   @RequestMapping(value = "authlogin", method = RequestMethod.POST)
   public String login(Model model, OpAuthUser user, HttpServletRequest request) throws Exception {
     Subject currentUser = SecurityUtils.getSubject();
-    if(currentUser.isAuthenticated()){
-      return "redirect:/"; 
+    if (currentUser.isAuthenticated()) {
+      return "redirect:/";
     }
     String userId = user.getId();
     String loginName = user.getUserName();
     String password = user.getPassword();
-    
+
     try {
       UsernamePasswordToken token = new UsernamePasswordToken(loginName, password);
       currentUser.login(token);
       loadSessionData(loginName, request);
     } catch (LockedAccountException e) {
-      model.addAttribute("errorMsg", "用户锁定，请联系管理员!");
+      model.addAttribute("errorMsg", "user locked !");
       return "common/login";
     } catch (UnknownAccountException | IncorrectCredentialsException e) {
-      model.addAttribute("errorMsg", "用户名或密码错误!");
+      model.addAttribute("errorMsg", "username or password incorrect !");
       return "common/login";
     } catch (AuthenticationException e) {
-      model.addAttribute("errorMsg", "用户认证错误!");
+      model.addAttribute("errorMsg", "authentication error !");
       return "common/login";
     } catch (Exception e) {
       logger.error(e.getLocalizedMessage());

@@ -16,7 +16,7 @@ public class SysRoleFunction {
   private static Map<String, Set<String>> functionConfigs = new HashMap<String, Set<String>>();
   static {
     String path =
-        SysRoleFunction.class.getClassLoader().getResource("conf/op/xml/sys-menu.xml").getPath();
+        SysRoleFunction.class.getClassLoader().getResource("conf/lumei/xml/sys-menu.xml").getPath();
     File configFile = new File(path);
     SAXReader saxReader = new SAXReader();
     try {

@@ -13,16 +13,8 @@ import java.util.Map;
 public enum SysRole {
 
   ADMIN("ADMIN", "Administrator"),
-  PRD_OP("PRD_OP", "产品发布岗"),
-  PRD_AP("PRD_AP", "产品审核岗"),
-  FIN_OP("FIN_OP", "固定理财资金维护岗"),
-  FIN_AP("FIN_AP", "固定理财资金审核岗"),
-  PSP_USER_FIN_OP("PSP_USER_FIN_OP", "售后宝用户资金维护岗"),
-  PSP_DCCJ_FIN_OP("PSP_DCCJ_FIN_OP", "售后宝平台资金维护岗"),
-  PSP_STORE_FIN_OP("PSP_STORE_FIN_OP", "售后宝门店资金维护岗"),
-  STORE_OP("STORE_OP", "门店管理岗"),
-  ID_AP("ID_AP", "身份认证审核岗"),
-  STORE_USER_OP("STORE_USER_OP", "门店消费维护岗");
+  SALES("SALES", "Sales"),
+  CUSTOMER_SERVICE("CUSTOMER_SERVICE", "Customer Service");
   
   private String key;
   private String desc;

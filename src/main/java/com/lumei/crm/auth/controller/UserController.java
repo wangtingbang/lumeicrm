@@ -58,8 +58,8 @@ public class UserController {
     String userId = SessionUtil.getCurrentUserId();
     OpAuthUser user = opAuthUserBusiness.find(userId, OpAuthUser.class);
     if (!(StringUtils.isNotBlank(newPwd1) && StringUtils.isNotBlank(newPwd2)
-        && StringUtils.trimToEmpty(newPwd1).length() > 6 && StringUtils.trimToEmpty(newPwd1)
-        .length() > 6)) {
+        && StringUtils.trimToEmpty(newPwd1).length() >= 6 && StringUtils.trimToEmpty(newPwd1)
+        .length() >= 6)) {
       throw new BusinessException(PosApiCode.AUTH_ERROR8.getCode());
     }
     if (null != user) {
@@ -71,7 +71,7 @@ public class UserController {
           user.setUpdateBy(userId);
           user.setUpdateTime(DateTimeUtil.now());
           opAuthUserBusiness.updateSelective(user);
-          rm.put("msg", "更新成功!");
+          rm.put("msg", "update success !");
 
         } else {
           throw new BusinessException(PosApiCode.AUTH_ERROR1.getCode());
@@ -127,7 +127,7 @@ public class UserController {
     opAuthUser.setCreateTime(DateTimeUtil.now());
     opAuthUserBusiness.create(opAuthUser);
     Map<String, String> rm = new HashMap<String, String>();
-    rm.put("msg", "新建用户成功!");
+    rm.put("msg", "create success !");
     return rm;
   }
 
@@ -144,7 +144,7 @@ public class UserController {
     opAuthUser.setPassword(null);
     opAuthUserBusiness.updateSelective(opAuthUser);
     Map<String, String> rm = new HashMap<String, String>();
-    rm.put("msg", "更新成功!");
+    rm.put("msg", "update success !");
     return rm;
   }
 
@@ -160,7 +160,7 @@ public class UserController {
     opAuthUser.setUpdateBy(SessionUtil.getCurrentUserId());
     opAuthUser.setUpdateTime(DateTimeUtil.now());
     opAuthUserBusiness.updateSelective(opAuthUser);
-    rm.put("msg", "重置密码成功!");
+    rm.put("msg", "reset success !");
     return rm;
   }
 
@@ -173,13 +173,13 @@ public class UserController {
     OpAuthUser opAuthUser = opAuthUserBusiness.find(userId, OpAuthUser.class);
     byte flag = opAuthUser.getEnabled().byteValue();
     flag = (byte) ((~flag) & 1);
-    String act = flag == 0 ? "禁用" : "启用";
+    String act = flag == 0 ? "lock" : "unlock";
     opAuthUser.setEnabled(flag);
     opAuthUser.setUpdateBy(SessionUtil.getCurrentUserId());
     opAuthUser.setUpdateTime(DateTimeUtil.now());
     opAuthUserBusiness.updateSelective(opAuthUser);
     Map<String, String> rm = new HashMap<String, String>();
-    rm.put("msg", act + "成功!");
+    rm.put("msg", act + " success !");
     return rm;
   }
 

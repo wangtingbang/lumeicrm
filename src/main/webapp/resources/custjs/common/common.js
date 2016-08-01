@@ -12,12 +12,12 @@ $.iajax = function(options){
 		if(result.retCode == "0"){
 			options.success(result.retData);
 		}else if($.trim(result) == "401.1"){
-			$.ios('登录已失效！');
+			$.ios('Login Timeout !');
 			setTimeout(function(){location.href=contextPath+"/login";},3000);
 		}else if($.trim(result) == "403"){
-			$.ios('未经授权，事件已被记录！');
+			$.ios('unauthorized access, we record it !');
 		}else if($.trim(result) == "404"){
-			$.ios('资源未找到！');
+			$.ios('Not Found !');
 		}else if(result.retCode == "001000"){
 			$.ios(retCode[result.retCode]);
 		}else{
@@ -161,12 +161,12 @@ $.iconfirm = function(text,callback) {
 		 return;
 	 }
 		var defaults = {
-				  title:"确认",
+				  title:"Confirm",
 				  text: "",
 //				  type: "warning", //success error
-				  confirmButtonText: "确定",
+				  confirmButtonText: "Confirm",
 				  showCancelButton:true,
-				  cancelButtonText:"取消"
+				  cancelButtonText:"Cancel"
 		};
 		var settings = $.extend({},defaults,{text:text});
 		swal(settings,function(isConfirm){
@@ -210,7 +210,7 @@ $.ispinner = {
 				document.body.appendChild(target);
 				var spinner = new Spinner(opts).spin(target);
 				return iosOverlay({
-					text: "加载中...",
+					text: "Loading ...",
 					spinner: spinner
 				});
 		 
@@ -308,11 +308,11 @@ function logout(){
 function resetpwd(){
 	var resetpwdfn = doT.template($('#resetpwdtemp').text());
 	$.imodal({
-		title:"修改密码",
+		title:"Reset Password",
 		contents:resetpwdfn({}),
 		buttons:[
-				{addClass: 'btn btn-sm btn-default', text: '<i class="ace-icon fa fa-times  bigger-110"></i>取消', attr:'data-dismiss="modal"'},
-				{addClass: 'btn btn-sm btn-primary', text: '<i class="ace-icon fa fa-check  bigger-110"></i>确定', onClick: function(msgDom) {
+				{addClass: 'btn btn-sm btn-default', text: '<i class="ace-icon fa fa-times  bigger-110"></i>Cancel', attr:'data-dismiss="modal"'},
+				{addClass: 'btn btn-sm btn-primary', text: '<i class="ace-icon fa fa-check  bigger-110"></i>Confirm', onClick: function(msgDom) {
 					resetpwd2(msgDom);
 				}
 				}
@@ -324,12 +324,12 @@ function resetpwd2(msgDom){
 	$.ipost(contextPath+'/auth/resetpwd', $('#pwdForm').serialize(), function (result) {
 		msgDom.imsg({
 			type:'success',
-			title:"更新成功",
+			title:"Update Success !",
 			text:result.msg
 		});
 	}, function(error){
 		msgDom.imsg({
-			title:"更新失败",
+			title:"Update Fail !",
 			text:error
 		});
 	});

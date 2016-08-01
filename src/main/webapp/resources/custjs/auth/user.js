@@ -1,24 +1,24 @@
 $(function () {
 	$('#create_btn').click(function() {
 		$.imodal({
-			title:"新建用户",
+			title:"Add User",
 			contents:function(){
 				var pagefn = doT.template($('#create_temp').text());
 				return pagefn({});
 			},
 			buttons:[
-						{addClass: 'btn btn-sm btn-default', text: '<i class="ace-icon fa fa-times  bigger-110"></i>取消', attr:'data-dismiss="modal"'},
-						{addClass: 'btn btn-sm btn-primary', text: '<i class="ace-icon fa fa-check  bigger-110"></i>确定', onClick: function(msgDom) {
+						{addClass: 'btn btn-sm btn-default', text: '<i class="ace-icon fa fa-times  bigger-110"></i>Cancel', attr:'data-dismiss="modal"'},
+						{addClass: 'btn btn-sm btn-primary', text: '<i class="ace-icon fa fa-check  bigger-110"></i>Confirm', onClick: function(msgDom) {
 								$.ipost(contextPath+'/auth/user/create', $('#createuserform').serialize(), function (result) {
 									msgDom.imsg({
 										type:'success',
-										title:"新建成功",
+										title:"Create Success !",
 										text:result.msg
 									});
 									$('#search_btn').click();
 								},function(error){
 									msgDom.imsg({
-										title:"新建失败",
+										title:"Create Fail !",
 										text:error
 									});
 								});
@@ -68,24 +68,24 @@ function searchSubmit() {
 
 function updateuser(id, userName, nickName){
 	$.imodal({
-		title:"编辑用户",
+		title:"Edit User",
 		contents:function(){
 			var pagefn = doT.template($('#update_user_temp').text());
 			return pagefn({id:id, userName: userName, nickName:nickName});
 		},
 		buttons:[
-					{addClass: 'btn btn-sm btn-default', text: '<i class="ace-icon fa fa-times  bigger-110"></i>取消', attr:'data-dismiss="modal"'},
-					{addClass: 'btn btn-sm btn-primary', text: '<i class="ace-icon fa fa-check  bigger-110"></i>确定', onClick: function(msgDom) {
+					{addClass: 'btn btn-sm btn-default', text: '<i class="ace-icon fa fa-times  bigger-110"></i>Cancel', attr:'data-dismiss="modal"'},
+					{addClass: 'btn btn-sm btn-primary', text: '<i class="ace-icon fa fa-check  bigger-110"></i>Confirm', onClick: function(msgDom) {
 						$.ipost(contextPath+'/auth/user/update', $('#updateuserform').serialize(), function (result) {
 								msgDom.imsg({
 									type:'success',
-									title:"修改成功",
+									title:"Update Success !",
 									text:result.msg
 								});
 								$('#search_btn').click();
 							},function(error){
 								msgDom.imsg({
-									title:"修改失败",
+									title:"Update Fail !",
 									text:error
 								});
 							});
@@ -96,15 +96,15 @@ function updateuser(id, userName, nickName){
 }
 
 function resetuserpwd(id,name){
-	 $.iconfirm("确定要重置"+name+"的密码吗？", function(){
+	 $.iconfirm("Are you sure reset "+name+"'s password?", function(){
 			$.ipost(
 					contextPath+"/auth/user/resetuserpwd",
 					{userId:id},
 					function(result){
-						$.ialert("重置密码成功");
+						$.ialert("Reset Success !");
 					},
 					function(error){
-						$.ialert("重置密码失败");
+						$.ialert("Reset Fail !");
 					}
 			);
 		 });
@@ -115,11 +115,11 @@ function lockSubmit(id){
 		contextPath+"/auth/user/lock",
 		{userId:id},
 		function(result){
-			$.ialert("状态更新成功");
+			$.ialert("Update Success !");
 			$('#search_btn').click();
 		},
 		function(error){
-			$.ialert("状态更新失败");
+			$.ialert("Update Fail !");
 		}
 	);
 }
@@ -127,17 +127,17 @@ function lockSubmit(id){
 function userRole(id, name){
 	var pagefn = doT.template($('#user_role_temp').text());
 	$.imodal({
-		title:"角色设置 - "+name,
+		title:"Add Roles - "+name,
 		contents:pagefn({id:id}),
 		buttons:[
-		         {addClass: 'btn btn-sm btn-default', text: '<i class="ace-icon fa fa-times  bigger-110"></i>取消', attr:'data-dismiss="modal"'}
+		         {addClass: 'btn btn-sm btn-default', text: '<i class="ace-icon fa fa-times  bigger-110"></i>Cancel', attr:'data-dismiss="modal"'}
 			]
 	});
 	getRole();
 	listUsrRole(id);
 	$('#usrRoleBtn').click(function () {
 		if($("#role_select").val()==""){
-			alert("请选择角色");
+			alert("no role selected !");
 			return false;
 		}else{
 			$.ipost(contextPath+"/auth/user/addUserRole", 
@@ -191,7 +191,7 @@ function roles(it) {
 					+ (value.roleName)
 					+ '</button><button data-toggle="dropdown" class="btn btn-sm btn-yellow dropdown-toggle"><i class="ace-icon fa fa-angle-down icon-only"></i></button><ul class="dropdown-menu dropdown-yellow"><li><a href="javascript:delUsrRole(\''
 					+ (value.id)+'\',\''+(value.userId)
-					 + '\');">删除</a></li></ul></div>';
+					 + '\');">Delete</a></li></ul></div>';
 		}
 	}
 	return out;

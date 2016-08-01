@@ -296,19 +296,19 @@
 <script id="resetpwdtemp" type="text/x-dot-template">
 <form class="form-horizontal" id="pwdForm">
 <div class="form-group">
-	<label class="col-sm-4 control-label no-padding-right" for="id">old password</label>
+	<label class="col-sm-4 control-label no-padding-right" for="id">Old Password</label>
 	<div class="col-sm-8">
 		<input type="password" id="oldPwd" name="oldPwd" class="col-xs-12 col-sm-12" value=""/>
 	</div>
 </div>
 <div class="form-group">
-	<label class="col-sm-4 control-label no-padding-right" for="id">new password</label>
+	<label class="col-sm-4 control-label no-padding-right" for="id">New Password</label>
 	<div class="col-sm-8">
 		<input type="password" id="newPwd1" name="newPwd1" class="col-xs-12 col-sm-12" value=""/>
 	</div>
 </div>
 <div class="form-group">
-	<label class="col-sm-4 control-label no-padding-right" for="id">confirm new password</label>
+	<label class="col-sm-4 control-label no-padding-right" for="id">Confirm New Password</label>
 	<div class="col-sm-8">
 		<input type="password" id="newPwd2" name="newPwd2" class="col-xs-12 col-sm-12" value=""/>
 	</div>
