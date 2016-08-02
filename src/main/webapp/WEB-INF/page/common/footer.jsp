@@ -3,7 +3,7 @@
 	<div class="footer-inner">
 		<div class="footer-content">
 			<span class="bigger-120">
-				<span class="blue bolder">LumeiCRM</span>
+				<span class="blue bolder">Lumei CRM</span>
 				&copy; 2016-2017
 			</span>
 		</div>

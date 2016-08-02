@@ -62,7 +62,8 @@
 		<property name="cache" value="true" />
 	</bean> -->
 
-	<mvc:view-controller path="/" view-name="common/index" />
+<!-- 	<mvc:view-controller path="/" view-name="common/index" />-->
+	<mvc:view-controller path="/" view-name="customer/listCustomer" />
 	<mvc:view-controller path="/uncaughtException"
 		view-name="common/exception" />
 	<mvc:view-controller path="/resourceNotFound"

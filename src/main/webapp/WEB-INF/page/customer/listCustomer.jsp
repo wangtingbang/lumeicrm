@@ -16,8 +16,6 @@
 				<i class="ace-icon fa fa-home home-icon"></i>
 				<a href="<%=request.getContextPath() %>/">Home</a>
 				<i class="ace-icon fa fa-angle-double-right"></i>
-				<a href="#">Lumei CRM</a>
-				<i class="ace-icon fa fa-angle-double-right"></i>
 				<c:if test="${authType == 'op'}">Customers List</c:if><c:if test="${authType == 'ap'}">Customers View</c:if>
 			</small>
 			</h1>
@@ -28,40 +26,31 @@
 <div class="row">
 <div class="col-xs-12">
 <form id="search_form" class="form-horizontal" action="#">
-		<div class="row">
-			<div class="col-sm-3 form-group">
+		<%-- <div class="row"> --%>
+			<div class="col-sm-4 form-group">
 				<label class="col-sm-2 control-label no-padding-right" for="form-field-1">Name</label>
 				<div class="col-sm-10">
 						<input id="form-field-customer-name"  class="form-control" type="text" name="customerName"/>
 				</div>
 			</div>
-			<div class="col-sm-9 form-group">
-				<label class="col-sm-1 control-label no-padding-right" for="form-field-2">Phone</label>
-				<div class="col-sm-4">
+			<div class="col-sm-4 form-group">
+				<label class="col-sm-2 control-label no-padding-right" for="form-field-2">Phone</label>
+				<div class="col-sm-10">
 					<input id="form-field-customer-phone"  class="form-control" type="text" name="customerPhone"/>
 				</div>
-				<div class="col-sm-3 form-group center">
-					<a class="btn btn-info btn-sm" id="search_btn">
-						 <i class="ace-icon fa fa-search  bigger-110"></i> Search
-					</a>
-				</div>
-				<div class="col-sm-3 form-group center">
-					<a class="btn btn-info btn-sm" id="create_btn">
-						<i class="ace-icon fa fa-plus  bigger-110"></i> Add
-					</a>
-				</div>
 			</div>
-
-		</div>
-		<div class="row">
-			<div class="col-sm-3 form-group">
+			<div class="col-sm-4 form-group">
 				<label class="col-sm-2 control-label no-padding-right" for="">Email</label>
 				<div class="col-sm-10">
 					<input id="form-field-customer-email"  class="form-control" type="text" name="customerEmail"/>
 				</div>
 			</div>
+			<%-- </div>
 
-			<div class="col-sm-9 form-group">
+		</div> --%>
+		<%-- <div class="row"> --%>
+
+			<div class="col-sm-8 form-group">
 				<label class="col-sm-1 control-label no-padding-right" for="form-field-3">Status</label>
 				<div class="col-sm-11">
 					<label style="margin-right: 10px; margin-top: 5px;">
@@ -82,14 +71,24 @@
 					</label>
 										<label style="margin-right: 10px; margin-top: 5px;">
 					<input id="form-search-status-paied" name="form-search-status-paied" type="checkbox" class="ace" />
-					<span class="lbl">No Response&nbsp;&nbsp;</span>
+					<span class="lbl">Still in the Market&nbsp;&nbsp;</span>
 					</label>
 				</div>
 			</div>
-
+			<div class="col-sm-4 form-group">
+			<div class="col-sm-6 form-group center">
+				<a class="btn btn-info btn-sm" id="search_btn">
+					 <i class="ace-icon fa fa-search  bigger-110"></i> Search
+				</a>
+			</div>
+			<div class="col-sm-6 form-group center">
+				<a class="btn btn-info btn-sm" id="create_btn">
+					<i class="ace-icon fa fa-plus  bigger-110"></i> Add
+				</a>
+			</div>
 		</div>
-		</form>
-	</div>
+</form>
+</div>
 </div>
 <div class="row">
 <div class="col-xs-12">
@@ -108,6 +107,9 @@
 			<th>Phone</th>
 			<th>Email</th>
 			<th>Status</th>
+			<th>Create User</th>
+			<th>Update User</th>
+			<th>Sales</th>
 			<th></th>
 		</tr>
 	</thead>
@@ -118,7 +120,10 @@
 			<td>{{=p.phone}}</td>
 			<td>{{=p.email}}</td>
 			<td>{{=p.status }}</td>
-			<td><a href="getProfile?customerId={{=p.id }}">View Profile</a></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td><a href="customer/getProfile?customerId={{=p.id }}">View Profile</a></td>
 		</tr>
 {{~}}
 {{? !it.data.length}}
@@ -127,4 +132,3 @@
 	</tbody>
 </table>
 </script>
-

@@ -1,85 +1,58 @@
+<%@page import="com.lumei.crm.util.SessionUtil"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<script id="create_temp" type="text/x-dot-template">
-<div class="widget-box" style="{{? 'firefox'==_browser}}min-width: 600px;{{?}} {{? 'webkit'==_browser || 'msie' == _browser}}max-width: 600px;{{?}}" >
-								<div class="widget-header widget-header-blue widget-header-flat">
-									<h4 class="widget-title lighter">{{=it.title}}</h4>
-									<button type="button" class="close pull-right" data-dismiss="modal" aria-hidden="true" style="font-size: 32px; margin: 3px;">&times;</button>
-								</div>
-								<div class="widget-body">
-									<div class="widget-main">
-										<div id="fuelux-wizard" data-target="#step-container">
-											<ul class="wizard-steps">
 
-												<li data-target="#step1" class="active">
-													<span class="step">1</span>
-													<span class="title">Car Buying</span>
-												</li>
+<script src="<%=request.getContextPath()%>/resources/custjs/customer/carbuying.js"></script>
 
-												<li data-target="#step2">
-													<span class="step">2</span>
-													<span class="title"></span>
-												</li>
+<div class="page-header">
+	<div class="row">
+	<div class="col-sm-12">
+		<div class="col-sm-10">
+			<h1>
+			<small>
+				<i class="ace-icon fa fa-home home-icon"></i>
+				<a href="<%=request.getContextPath() %>/">Home</a>
+				<i class="ace-icon fa fa-angle-double-right"></i>
+				<%=SessionUtil.getAttributes("customerName") %>
+				<i class="ace-icon fa fa-angle-double-right"></i>
+				 Car Buying
+			</small>
+			</h1>
+		</div>
+	</div>
+	</div>
+</div>
 
-												<li data-target="#step3">
-													<span class="step">3</span>
-													<span class="title"></span>
-												</li>
-											</ul>
-										</div>
+<form id="search_form" class="form-horizontal" action="#" hidden="hidden" >
+	<div class="row">
+		<div class="col-sm-6 form-group">
+			<label class="col-sm-2 control-label no-padding-right" for="form-field-1">customerId</label>
+			<div class="col-sm-4">
+				<input id="customerId" name="customerId"  class="form-control" value="<%=SessionUtil.getAttributes("customerId") %>" readonly="readonly"/>
+			</div>
+		</div>
+	</div>
+</form>
 
-										<hr />
-
-										<div class="step-content pos-rel" id="step-container">
-											<div class="step-pane active" id="step1">
-{{=it.page1}}
-											</div>
-											<div class="step-pane" id="step2">
-{{=it.page2}}
-											</div>
-
-											<div class="step-pane" id="step3">
-{{=it.page3}}
-											</div>
-										</div>
-
-										<hr />
-										<div class="wizard-actions">
-											<button class="btn btn-sm btn-prev" style="margin-right: 3px;">
-												<i class="ace-icon fa fa-arrow-left"></i>
-												Back
-											</button>
-
-											<button class="btn btn-sm btn-success btn-next" data-last="OK">
-												Next
-												<i class="ace-icon fa fa-arrow-right icon-on-right"></i>
-											</button>
-
-											<a style="margin-left: 20px;" data-dismiss="modal" href="#">
-												Close
-											</a>
-										</div>
-									</div><!-- /.widget-main -->
-								</div><!-- /.widget-body -->
-							</div>
-</script>
+<div id="car-buying-content"></div>
 
 <script id="step_temp_1" type="text/x-dot-template">
 <form class="form-horizontal" id="submit-form1">
 <input type="hidden" name="id" id="id" value="{{=it.id}}"/>
 
+<div class="form-group" style="margin-left:8.3%">
+<label class="col-sm-11"><h5 class="header ligth blue" style="margin-top:0px,margin-bottom:0px">Basic Information</h5></label>
+</div>
+
 <div class="form-group">
-	<label class="col-sm-3 control-label no-padding-right" for="activityName">Sales Name:</label>
-	<div class="col-sm-8">
+	<label class="col-sm-2 control-label no-padding-right" for="activityName">Sales Name:</label>
+	<div class="col-sm-4">
 		<div class="clearfix">
 			<input type="text" name="salesName" id="salesName" class="form-control col-sm-12" value="{{=it.salesName || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
 		</div>
 	</div>
-</div>
-
-<div class="form-group">
-	<label class="col-sm-3 control-label no-padding-right" for="category">Category:</label>
-	<div class="col-sm-8">
+	<label class="col-sm-1 control-label no-padding-right" for="category">Category:</label>
+	<div class="col-sm-4">
 		<div class="clearfix">
 			<input type="text" name="category" id="category" class="form-control col-sm-12" value="{{=it.category || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
 		</div>
@@ -87,17 +60,14 @@
 </div>
 
 <div class="form-group">
-	<label class="col-sm-3 control-label no-padding-right" for="activityName">Makes:</label>
-	<div class="col-sm-8">
+	<label class="col-sm-2 control-label no-padding-right" for="activityName">Makes:</label>
+	<div class="col-sm-4">
 		<div class="clearfix">
 			<input type="text" name="makes" id="makes" class="form-control col-sm-12" value="{{=it.makes || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
 		</div>
 	</div>
-</div>
-
-<div class="form-group">
-	<label class="col-sm-3 control-label no-padding-right" for="model">Model:</label>
-	<div class="col-sm-8">
+	<label class="col-sm-1 control-label no-padding-right" for="model">Model:</label>
+	<div class="col-sm-4">
 		<div class="clearfix">
 			<input type="text" name="model" id="model" class="form-control col-sm-12" value="{{=it.model || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
 		</div>
@@ -105,8 +75,8 @@
 </div>
 
 <div class="form-group">
-	<label class="col-sm-3 control-label no-padding-right" for="car description">Car Description:</label>
-	<div class="col-sm-9">
+	<label class="col-sm-2 control-label no-padding-right" for="car description">Car Description:</label>
+	<div class="col-sm-4">
 	<div class="clearfix">
 	<textarea class="form-control limited" id="carDescription"  name="carDescription" maxlength="1000" {{? it.readonly}}readonly="readonly"{{?}}>{{=it.carDescription || ''}}</textarea>
 	</div>
@@ -114,328 +84,282 @@
 </div>
 
 <div class="form-group">
-	<label class="col-sm-3 control-label no-padding-right" for="isNew">Is New:</label>
-	<label class="col-sm-3 line-height-1">
-		<input name="isNew" value="1" type="radio" class="ace" {{? it.readonly && 1 != it.valueDateType }}disabled="disabled"{{?}} {{? 1 == it.isNew}}checked="checked"{{?}}/>
-		<span class="lbl">new</span>
-	</label>
+	<label class="col-sm-2 control-label no-padding-right">Is New:</label>
+	<div class="col-sm-4">
+			<label class="line-height-1" style="margin-right: 10px;">
+				<input name="isNew" value="1" type="radio" class="ace" {{? it.readonly && 1 != it.isNew}}disabled="disabled"{{?}} {{? 1 == it.isNew}}checked="checked"{{?}}/>
+				<span class="lbl">New</span>
+			</label>
+			<label class="line-height-1" style="margin-right: 10px;">
+				<input name="isNew" value="0" type="radio" class="ace" {{? it.readonly && 0 != it.isNew}}disabled="disabled"{{?}} {{? 2 == it.isNew}}checked="checked"{{?}}/>
+				<span class="lbl">Used</span>
+			</label>
+	</div>
+	<label class="col-sm-1 control-label no-padding-right" for="years">Years:</label>
 	<div class="col-sm-4">
 		<div class="clearfix">
-			<input type="text" name="valueDateDealDay" id="valueDateDealDay" class="form-control col-sm-12" value="{{?it.valueDateDealDay || it.valueDateDealDay== 0}}{{=it.valueDateDealDay }}{{?}}" {{? it.readonly}}readonly="readonly"{{?}}/>
+			<input type="text" name="years" id="years" class="form-control col-sm-12" value="{{=it.years || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
 		</div>
 	</div>
-	<label class="col-sm-1 control-label-left no-padding-left" for="valueDateDealDay">used</label>
 </div>
 
 <div class="form-group">
-	<label class="col-sm-3 control-label no-padding-right" for="productName">Years:</label>
-	<div class="col-sm-8">
+	<label class="col-sm-2 control-label no-padding-right" for="mileages">Mileages:</label>
+	<div class="col-sm-4">
 		<div class="clearfix">
-			<input type="text" name="productName" id="productName" class="form-control col-sm-12" value="{{=it.productName || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
+			<input type="text" name="mileages" id="mileages" class="form-control col-sm-12" value="{{=it.mileages || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
 		</div>
 	</div>
-</div>
-
-<div class="form-group">
-	<label class="col-sm-3 control-label no-padding-right" for="productName">Mileages:</label>
-	<div class="col-sm-8">
+	<label class="col-sm-1 control-label no-padding-right" for="msrp">MSRP:</label>
+	<div class="col-sm-4">
 		<div class="clearfix">
-			<input type="text" name="productName" id="productName" class="form-control col-sm-12" value="{{=it.productName || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
+			<input type="text" name="msrp" id="msrp" class="form-control col-sm-12" value="{{=it.msrp || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
 		</div>
 	</div>
 </div>
 
 <div class="form-group">
-	<label class="col-sm-3 control-label no-padding-right" for="productName">MSRP:</label>
-	<div class="col-sm-8">
+	<label class="col-sm-2 control-label no-padding-right" for="exterior">Exterior:</label>
+	<div class="col-sm-4">
 		<div class="clearfix">
-			<input type="text" name="productName" id="productName" class="form-control col-sm-12" value="{{=it.productName || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
+			<input type="text" name="exterior" id="productName" class="form-control col-sm-12" value="{{=it.exterior || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
 		</div>
 	</div>
-</div>
-
-<div class="form-group">
-	<label class="col-sm-3 control-label no-padding-right" for="productName">Exterior:</label>
-	<div class="col-sm-8">
+	<label class="col-sm-1 control-label no-padding-right" for="interior">Interior:</label>
+	<div class="col-sm-4">
 		<div class="clearfix">
-			<input type="text" name="productName" id="productName" class="form-control col-sm-12" value="{{=it.productName || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
+			<input type="text" name="interior" id="interior" class="form-control col-sm-12" value="{{=it.interior || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
 		</div>
 	</div>
 </div>
 
 <div class="form-group">
-	<label class="col-sm-3 control-label no-padding-right" for="productName">Interior:</label>
-	<div class="col-sm-8">
+	<label class="col-sm-2 control-label no-padding-right" for="color">Color:</label>
+	<div class="col-sm-4">
 		<div class="clearfix">
-			<input type="text" name="productName" id="productName" class="form-control col-sm-12" value="{{=it.productName || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
+			<input type="text" name="color" id="color" class="form-control col-sm-12" value="{{=it.color || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
 		</div>
 	</div>
 </div>
 
 <div class="form-group">
-	<label class="col-sm-3 control-label no-padding-right" for="productName">Color:</label>
-	<div class="col-sm-8">
-		<div class="clearfix">
-			<input type="text" name="productName" id="productName" class="form-control col-sm-12" value="{{=it.productName || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
-		</div>
-	</div>
-</div>
-
-<div class="form-group">
-	<label class="col-sm-3 control-label no-padding-right" for="car description">Comments:</label>
-	<div class="col-sm-9">
+	<label class="col-sm-2 control-label no-padding-right" for="comments">Comments:</label>
+	<div class="col-sm-4">
 	<div class="clearfix">
-	<textarea class="form-control limited" id="carDescription"  name="carDescription" maxlength="1000" {{? it.readonly}}readonly="readonly"{{?}}>{{=it.carDescription || ''}}</textarea>
+	<textarea class="form-control limited" id="comments"  name="comments" maxlength="1000" {{? it.readonly}}readonly="readonly"{{?}}>{{=it.carDescription || ''}}</textarea>
 	</div>
 	</div>
 </div>
 
+<div class="form-group"  style="margin-left:8.3%">
+<label class="col-sm-11"><h5 class="header ligth blue" style="margin-top:0px,margin-bottom:0px">Finance</h5></label>
+</div>
+
 
 <div class="form-group">
-	<label class="col-sm-3 control-label no-padding-right" for="productName">Down Payment:</label>
-	<div class="col-sm-8">
+	<label class="col-sm-2 control-label no-padding-right" for="downPayment">Down Payment:</label>
+	<div class="col-sm-4">
 		<div class="clearfix">
-			<input type="text" name="productName" id="productName" class="form-control col-sm-12" value="{{=it.productName || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
+			<input type="text" name="downPayment" id="downPayment" class="form-control col-sm-12" value="{{=it.downPayment || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
+		</div>
+	</div>
+	<label class="col-sm-1 control-label no-padding-right" for="rate">Rate:</label>
+	<div class="col-sm-4">
+		<div class="clearfix">
+			<input type="text" name="rate" id="rate" class="form-control col-sm-12" value="{{=it.rate || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
 		</div>
 	</div>
 </div>
 
 <div class="form-group">
-	<label class="col-sm-3 control-label no-padding-right" for="productName">Rate:</label>
-	<div class="col-sm-8">
+	<label class="col-sm-2 control-label no-padding-right" for="terms">Terms:</label>
+	<div class="col-sm-4">
 		<div class="clearfix">
-			<input type="text" name="productName" id="productName" class="form-control col-sm-12" value="{{=it.productName || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
+			<input type="text" name="terms" id="terms" class="form-control col-sm-12" value="{{=it.terms || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
+		</div>
+	</div>
+	<label class="col-sm-1 control-label no-padding-right" for="monthlyPay">Monthly Pay:</label>
+	<div class="col-sm-4">
+		<div class="clearfix">
+			<input type="text" name="monthlyPay" id="monthlyPay" class="form-control col-sm-12" value="{{=it.monthlyPay || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
 		</div>
 	</div>
 </div>
 
 <div class="form-group">
-	<label class="col-sm-3 control-label no-padding-right" for="productName">Terms:</label>
-	<div class="col-sm-8">
-		<div class="clearfix">
-			<input type="text" name="productName" id="productName" class="form-control col-sm-12" value="{{=it.productName || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
-		</div>
-	</div>
-</div>
-
-<div class="form-group">
-	<label class="col-sm-3 control-label no-padding-right" for="productName">Monthly Pay:</label>
-	<div class="col-sm-8">
-		<div class="clearfix">
-			<input type="text" name="productName" id="productName" class="form-control col-sm-12" value="{{=it.productName || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
-		</div>
-	</div>
-</div>
-
-<div class="form-group">
-	<label class="col-sm-3 control-label no-padding-right" for="car description">Comments:</label>
-	<div class="col-sm-9">
+	<label class="col-sm-2 control-label no-padding-right" for="comments">Comments:</label>
+	<div class="col-sm-4">
 	<div class="clearfix">
-	<textarea class="form-control limited" id="carDescription"  name="carDescription" maxlength="1000" {{? it.readonly}}readonly="readonly"{{?}}>{{=it.carDescription || ''}}</textarea>
+	<textarea class="form-control limited" id="comments"  name="comments" maxlength="1000" {{? it.readonly}}readonly="readonly"{{?}}>{{=it.comments || ''}}</textarea>
 	</div>
 	</div>
 </div>
 
+<div class="form-group" style="margin-left:8.3%">
+<label class="col-sm-11"><h5 class="header ligth blue" style="margin-top:0px,margin-bottom:0px">Additional Information</h5></label>
+</div>
 
 <div class="form-group">
-	<label class="col-sm-3 control-label no-padding-right" for="productName">Credit Card #:</label>
-	<div class="col-sm-8">
+	<label class="col-sm-2 control-label no-padding-right" for="creditCardNo">Credit Card #:</label>
+	<div class="col-sm-4">
 		<div class="clearfix">
-			<input type="text" name="productName" id="productName" class="form-control col-sm-12" value="{{=it.productName || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
+			<input type="text" name="creditCardNo" id="creditCardNo" class="form-control col-sm-12" value="{{=it.creditCardNo || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
+		</div>
+	</div>
+	<label class="col-sm-1 control-label no-padding-right" for="expirationDate">Expiration Date:</label>
+	<div class="col-sm-4">
+		<div class="clearfix">
+			<input type="text" name="expirationDate" id="expirationDate" class="form-control col-sm-12" value="{{=it.expirationDate || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
 		</div>
 	</div>
 </div>
 
 <div class="form-group">
-	<label class="col-sm-3 control-label no-padding-right" for="productName">Expiration Date:</label>
-	<div class="col-sm-8">
+	<label class="col-sm-2 control-label no-padding-right" for="cvs">CVS:</label>
+	<div class="col-sm-4">
 		<div class="clearfix">
-			<input type="text" name="productName" id="productName" class="form-control col-sm-12" value="{{=it.productName || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
+			<input type="text" name="cvs" id="cvs" class="form-control col-sm-12" value="{{=it.cvs || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
 		</div>
 	</div>
-</div>
-
-<div class="form-group">
-	<label class="col-sm-3 control-label no-padding-right" for="productName">CVS:</label>
-	<div class="col-sm-8">
+	<label class="col-sm-1 control-label no-padding-right" for="driverLicense">Driver License:</label>
+	<div class="col-sm-4">
 		<div class="clearfix">
-			<input type="text" name="productName" id="productName" class="form-control col-sm-12" value="{{=it.productName || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
-		</div>
-	</div>
-</div>
-
-<div class="form-group">
-	<label class="col-sm-3 control-label no-padding-right" for="productName">Driver License:</label>
-	<div class="col-sm-8">
-		<div class="clearfix">
-			<input type="text" name="productName" id="productName" class="form-control col-sm-12" value="{{=it.productName || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
+			<input type="text" name="driverLicense" id="driverLicense" class="form-control col-sm-12" value="{{=it.driverLicense || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
 		</div>
 	</div>
 </div>
 
 
+<div class="form-group"  style="margin-left:8.3%">
+<label class="col-sm-11"><h5 class="header ligth blue" style="margin-top:0px,margin-bottom:0px">Lease</h5></label>
+</div>
+
 <div class="form-group">
-	<label class="col-sm-3 control-label no-padding-right" for="productName">Down Payment:</label>
-	<div class="col-sm-8">
+	<label class="col-sm-2 control-label no-padding-right" for="downPayment">Down Payment:</label>
+	<div class="col-sm-4">
 		<div class="clearfix">
-			<input type="text" name="productName" id="productName" class="form-control col-sm-12" value="{{=it.productName || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
+			<input type="text" name="downPayment" id="downPayment" class="form-control col-sm-12" value="{{=it.downPayment || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
+		</div>
+	</div>
+	<label class="col-sm-1 control-label no-padding-right" for="terms">Terms:</label>
+	<div class="col-sm-4">
+		<div class="clearfix">
+			<input type="text" name="terms" id="terms" class="form-control col-sm-12" value="{{=it.terms || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
 		</div>
 	</div>
 </div>
 
 <div class="form-group">
-	<label class="col-sm-3 control-label no-padding-right" for="productName">Terms:</label>
-	<div class="col-sm-8">
+	<label class="col-sm-2 control-label no-padding-right" for="monthlyPay">Monthly Pay:</label>
+	<div class="col-sm-4">
 		<div class="clearfix">
-			<input type="text" name="productName" id="productName" class="form-control col-sm-12" value="{{=it.productName || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
+			<input type="text" name="monthlyPay" id="monthlyPay" class="form-control col-sm-12" value="{{=it.monthlyPay || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
 		</div>
 	</div>
 </div>
 
 <div class="form-group">
-	<label class="col-sm-3 control-label no-padding-right" for="productName">Monthly Pay:</label>
-	<div class="col-sm-8">
-		<div class="clearfix">
-			<input type="text" name="productName" id="productName" class="form-control col-sm-12" value="{{=it.productName || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
-		</div>
-	</div>
-</div>
-
-<div class="form-group">
-	<label class="col-sm-3 control-label no-padding-right" for="car description">Comments:</label>
-	<div class="col-sm-9">
+	<label class="col-sm-2 control-label no-padding-right" for="comments">Comments:</label>
+	<div class="col-sm-4">
 	<div class="clearfix">
-	<textarea class="form-control limited" id="carDescription"  name="carDescription" maxlength="1000" {{? it.readonly}}readonly="readonly"{{?}}>{{=it.carDescription || ''}}</textarea>
+	<textarea class="form-control limited" id="comments"  name="comments" maxlength="1000" {{? it.readonly}}readonly="readonly"{{?}}>{{=it.comments || ''}}</textarea>
 	</div>
 	</div>
 </div>
 
+<div class="form-group"  style="margin-left:8.3%">
+<label class="col-sm-11"><h5 class="header ligth blue" style="margin-top:0px,margin-bottom:0px">Trade In</h5></label>
+</div>
+
 <div class="form-group">
-	<label class="col-sm-3 control-label no-padding-right" for="productName">Trade In:</label>
-	<div class="col-sm-8">
+	<label class="col-sm-2 control-label no-padding-right" for="tradeIn">Trade In:</label>
+	<div class="col-sm-4">
 		<div class="clearfix">
-			<input type="text" name="productName" id="productName" class="form-control col-sm-12" value="{{=it.productName || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
+			<input type="text" name="tradeIn" id="tradeIn" class="form-control col-sm-12" value="{{=it.tradeIn || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
+		</div>
+	</div>
+	<label class="col-sm-1 control-label no-padding-right" for="makes">Makes:</label>
+	<div class="col-sm-4">
+		<div class="clearfix">
+			<input type="text" name="makes" id="makes" class="form-control col-sm-12" value="{{=it.makes || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
 		</div>
 	</div>
 </div>
 
 <div class="form-group">
-	<label class="col-sm-3 control-label no-padding-right" for="productName">Makes:</label>
-	<div class="col-sm-8">
+	<label class="col-sm-2 control-label no-padding-right" for="mileage">Mileage:</label>
+	<div class="col-sm-4">
 		<div class="clearfix">
-			<input type="text" name="productName" id="productName" class="form-control col-sm-12" value="{{=it.productName || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
+			<input type="text" name="mileage" id="mileage" class="form-control col-sm-12" value="{{=it.mileage || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
+		</div>
+	</div>
+	<label class="col-sm-1 control-label no-padding-right" for="model">Model:</label>
+	<div class="col-sm-4">
+		<div class="clearfix">
+			<input type="text" name="model" id="model" class="form-control col-sm-12" value="{{=it.model || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
 		</div>
 	</div>
 </div>
 
 <div class="form-group">
-	<label class="col-sm-3 control-label no-padding-right" for="productName">Mileage:</label>
-	<div class="col-sm-8">
+	<label class="col-sm-2 control-label no-padding-right" for="years">Years:</label>
+	<div class="col-sm-4">
 		<div class="clearfix">
-			<input type="text" name="productName" id="productName" class="form-control col-sm-12" value="{{=it.productName || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
+			<input type="text" name="years" id="years" class="form-control col-sm-12" value="{{=it.years || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
+		</div>
+	</div>
+	<label class="col-sm-1 control-label no-padding-right" for="value">Value:</label>
+	<div class="col-sm-4">
+		<div class="clearfix">
+			<input type="text" name="value" id="value" class="form-control col-sm-12" value="{{=it.value || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
 		</div>
 	</div>
 </div>
 
 <div class="form-group">
-	<label class="col-sm-3 control-label no-padding-right" for="productName">Model:</label>
-	<div class="col-sm-8">
+	<label class="col-sm-2 control-label no-padding-right" for="exterior">Exterior:</label>
+	<div class="col-sm-4">
 		<div class="clearfix">
-			<input type="text" name="productName" id="productName" class="form-control col-sm-12" value="{{=it.productName || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
+			<input type="text" name="exterior" id="exterior" class="form-control col-sm-12" value="{{=it.exterior || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
 		</div>
 	</div>
-</div>
-
-<div class="form-group">
-	<label class="col-sm-3 control-label no-padding-right" for="productName">Years:</label>
-	<div class="col-sm-8">
+	<label class="col-sm-1 control-label no-padding-right" for="interior">Interior:</label>
+	<div class="col-sm-4">
 		<div class="clearfix">
-			<input type="text" name="productName" id="productName" class="form-control col-sm-12" value="{{=it.productName || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
-		</div>
-	</div>
-</div>
-
-<div class="form-group">
-	<label class="col-sm-3 control-label no-padding-right" for="productName">Value:</label>
-	<div class="col-sm-8">
-		<div class="clearfix">
-			<input type="text" name="productName" id="productName" class="form-control col-sm-12" value="{{=it.productName || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
-		</div>
-	</div>
-</div>
-
-<div class="form-group">
-	<label class="col-sm-3 control-label no-padding-right" for="productName">Exterior:</label>
-	<div class="col-sm-8">
-		<div class="clearfix">
-			<input type="text" name="productName" id="productName" class="form-control col-sm-12" value="{{=it.productName || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
-		</div>
-	</div>
-</div>
-
-<div class="form-group">
-	<label class="col-sm-3 control-label no-padding-right" for="productName">Interior:</label>
-	<div class="col-sm-8">
-		<div class="clearfix">
-			<input type="text" name="productName" id="productName" class="form-control col-sm-12" value="{{=it.productName || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
+			<input type="text" name="interior" id="interior" class="form-control col-sm-12" value="{{=it.interior || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
 		</div>
 	</div>
 </div>
 <div class="form-group">
-	<label class="col-sm-3 control-label no-padding-right" for="productName">Color:</label>
-	<div class="col-sm-8">
+	<label class="col-sm-2 control-label no-padding-right" for="color">Color:</label>
+	<div class="col-sm-4">
 		<div class="clearfix">
-			<input type="text" name="productName" id="productName" class="form-control col-sm-12" value="{{=it.productName || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
+			<input type="text" name="color" id="color" class="form-control col-sm-12" value="{{=it.color || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
 		</div>
 	</div>
 </div>
 
-</form>
-</script>
+<div class="form-group" style="margin-bottom:0px">
+<label class="col-sm-12"><h5 class="header ligth blue" style="margin-top:0px,margin-bottom:0px"></h5></label>
+</div>
 
-<script id="step_temp_3" type="text/x-dot-template">
-{{~[1,2,3,4,5] :p:index}}
-<form method="post" action="" enctype="multipart/form-data" class="form-horizontal" id="pic{{=index+1}}">
-<div class="form-group">
-	<label class="col-sm-2 control-label no-padding-right" for="">
-	{{?index==0}}
-		活动介绍:
-	{{?? index!=0}}
-		图片{{=index+1}}:
-	{{?}}
-	</label>
-	{{? !it.readonly}}
-	<div id="input_pic_div{{=index+1}}" class="col-sm-5 {{? it["picUrl"+(index+1)]}}hidden{{?}}">
-		<div class="clearfix">
-			<input type="file" class="picurl" id="id-input-file-{{=(index+1)}}"  name="id-input-file-{{=(index+1)}}" />
+<div class="col-sm-12 form-group">
+	<div class="col-sm-4 form-group center">
+	</div>
+	<div class="col-sm-4 form-group center">
+		<div class="col-sm-6 form-group center">
+			<a class="btn btn-info btn-sm" id="save_btn" onclick="javascript:saveCarBuying();">
+				 <i class="ace-icon fa fa-check bigger-110"></i> Save
+			</a>
+		</div>
+		<div class="col-sm-6 form-group center">
+			<a class="btn btn-sm btn-default" type="reset" id="delete_btn">
+				<i class="ace-icon fa fa-times bigger-110"></i> Delete
+			</a>
 		</div>
 	</div>
-	{{?}}
-	<label class="col-sm-5" for="">
-	{{? !it.readonly}}
-	<a id="upload_pic_btn{{=index+1}}" class="green {{? it["picUrl"+(index+1)]}}hidden{{?}}" href="javascript:pic_upload({{=(index+1)}})"><i class="ace-icon fa fa-cloud-upload bigger-110"></i>上传</a>
-	&nbsp;&nbsp;&nbsp;
-	<a id="remove_pic_btn{{=index+1}}" class="orange {{? !(it["picUrl"+(index+1)] &&it["picUrl"+(index+1)] != null && it["picUrl"+(index+1)] != '' )}}hidden{{?}}" href="javascript:pic_remove({{=(index+1)}})"><i class="ace-icon fa fa-trash-o bigger-110"></i>删除</a>
-	{{?}}
-	&nbsp;&nbsp;&nbsp;
-	<a id="gallery-pic{{=index+1}}" class="gallery {{? !it["picUrl"+(index+1)]}}hidden{{?}}" href="{{=fileServerPath+it["picUrl"+(index+1)]}}" data-rel="colorbox">
-	<i class="ace-icon fa fa-eye bigger-110"></i>查看
-	</a>
-	{{? !it["picUrl"+(index+1)]}}
-	<a class="red {{? !it.readonly}}hidden{{?}}">
-		<i class="ace-icon fa fa-eye-slash bigger-110"></i>&nbsp;&nbsp;未上传
-	</a>
-	{{?}}
-	</label>
+	<div class="col-sm-4 form-group center">
+	</div>
 </div>
-</form>
-{{~}}
-
-<form class="form-horizontal" id="submit-form3">
-	<input type="hidden" name="picUrl1" id="uploaded-picurl1" value="{{=it.picUrl1 || '' }}"/>
-	<input type="hidden" name="picUrl2" id="uploaded-picurl2" value="{{=it.picUrl2 || '' }}"/>
-	<input type="hidden" name="picUrl3" id="uploaded-picurl3" value="{{=it.picUrl3 || '' }}"/>
-	<input type="hidden" name="picUrl4" id="uploaded-picurl4" value="{{=it.picUrl4 || '' }}"/>
-	<input type="hidden" name="picUrl5" id="uploaded-picurl5" value="{{=it.picUrl5 || '' }}"/>
 </form>
 </script>
