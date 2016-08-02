@@ -296,7 +296,7 @@
                     <archive>
                         <addMavenDescriptor>false</addMavenDescriptor>
                     </archive>
-                    <warName>jq-p2p-pos</warName>
+                    <warName>lumeicrm</warName>
                     <webResources>
                         <resource>
                             <directory>src/main/resources-${env}</directory>

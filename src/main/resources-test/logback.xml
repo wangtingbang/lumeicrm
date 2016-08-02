@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-	<property name="LOG_NAME" value="jq-p2p-pos" />
+	<property name="LOG_NAME" value="lumeicrm" />
 	<appender name="GELFLOG" class="me.moocar.logback.net.SocketEncoderAppender">
 		<!-- 配置日志服务器的ip -->
         <remoteHost>192.168.99.210</remoteHost>
