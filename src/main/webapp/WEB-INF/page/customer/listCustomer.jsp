@@ -54,23 +54,23 @@
 				<label class="col-sm-1 control-label no-padding-right" for="form-field-3">Status</label>
 				<div class="col-sm-11">
 					<label style="margin-right: 10px; margin-top: 5px;">
-					<input id="form-search-status-unconfirm" name="form-search-status-unconfirm" type="checkbox" class="ace" />
+					<input id="form-search-status-appointmented" name="form-search-status-appointmented" type="checkbox" checked="checked" class="ace" />
 					<span class="lbl">Appointmented&nbsp;&nbsp;</span>
 					</label>
 					<label style="margin-right: 10px; margin-top: 5px;">
-					<input id="form-search-status-confirm" name="form-search-status-confirm" type="checkbox" class="ace" />
+					<input id="form-search-status-soldbylumei" name="form-search-status-soldbylumei" type="checkbox" checked="checked" class="ace" />
 					<span class="lbl">Sold by Lumei&nbsp;&nbsp;</span>
 					</label>
 					<label style="margin-right: 10px; margin-top: 5px;">
-					<input id="form-search-status-failed" name="form-search-status-failed" type="checkbox" class="ace" />
+					<input id="form-search-status-buyfromother" name="form-search-status-buyfromother" type="checkbox" checked="checked" class="ace" />
 					<span class="lbl">Buy from Other&nbsp;&nbsp;</span>
 					</label>
 					<label style="margin-right: 10px; margin-top: 5px;">
-					<input id="form-search-status-paied" name="form-search-status-paied" type="checkbox" class="ace" />
+					<input id="form-search-status-noresponse" name="form-search-status-noresponse" type="checkbox" checked="checked" class="ace" />
 					<span class="lbl">No Response&nbsp;&nbsp;</span>
 					</label>
-										<label style="margin-right: 10px; margin-top: 5px;">
-					<input id="form-search-status-paied" name="form-search-status-paied" type="checkbox" class="ace" />
+					<label style="margin-right: 10px; margin-top: 5px;">
+					<input id="form-search-status-stillinthemarket" name="form-search-status-stillinthemarket" type="checkbox" checked="checked" class="ace" />
 					<span class="lbl">Still in the Market&nbsp;&nbsp;</span>
 					</label>
 				</div>
@@ -103,26 +103,22 @@
 	<table id="sample-table-1" class="table table-striped table-bordered table-hover">
 	<thead>
 		<tr>
-			<th>Name </th>
+			<th>Name</th>
 			<th>Phone</th>
 			<th>Email</th>
 			<th>Status</th>
-			<th>Create User</th>
-			<th>Update User</th>
 			<th>Sales</th>
-			<th></th>
+			<th>Operation</th>
 		</tr>
 	</thead>
 	<tbody>
 	{{~it.data :p:index}}
 		<tr>
-			<td><a href="javascript:findCustomer('{{=p.id }}');">{{=p.name}}</a></td>
-			<td>{{=p.phone}}</td>
-			<td>{{=p.email}}</td>
-			<td>{{=p.status }}</td>
-			<td></td>
-			<td></td>
-			<td></td>
+			<td>{{=p.name||''}}</td>
+			<td>{{=p.phone||''}}</td>
+			<td>{{=p.email||''}}</td>
+			<td>{{=datadic['customerStatus'][p.status]}}</td>
+			<td>{{=p.sales||''}}</td>
 			<td><a href="customer/getProfile?customerId={{=p.id }}">View Profile</a></td>
 		</tr>
 {{~}}

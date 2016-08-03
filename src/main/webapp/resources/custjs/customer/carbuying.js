@@ -25,12 +25,13 @@ function searchSubmit(){
 	});
 
 	$.iget(
-			contextPath + '/customer/carBuying/get',
+			contextPath + '/customer/service/carbuying/get',
 			{customerId:param['customerId']},
 //			temp : "grid_temp"
 				//*
 			function(data){
 				var pagefn = doT.template($('#step_temp_1').text());
+				data = $.extend(data, {customerId:param['customerId']});
 				var htmlpage = pagefn(data);
 				$("#car-buying-content").html(htmlpage);
 			},
@@ -50,9 +51,11 @@ function saveCarBuying(){
 	});
 //	$.ialert(param);
 
-	var data = $('#submit-form1').serializeArray();
+	var customerId = $("#customerId").val();
+
+	param['userId'] = customerId;
 	$.ipost(
-	contextPath + '/customer/service/carbuying/create',
+	contextPath + '/customer/service/carbuying/save',
 	param,
 	function(){
 		//TODO

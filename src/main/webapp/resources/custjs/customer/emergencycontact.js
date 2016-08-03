@@ -20,15 +20,12 @@ function searchSubmit(){
 	var param = {};
 
 	$($('#search_form').serializeArray()).each(function(k, v){
-			param[v.name]=v.value;
-		// }
+		param[v.name]=v.value;
 	});
 
 	$.iget(
-			contextPath + '/customer/emergencyContact/get',
+			contextPath + '/customer/service/emergencycontact/get',
 			{customerId:param['customerId']},
-//			temp : "grid_temp"
-				//*
 			function(data){
 				var pagefn = doT.template($('#step_temp_1').text());
 				var htmlpage = pagefn(data);
@@ -51,8 +48,10 @@ function saveEmergencyContact(){
 //	$.ialert(param);
 
 	var data = $('#submit-form1').serializeArray();
+	var customerId = $("#customerId").val();
+	data = $.extend({}, data, {userId:customerId});
 	$.ipost(
-	contextPath + '/customer/service/emergencycontact/create',
+	contextPath + '/customer/service/emergencycontact/save',
 	param,
 	function(){
 		//TODO

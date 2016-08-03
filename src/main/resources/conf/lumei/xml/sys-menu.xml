@@ -1,22 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <menu-conf>
-	<menu id="lumeiCrm" pid="" name="Lumei CRM" url="" icon="fa-credit-card"
-		order="200">
+	<menu id="cusotmerList" pid="" name="Customers" url="customer/list"
+		icon="fa-desktop" order="100">
 		<roles>
 			<role name="OP" />
 			<role name="AP" />
 			<role name="ADMIN" />
 		</roles>
 	</menu>
-	<menu id="cusotmerList" pid="lumeiCrm" name="customers" url="customer/op/list"
-		icon="" order="210">
-		<roles>
-			<role name="OP" />
-			<role name="AP" />
-			<role name="ADMIN" />
-		</roles>
-	</menu>
-
 	<menu id="systemConfig" pid="" name="User Config" icon="fa-cog"
 		function="User Config" url="auth/user/listUserByPage" order="900">
 		<roles>

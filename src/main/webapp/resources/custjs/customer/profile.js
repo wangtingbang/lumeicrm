@@ -19,7 +19,6 @@ $(function () {
 });
 
 function saveProfile(){
-	$.ialert("save profile...");
 	var param = {};
 	$($('#submit-form1').serializeArray()).each(function(k, v){
 		if(!(v.value === '' || v.value == null || v.value === 'undefined')){
@@ -30,7 +29,7 @@ function saveProfile(){
 
 	var data = $('#submit-form1').serializeArray();
 	$.ipost(
-	contextPath + '/customer/profile/create',
+	contextPath + '/customer/profile/save',
 	param,
 	function(){
 		//TODO
@@ -61,11 +60,11 @@ function searchSubmit(){
 				var htmlpage = pagefn(data);
 				$("#profile-content").html(htmlpage);
 
-				$page = $('#page').igrid({
+				$page = $('#notes-content').igrid({
 					//url : contextPath + '/consume/'+authType + '/postsalepay/listConsume',
-					url : contextPath + '/customer/notes/listByPage?page=1&limit=10',
+					url : contextPath + '/customer/notes/listByPage',
 					param : param,
-					temp : "grid_temp"
+					temp : "note_grid_temp"
 				});
 
 			},
@@ -76,9 +75,14 @@ function searchSubmit(){
 }
 
 
-function addNote(){
+function addNote(noteId, noteCrtUId, noteCrtTm, noteCont){
+
+	$.ialert(noteId);
+	var customerId = $("#customerId").val();
 	var notesfn = doT.template($('#add-notes-temp').text());
-	var data = $.extend({},{datadic:{serviceType:datadicArray(datadic["serviceType"])}});
+	var note = {id:noteId, createUserId:noteCrtUId, createTime:noteCrtTm, content:noteCont};
+	var data = $.extend({},{userId:customerId,datadic:{serviceType:datadicArray(datadic["serviceType"])}},note);
+	
 	$.imodal({
 		title:"Notes",
 		contents:notesfn(data),
@@ -93,8 +97,11 @@ function addNote(){
 }
 
 function addNote2(msgDom){
+	var data = $('#add-notes-form').serialize();
+	var customerId = $("#customerId").val();
+	data = $.extend({}, data, {userId:customerId});
 	$.ipost(
-		contextPath+'/customer/notes/create',
+		contextPath+'/customer/notes/save',
 		$('#add-notes-form').serialize(),
 		function (result) {
 			msgDom.imsg({

@@ -241,7 +241,7 @@
 					    </select>
 					</div>
 					<label class="col-sm-3 form-controls">
-					     No.{{=it.page}} page @ {{=it.totalPage}} pages, Total rows:{{=it.total}}
+					     No.{{=it.page}} page of {{=it.totalPage}} pages, Total rows:{{=it.total}}
 					</label>
 					<div class="col-sm-8 control-label no-padding-top">
 						<ul class="pagination no-margin-top no-margin-bottom">

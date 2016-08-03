@@ -32,51 +32,22 @@
 	</div>
 </form>
 <div id="profile-content"></div>
-<div id="notes-content"></div>
-<script id="create_temp" type="text/x-dot-template">
-<div class="widget-box" style="{{? 'firefox'==_browser}}min-width: 600px;{{?}} {{? 'webkit'==_browser || 'msie' == _browser}}max-width: 600px;{{?}}" >
-	<div class="widget-header widget-header-blue widget-header-flat">
-		<h4 class="widget-title lighter">{{=it.title}}</h4>
-			<button type="button" class="close pull-right" data-dismiss="modal" aria-hidden="true" style="font-size: 32px; margin: 3px;">&times;</button>
-	</div>
-	<div class="widget-body">
-		<div class="widget-main">
-			<div id="fuelux-wizard" data-target="#step-container">
-				<ul class="wizard-steps">
-					<li data-target="#step1" class="active">
-						<span class="step">1</span>
-						<span class="title">Profile</span>
-					</li>
-				</ul>
-			</div>
-
-			<hr />
-
-			<div class="step-content pos-rel" id="step-container">
-				<div class="step-pane active" id="step1">{{=it.page1}}</div>
-				<div class="step-pane" id="step2">{{=it.page2}}</div>
-				<div class="step-pane" id="step3">{{=it.page3}}</div>
-			</div>
-
-			<hr />
-			<div class="wizard-actions">
-				<button class="btn btn-sm btn-prev" style="margin-right: 3px;">
-					<i class="ace-icon fa fa-arrow-left"></i>Back
-				</button>
-
-				<button class="btn btn-sm btn-success btn-next" data-last="OK">Next
-					<i class="ace-icon fa fa-arrow-right icon-on-right"></i>
-				</button>
-					<a style="margin-left: 20px;" data-dismiss="modal" href="#">Close</a>
-			</div>
+<!-- <div class="row">
+	<div id="notes-content" class="col-xs-12 table-responsive"></div>
+</div> -->
+<div class="row">
+<div class="col-xs-12">
+		<hr class="no-margin-top"> </hr>
+		<div class="row">
+				<div class="col-xs-12 table-responsive" id="notes-content"></div>
 		</div>
-	</div>
 </div>
-</script>
+</div>
 
 <script id="step_temp_1" type="text/x-dot-template">
 <form class="form-horizontal" id="submit-form1">
 <input type="hidden" name="id" id="id" value="{{=it.id}}"/>
+<input type="hidden" name="userId" id="userId" value="{{=it.userId}}"/>
 
 <div class="form-group"  style="margin-left:8.3%">
 <label class="col-sm-11"><h5 class="header ligth blue" style="margin-top:0px,margin-bottom:0px">Basic Information</h5></label>
@@ -230,15 +201,14 @@
   <label class="col-sm-2 control-label no-padding-right" for="name">Service:</label>
   <div class="col-sm-9">
       <label style="margin-right: 10px; margin-top: 5px;">
-      <input id="form-search-status-unconfirm" name="form-search-status-unconfirm" type="checkbox" class="ace" {{? it.readonly && 1 != it.service/100}}disabled="disabled"{{?}} {{? 1 == it.service/100%100}}checked="checked"{{?}}/>
+      <input id="form-search-status-unconfirm" name="form-search-status-unconfirm" type="checkbox" class="ace" {{? it.readonly}}disabled="disabled"{{?}} {{? it.serviceInfo&&it.serviceInfo.s1}}checked="checked"{{?}}/>
       <span class="lbl">Car Buying&nbsp;&nbsp;</span>
-      <span class="lbl"><a href="getCarBuying?customerId={{=it.id }}&customerName={{=it.name}}" target="_blank">view</a></span>
+      <span class="lbl">{{?it.serviceInfo&&it.serviceInfo.s1}}<a href="getCarBuying?customerId={{=it.id }}&customerName={{=it.name}}" target="_blank">view </a>{{?}}{{?it.serviceInfo&&!it.serviceInfo.s1}}<a href="getCarBuying?customerId={{=it.id }}&customerName={{=it.name}}" target="_blank">add</a>{{?}}</span>
       </label>
       <label style="margin-right: 10px; margin-top: 5px;">
-      <input id="form-search-status-confirm" name="form-search-status-confirm" type="checkbox" class="ace" />
+      <input id="form-search-status-confirm" name="form-search-status-confirm" type="checkbox" class="ace" {{? it.serviceInfo&&it.serviceInfo.s2}}checked="checked"{{?}}/>
       <span class="lbl">Emergency Contact&nbsp;&nbsp;</span>
-      <span class="lbl"><a href="getEmergencyContact?customerId={{=it.id }}&customerName={{=it.name}}" target="_blank">view</a></span>
-      </label>
+			<span class="lbl">{{?it.serviceInfo&&it.serviceInfo.s2}}<a href="getEmergencyContact?customerId={{=it.id }}&customerName={{=it.name}}" target="_blank">view </a>{{?}}{{?it.serviceInfo&&!it.serviceInfo.s2}}<a href="getEmergencyContact?customerId={{=it.id }}&customerName={{=it.name}}" target="_blank">add</a>{{?}}</span>
       <label style="margin-right: 10px; margin-top: 5px;">
       <input id="form-search-status-failed" name="form-search-status-failed" type="checkbox" class="ace" disabled="disabled" />
       <span class="lbl">Car Selling&nbsp;&nbsp;</span>
@@ -291,13 +261,14 @@
     </label>
   </div>
 </div>
+</script>
 
+<script id="note_grid_temp" type="text/x-dot-template">
 <div class="form-group"  style="margin-left:8.3%">
 <label class="col-sm-11"><h5 class="header ligth blue" style="margin-top:0px,margin-bottom:0px">Notes&nbsp;&nbsp;&nbsp;&nbsp;
 <a href="#" onclick="javascript:addNote();">+ Add Note</a>
 </h5></label>
 </div>
-
 <div class="form-group" style="margin-left:8.3%">
 <div class="col-xs-11">
 <table id="sample-table-1" class="table table-striped table-bordered table-hover">
@@ -313,25 +284,24 @@
 	</tr>
 </thead>
 <tbody>
-{{~it.notes :p:index}}
+{{~it.data:p:index}}
 	<div class="col-sm-2 form-group center">
 	</div>
 	<tr>
-		<td>{{=p.noteServiceType}}</td>
-		<td>{{=p.commitUserId}}</td>
-		<td>{{=p.commitTime }}</td>
-		<td>{{=p.content }}</td>
-		<td><a href="getProfile?customerId={{=p.id }}">Detaill</a></td>
+		<td>{{=datadic['serviceType'][p.noteServiceType]}}</td>
+		<td>{{=p.createUserId||''}}</td>
+		<td>{{=p.createTime||''}}</td>
+		<td>{{=p.content||''}}</td>
+		<td><a onclick="javascript:addNote('{{=p.id}}','{{=p.createUserId}}','{{=p.createTime}}','{{=p.content}}')">Detaill</a></td>
 	</tr>
 {{~}}
-{{? !it||!it.notes||!it.notes.length}}
+{{? !it||!it.data||!it.data.length}}
 <tr ><td colspan="12">No notes</td></tr>
 {{?}}
 </tbody>
 </table>
 </div>
 </div>
-
 <div class="form-group" style="margin-bottom:0px">
 <label class="col-sm-12"><h5 class="header ligth blue" style="margin-top:0px,margin-bottom:0px"></h5></label>
 </div>
@@ -341,7 +311,7 @@
 	</div>
 	<div class="col-sm-4 form-group center">
 		<div class="col-sm-6 form-group center">
-			<a class="btn btn-info btn-sm" id="save_btn">
+			<a class="btn btn-info btn-sm" id="save_btn" onclick="javascript:saveProfile();">
 				 <i class="ace-icon fa fa-check bigger-110"></i> Save
 			</a>
 		</div>
@@ -361,13 +331,14 @@
 <script id="add-notes-temp" type="text/x-dot-template">
 <form class="form-horizontal" id="add-notes-form">
 <div class="form-group">
+	<input type="hidden" id="userId" name="userId" value="{{=it.customerId||''}}" class="col-xs-12 col-sm-12" value=""/>
 	<label class="col-sm-2 control-label no-padding-right" for="id">Created By:</label>
 	<div class="col-sm-4">
-		<input type="text" id="createdBy" name="createdBy" class="col-xs-12 col-sm-12" value=""/>
+		<input type="text" id="createdBy" name="createdBy" class="col-xs-12 col-sm-12" value="{{=it.createUserId||''}}"/>
 	</div>
 	<label class="col-sm-2 control-label no-padding-right" for="id">Create Time:</label>
 	<div class="col-sm-4">
-		<input type="text" id="createTime" name="createTime" class="col-xs-12 col-sm-12" value=""/>
+		<input type="text" id="createTime" name="createTime" class="col-xs-12 col-sm-12" value="{{=it.createTime||''}}"/>
 	</div>
 </div>
 <div class="form-group" style="width:600px">
@@ -385,7 +356,7 @@
 <div class="form-group">
 	<label class="col-sm-2 control-label no-padding-right" for="id">Content:</label>
 	<div class="col-sm-10">
-		  	<textarea class="form-control limited" id="content"  name="specialComment" maxlength="1000" {{? it.readonly}}readonly="readonly"{{?}}>{{=it.specialComment || ''}}</textarea>
+		  	<textarea class="form-control limited" id="content"  name="content" maxlength="1000" {{? it.readonly}}readonly="readonly"{{?}}>{{=it.content || ''}}</textarea>
 	</div>
 </div>
 </form>

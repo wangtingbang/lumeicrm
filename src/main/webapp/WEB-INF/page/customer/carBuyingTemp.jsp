@@ -39,6 +39,7 @@
 <script id="step_temp_1" type="text/x-dot-template">
 <form class="form-horizontal" id="submit-form1">
 <input type="hidden" name="id" id="id" value="{{=it.id}}"/>
+<input type="hidden" name="userId" id="userId" value="{{=it.userId}}"/>
 
 <div class="form-group" style="margin-left:8.3%">
 <label class="col-sm-11"><h5 class="header ligth blue" style="margin-top:0px,margin-bottom:0px">Basic Information</h5></label>
