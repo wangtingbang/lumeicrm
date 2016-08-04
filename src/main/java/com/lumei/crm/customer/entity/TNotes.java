@@ -19,7 +19,7 @@ public class TNotes extends BaseEntity<String> {
   /**
    * @field noteServiceType
    */
-  private String noteServiceType;
+  private Byte noteServiceType;
 
   /**
    * @field userId
@@ -73,14 +73,14 @@ public class TNotes extends BaseEntity<String> {
   /**
    * @return noteServiceType
    */
-  public String getNoteServiceType() {
+  public Byte getNoteServiceType() {
     return noteServiceType;
   }
 
   /**
    * @param noteServiceType
    */
-  public void setNoteServiceType(String noteServiceType) {
+  public void setNoteServiceType(Byte noteServiceType) {
     this.noteServiceType = noteServiceType;
   }
 

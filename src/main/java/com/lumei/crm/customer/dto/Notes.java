@@ -26,7 +26,7 @@ public class Notes extends BaseModel<String> implements Serializable {
    * @field noteServiceType
    */
   //@Length(min = 1, max = 0, message = "NOTE_SERVICE_TYPE长度为0")
-  private String noteServiceType;
+  private Byte noteServiceType;
 
   /**
    * @field userId
@@ -51,6 +51,8 @@ public class Notes extends BaseModel<String> implements Serializable {
   //@Length(min = 1, max = 0, message = "CREATE_USER_ID长度为0")
   private String createUserId;
 
+  private String createUserName;
+  
   /**
    * @field createTime
    */
@@ -62,10 +64,27 @@ public class Notes extends BaseModel<String> implements Serializable {
   //@Length(min = 1, max = 0, message = "UPDATE_USER_ID长度为0")
   private String updateUserId;
 
+  private String updateUserName;
   /**
    * @field updateTime
    */
   private Date updateTime;
+
+  public String getCreateUserName() {
+    return createUserName;
+  }
+
+  public void setCreateUserName(String createUserName) {
+    this.createUserName = createUserName;
+  }
+
+  public String getUpdateUserName() {
+    return updateUserName;
+  }
+
+  public void setUpdateUserName(String updateUserName) {
+    this.updateUserName = updateUserName;
+  }
 
   /**
    * @return id
@@ -84,14 +103,14 @@ public class Notes extends BaseModel<String> implements Serializable {
   /**
    * @return noteServiceType
    */
-  public String getNoteServiceType() {
+  public Byte getNoteServiceType() {
     return noteServiceType;
   }
 
   /**
    * @param noteServiceType
    */
-  public void setNoteServiceType(String noteServiceType) {
+  public void setNoteServiceType(Byte noteServiceType) {
     this.noteServiceType = noteServiceType;
   }
 

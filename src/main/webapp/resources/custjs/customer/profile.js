@@ -75,14 +75,15 @@ function searchSubmit(){
 }
 
 
-function addNote(noteId, noteCrtUId, noteCrtTm, noteCont){
+function addNote(noteId, noteCrtUId, noteCrtUName, noteCrtTm, noteCont){
 
-	$.ialert(noteId);
 	var customerId = $("#customerId").val();
 	var notesfn = doT.template($('#add-notes-temp').text());
-	var note = {id:noteId, createUserId:noteCrtUId, createTime:noteCrtTm, content:noteCont};
+
+	var t =  new Date(noteCrtTm).toChString(true);
+	var note = {id:noteId, createUserId:noteCrtUId,createUserName:noteCrtUName,createTime:noteCrtTm, content:noteCont};
 	var data = $.extend({},{userId:customerId,datadic:{serviceType:datadicArray(datadic["serviceType"])}},note);
-	
+
 	$.imodal({
 		title:"Notes",
 		contents:notesfn(data),

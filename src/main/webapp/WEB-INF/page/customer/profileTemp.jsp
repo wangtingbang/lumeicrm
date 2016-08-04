@@ -203,12 +203,14 @@
       <label style="margin-right: 10px; margin-top: 5px;">
       <input id="form-search-status-unconfirm" name="form-search-status-unconfirm" type="checkbox" class="ace" {{? it.readonly}}disabled="disabled"{{?}} {{? it.serviceInfo&&it.serviceInfo.s1}}checked="checked"{{?}}/>
       <span class="lbl">Car Buying&nbsp;&nbsp;</span>
-      <span class="lbl">{{?it.serviceInfo&&it.serviceInfo.s1}}<a href="getCarBuying?customerId={{=it.id }}&customerName={{=it.name}}" target="_blank">view </a>{{?}}{{?it.serviceInfo&&!it.serviceInfo.s1}}<a href="getCarBuying?customerId={{=it.id }}&customerName={{=it.name}}" target="_blank">add</a>{{?}}</span>
+      <span class="lbl">{{?it.serviceInfo&&it.serviceInfo.s1}}<a href="getCarBuying?customerId={{=it.id }}&customerName={{=it.name}}" target="_blank">view </a>{{?}}{{?!it.serviceInfo||(it.serviceInfo&&!it.serviceInfo.s1)}}<a href="getCarBuying?customerId={{=it.id }}&customerName={{=it.name}}" target="_blank">add</a>{{?}}</span>
       </label>
       <label style="margin-right: 10px; margin-top: 5px;">
-      <input id="form-search-status-confirm" name="form-search-status-confirm" type="checkbox" class="ace" {{? it.serviceInfo&&it.serviceInfo.s2}}checked="checked"{{?}}/>
+      <input id="form-search-status-confirm" name="form-search-status-confirm" type="checkbox" class="ace" {{? it.serviceInfo&&it.serviceInfo.s2}}checked="checked"{{?}} {{?!it.id}}disabled="disabled"{{?}}/>
       <span class="lbl">Emergency Contact&nbsp;&nbsp;</span>
-			<span class="lbl">{{?it.serviceInfo&&it.serviceInfo.s2}}<a href="getEmergencyContact?customerId={{=it.id }}&customerName={{=it.name}}" target="_blank">view </a>{{?}}{{?it.serviceInfo&&!it.serviceInfo.s2}}<a href="getEmergencyContact?customerId={{=it.id }}&customerName={{=it.name}}" target="_blank">add</a>{{?}}</span>
+			<span class="lbl">
+			{{?it.serviceInfo&&it.serviceInfo.s2}}<a href="getEmergencyContact?customerId={{=it.id }}&customerName={{=it.name}}" target="_blank">view </a>{{?}}
+			{{?it.id&&(!it.serviceInfo||(it.serviceInfo&&!it.serviceInfo.s2))}}<a href="getEmergencyContact?customerId={{=it.id }}&customerName={{=it.name}}" target="_blank">add</a>{{?}}</span>
       <label style="margin-right: 10px; margin-top: 5px;">
       <input id="form-search-status-failed" name="form-search-status-failed" type="checkbox" class="ace" disabled="disabled" />
       <span class="lbl">Car Selling&nbsp;&nbsp;</span>
@@ -289,10 +291,10 @@
 	</div>
 	<tr>
 		<td>{{=datadic['serviceType'][p.noteServiceType]}}</td>
-		<td>{{=p.createUserId||''}}</td>
-		<td>{{=p.createTime||''}}</td>
+		<td>{{=p.createUserName||''}}</td>
+		<td>{{=new Date(p.createTime).toChString(true) ||''}}</td>
 		<td>{{=p.content||''}}</td>
-		<td><a onclick="javascript:addNote('{{=p.id}}','{{=p.createUserId}}','{{=p.createTime}}','{{=p.content}}')">Detaill</a></td>
+		<td><a onclick="javascript:addNote('{{=p.id}}','{{=p.createUserId}}','{{=p.createUserName}}',{{=p.createTime}},'{{=p.content}}')">Detaill</a></td>
 	</tr>
 {{~}}
 {{? !it||!it.data||!it.data.length}}
@@ -334,11 +336,11 @@
 	<input type="hidden" id="userId" name="userId" value="{{=it.customerId||''}}" class="col-xs-12 col-sm-12" value=""/>
 	<label class="col-sm-2 control-label no-padding-right" for="id">Created By:</label>
 	<div class="col-sm-4">
-		<input type="text" id="createdBy" name="createdBy" class="col-xs-12 col-sm-12" value="{{=it.createUserId||''}}"/>
+		<input type="text" id="createdBy" name="createdBy" class="col-xs-12 col-sm-12" value="{{=it.createUserName||''}}" disabled="disabled"/>
 	</div>
 	<label class="col-sm-2 control-label no-padding-right" for="id">Create Time:</label>
 	<div class="col-sm-4">
-		<input type="text" id="createTime" name="createTime" class="col-xs-12 col-sm-12" value="{{=it.createTime||''}}"/>
+		<input type="text" id="createTime" name="createTime" class="col-xs-12 col-sm-12" value="{{=new Date(it.createTime).toChString(true) ||it.createTime||''}}" disabled="disabled"/>
 	</div>
 </div>
 <div class="form-group" style="width:600px">

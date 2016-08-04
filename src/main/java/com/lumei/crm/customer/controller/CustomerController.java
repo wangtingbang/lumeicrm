@@ -1,7 +1,10 @@
 package com.lumei.crm.customer.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -16,6 +19,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.google.common.collect.Lists;
 import com.lumei.crm.auth.bean.SysRole;
+import com.lumei.crm.auth.biz.OpAuthUserBusiness;
+import com.lumei.crm.auth.dto.OpAuthUser;
+import com.lumei.crm.auth.entity.TOpAuthUser;
 import com.lumei.crm.commons.mybatis.support.Example;
 import com.lumei.crm.commons.mybatis.support.Pagination;
 import com.lumei.crm.commons.util.BeanUtils;
@@ -24,6 +30,7 @@ import com.lumei.crm.customer.biz.CarBuyingBusiness;
 import com.lumei.crm.customer.biz.EmergencyContactBusiness;
 import com.lumei.crm.customer.biz.NotesBusiness;
 import com.lumei.crm.customer.biz.ProfileBusiness;
+import com.lumei.crm.customer.constants.LumeiCrmConstants;
 import com.lumei.crm.customer.dto.CarBuying;
 import com.lumei.crm.customer.dto.EmergencyContact;
 import com.lumei.crm.customer.dto.Notes;
@@ -54,6 +61,9 @@ public class CustomerController {
 
   @Autowired
   private NotesBusiness notesBusiness;
+  
+  @Autowired
+  private OpAuthUserBusiness opAuthUserBusiness;
 
   @RequestMapping(value = "list", method = RequestMethod.GET)
   public ModelAndView listProfiles() {
@@ -195,7 +205,16 @@ public class CustomerController {
     if(carBuying==null){
       return new CarBuying();
     }
-    
+    //*
+    Example<TNotes> example1 = Example.newExample(TNotes.class);
+    example1.param("userId", customerId);
+    example1.param("noteServiceType", LumeiCrmConstants.SERVICE_TYPE.CAR_BUYING.getValue());//TODO
+    example1.orderBy("updateTime").desc();
+    List<Notes> notes = notesBusiness.list(example1);
+    //*/
+    if(notes!=null&&notes.size()>0){
+      carBuying.setNotes(notes.get(0).getContent());
+    }
     return carBuying;
   }
 
@@ -204,6 +223,9 @@ public class CustomerController {
   public String saveCarBuying(CarBuying carBuying) {
 
     int result = 0;
+    if(StringUtils.isBlank(carBuying.getUserId())){
+      return "fail";
+    }
     if(carBuying.getCreateTime()==null){
       Date now = DateTimeUtil.now();
       carBuying.setCreateTime(now);
@@ -219,6 +241,34 @@ public class CustomerController {
       result = carBuyingBusiness.update(carBuying);
     }
 
+    String notes = carBuying.getNotes();
+    
+    String customerId = carBuying.getUserId();
+    Example<TNotes> example1 = Example.newExample(TNotes.class);
+    example1.param("userId", customerId);
+    example1.param("noteServiceType", LumeiCrmConstants.SERVICE_TYPE.CAR_BUYING.getValue());//TODO
+    example1.orderBy("updateTime").desc();
+    List<Notes> notesList = notesBusiness.list(example1);
+    Notes newNotes;
+    Date now = DateTimeUtil.now();
+    if(notesList==null||notesList.size()<1){
+      newNotes = new Notes();
+      newNotes.setUserId(customerId);
+      newNotes.setCreateTime(now);
+      newNotes.setCreateUserId(SessionUtil.getCurrentUserId());
+      newNotes.setUpdateTime(now);
+      newNotes.setUpdateUserId(SessionUtil.getCurrentUserId());
+      newNotes.setContent(notes);
+      newNotes.setNoteServiceType(LumeiCrmConstants.SERVICE_TYPE.CAR_BUYING.getValue());
+      notesBusiness.create(newNotes);
+    }else{
+      newNotes = notesList.get(0);
+      newNotes.setUpdateTime(now);
+      newNotes.setUpdateUserId(SessionUtil.getCurrentUserId());
+      newNotes.setContent(notes);
+      notesBusiness.updateSelective(newNotes);
+    }
+    
     return 1 == result ? "success" : "fail";
   }
 
@@ -246,6 +296,17 @@ public class CustomerController {
     if (emergencyContact == null) {
       return new EmergencyContact();
     }
+    
+    //*
+    Example<TNotes> example1 = Example.newExample(TNotes.class);
+    example1.param("userId", customerId);
+    example1.param("noteServiceType", LumeiCrmConstants.SERVICE_TYPE.EMERGENCY_CONTACT.getValue());//TODO
+    example1.orderBy("updateTime").desc();
+    List<Notes> notes = notesBusiness.list(example1);
+    //*/
+    if(notes!=null&&notes.size()>0){
+      emergencyContact.setNotes(notes.get(0).getContent());
+    }
     return emergencyContact;
   }
 
@@ -254,6 +315,9 @@ public class CustomerController {
   public String saveEmergencyContact(EmergencyContact emergencyContact) {
 
     int result = 0;
+    if(StringUtils.isBlank(emergencyContact.getUserId())){
+      return "fail";
+    }
     if(emergencyContact.getCreateTime()==null){
       Date now = DateTimeUtil.now();
       emergencyContact.setCreateTime(now);
@@ -262,12 +326,41 @@ public class CustomerController {
     if(StringUtils.isBlank(emergencyContact.getCreateUserId())){
       emergencyContact.setCreateUserId(SessionUtil.getCurrentUserId());
     }
+    String customerId = emergencyContact.getUserId();
     if (StringUtils.isBlank(emergencyContact.getId())){
       result = emergencyContactBusiness.create(emergencyContact);
     } else {
       emergencyContact.setUpdateUserId(SessionUtil.getCurrentUserId());
       result = emergencyContactBusiness.update(emergencyContact);
     }
+    
+    String notes = emergencyContact.getNotes();
+    
+    Example<TNotes> example1 = Example.newExample(TNotes.class);
+    example1.param("userId", customerId);
+    example1.param("noteServiceType", LumeiCrmConstants.SERVICE_TYPE.EMERGENCY_CONTACT.getValue());//TODO
+    example1.orderBy("updateTime").desc();
+    List<Notes> notesList = notesBusiness.list(example1);
+    Notes newNotes;
+    Date now = DateTimeUtil.now();
+    if(notesList==null||notesList.size()<1){
+      newNotes = new Notes();
+      newNotes.setUserId(customerId);
+      newNotes.setCreateTime(now);
+      newNotes.setCreateUserId(SessionUtil.getCurrentUserId());
+      newNotes.setUpdateTime(now);
+      newNotes.setUpdateUserId(SessionUtil.getCurrentUserId());
+      newNotes.setContent(notes);
+      newNotes.setNoteServiceType(LumeiCrmConstants.SERVICE_TYPE.EMERGENCY_CONTACT.getValue());
+      notesBusiness.create(newNotes);
+    }else{
+      newNotes = notesList.get(0);
+      newNotes.setUpdateTime(now);
+      newNotes.setUpdateUserId(SessionUtil.getCurrentUserId());
+      newNotes.setContent(notes);
+      notesBusiness.updateSelective(newNotes);
+    }
+    
     return 1 == result ? "success" : "fail";
   }
 
@@ -279,10 +372,51 @@ public class CustomerController {
     log.debug("param, page:{}, limit:{}", customerId, serviceType);
     Example<TNotes> example = Example.newExample(TNotes.class);
 
+    if(StringUtils.isBlank(customerId)){
+      Pagination<Notes> pg = Pagination.newInstance(page, limit);
+      pg.setResult(new ArrayList<Notes>());
+      pg.setTotal(0);
+      pg.setTotalPage(0);
+      return pg;
+    }
+    
     example.param("userId", customerId);
     example.param("noteServiceType", serviceType);
     example.orderBy("createTime");
-    return notesBusiness.listByPage(example, page, limit);
+    Pagination<Notes> pg = notesBusiness.listByPage(example, page, limit);
+    
+    List<Notes> notes = pg.getResult();
+    if(notes!=null||notes.size()>0){
+      List<String> uids = new ArrayList<String>();
+      for(Notes tmp:notes){
+        String uid0 = tmp.getUpdateUserId();
+        String uid1 = tmp.getCreateUserId();
+        uids.add(uid0);
+        uids.add(uid1);
+      }
+      Example<TOpAuthUser> example1 = Example.newExample(TOpAuthUser.class);
+      example1.paramIn("id", uids);
+      List<OpAuthUser> users = opAuthUserBusiness.list(example1);
+      Map<String, OpAuthUser> userMap = new HashMap();
+      for(OpAuthUser user:users){
+        userMap.put(user.getId(), user);
+      }
+      List<Notes> notesNew = new ArrayList();
+      for(Notes tmp: notes){
+        String crtUId = tmp.getCreateUserId();
+        String updUId = tmp.getUpdateUserId();
+        OpAuthUser crtUser = userMap.get(crtUId);
+        OpAuthUser updUser = userMap.get(updUId);
+        
+        String crtUName = crtUser==null?"":crtUser.getUserName();
+        String updUName = updUser==null?"":updUser.getUserName();
+        tmp.setCreateUserName(crtUName);
+        tmp.setUpdateUserName(updUName);
+        notesNew.add(tmp);
+      }
+      pg.setResult(notesNew);
+    }
+    return pg;
   }
 
   @RequestMapping(value = "notes/save", method = RequestMethod.POST)
