@@ -381,6 +381,16 @@ public class TEmergencyContact extends BaseEntity<String> {
    */
   private Date updateTime;
 
+  private String notes;
+  
+  public String getNotes() {
+    return notes;
+  }
+
+  public void setNotes(String notes) {
+    this.notes = notes;
+  }
+
   /**
    * @return id
    */

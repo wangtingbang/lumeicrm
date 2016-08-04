@@ -10,6 +10,7 @@
 		<result column="GENDER" property="gender" jdbcType="SMALLINT" />
 		<result column="PHONE" property="phone" jdbcType="VARCHAR" />
 		<result column="EMAIL" property="email" jdbcType="VARCHAR" />
+		<result column="WECHAT_ID" property="wechatId" jdbcType="VARCHAR" />
 		<result column="STREET" property="street" jdbcType="VARCHAR" />
 		<result column="CITY" property="city" jdbcType="VARCHAR" />
 		<result column="STATE" property="state" jdbcType="VARCHAR" />
@@ -42,6 +43,7 @@
 		GENDER,
 		PHONE,
 		EMAIL,
+		WECHAT_ID,
 		STREET,
 		CITY,
 		STATE,
@@ -198,6 +200,7 @@
 			#{gender,jdbcType=SMALLINT},
 			#{phone,jdbcType=VARCHAR},
 			#{email,jdbcType=VARCHAR},
+			#{wechatId,jdbcType=VARCHAR},
 			#{street,jdbcType=VARCHAR},
 			#{city,jdbcType=VARCHAR},
 			#{state,jdbcType=VARCHAR},
@@ -249,6 +252,9 @@
 		</if>
 		<if test="email != null">
 			EMAIL,
+		</if>
+		<if test="wechatId != null">
+			WECHAT_ID,
 		</if>
 		<if test="street != null">
 			STREET,
@@ -335,6 +341,9 @@
 		</if>
 		<if test="email != null">
 				#{email,jdbcType=VARCHAR},
+		</if>
+		<if test="wechatId != null">
+				#{wechatId,jdbcType=VARCHAR},
 		</if>
 		<if test="street != null">
 				#{street,jdbcType=VARCHAR},
@@ -435,6 +444,9 @@
 	<if test="email != null" >
 		EMAIL = #{email,jdbcType=VARCHAR},
 	</if>
+	<if test="wechatId != null" >
+		WECHAT_ID = #{wechatId,jdbcType=VARCHAR},
+	</if>
 	<if test="street != null" >
 		STREET = #{street,jdbcType=VARCHAR},
 	</if>
@@ -517,6 +529,7 @@
 		GENDER = #{gender,jdbcType=SMALLINT},
 		PHONE = #{phone,jdbcType=VARCHAR},
 		EMAIL = #{email,jdbcType=VARCHAR},
+		WECHAT_ID = #{wechatId,jdbcType=VARCHAR},
 		STREET = #{street,jdbcType=VARCHAR},
 		CITY = #{city,jdbcType=VARCHAR},
 		STATE = #{state,jdbcType=VARCHAR},

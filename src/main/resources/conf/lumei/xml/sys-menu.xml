@@ -3,9 +3,9 @@
 	<menu id="cusotmerList" pid="" name="Customers" url="customer/list"
 		icon="fa-desktop" order="100">
 		<roles>
-			<role name="OP" />
-			<role name="AP" />
 			<role name="ADMIN" />
+			<role name="SALES" />
+			<role name="CUSTOMER_SERVICE" />
 		</roles>
 	</menu>
 	<menu id="systemConfig" pid="" name="User Config" icon="fa-cog"

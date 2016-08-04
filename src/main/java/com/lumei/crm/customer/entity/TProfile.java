@@ -151,6 +151,16 @@ public class TProfile extends BaseEntity<String> {
    */
   private Date updateTime;
 
+  private String wechatId;
+  
+  public String getWechatId() {
+    return wechatId;
+  }
+
+  public void setWechatId(String wechatId) {
+    this.wechatId = wechatId;
+  }
+
   /**
    * @return id
    */

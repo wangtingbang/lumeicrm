@@ -111,9 +111,10 @@ public class CustomerController {
 
 
   @RequestMapping(value = "getProfile", method = RequestMethod.GET)
-  public ModelAndView getProfile(String customerId) {
+  public ModelAndView getProfile(String customerId, String customerName) {
     ModelAndView mav = new ModelAndView("customer/profileTemp");
     SessionUtil.setAttributes("customerId", customerId);
+    SessionUtil.setAttributes("customerName", customerName);
     return mav;
   }
 
@@ -437,6 +438,16 @@ public class CustomerController {
       notes.setUpdateUserId(SessionUtil.getCurrentUserId());
       result = notesBusiness.update(notes);
     }
+    return 1 == result ? "success" : "fail";
+  }
+  
+  @RequestMapping(value="notes/delete", method = RequestMethod.POST)
+  @ResponseBody
+  public String deleteNotes(String id) {
+    int result = 0;
+    log.info("delete note:{}, opId:{},opName:{}", id, SessionUtil.getCurrentUserId(),SessionUtil.getCurrentUserName());
+ 
+    result = notesBusiness.delete(id, Notes.class);
     return 1 == result ? "success" : "fail";
   }
 

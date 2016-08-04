@@ -27,6 +27,8 @@
 			<label class="col-sm-1 control-label no-padding-right" for="form-field-1">customerId</label>
 			<div class="col-sm-9">
 				<input id="customerId" name="customerId"  class="form-control" value="<%=SessionUtil.getAttributes("customerId") %>" readonly="readonly"/>
+				<input id="currentUserId" name="currentUserId"  class="form-control" value="<%=SessionUtil.getCurrentUserId() %>" readonly="readonly"/>
+				<input id="currentUserName" name="currentUserName"  class="form-control" value="<%=SessionUtil.getCurrentUserName() %>" readonly="readonly"/>
 			</div>
 		</div>
 	</div>
@@ -63,7 +65,7 @@
   <label class="col-sm-1 control-label no-padding-right">Gender:</label>
   <div class="col-sm-4">
       <label class="line-height-1" style="margin-right: 10px; margin-top: 5px;">
-        <input name="gender" value="1" type="radio" class="ace" {{? it.readonly && 1 != it.gender}}disabled="disabled"{{?}} {{? 1 == it.gender}}checked="checked"{{?}}/>
+        <input name="gender" value="1" type="radio" class="ace" {{? it.readonly && 1 != it.gender}}disabled="disabled"{{?}} {{? !it.gender|| 1 == it.gender}}checked="checked"{{?}}/>
         <span class="lbl"> F</span>
       </label>
       <label class="line-height-1" style="margin-right: 10px;">
@@ -95,7 +97,7 @@
       <input type="text" name="email" id="university" class="form-control col-sm-1 " value="{{=it.university|| '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
     </div>
   </div>
-  <label class="col-sm-1 control-label no-padding-right" for="name">Wechat ID:</label>
+  <label class="col-sm-1 control-label no-padding-right" for="wechatId">Wechat ID:</label>
   <div class="col-sm-4">
     <div class="clearfix">
       <input type="text" name="wechatId" id="wechatId" class="form-control col-sm-1 " value="{{=it.wechatId|| '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
@@ -109,13 +111,15 @@
   <label class="col-sm-2 control-label no-padding-right" for="university">Created By:</label>
   <div class="col-sm-4">
     <div class="clearfix">
-      <input type="text" name="email" id="university" class="form-control col-sm-1 " value="{{=it.university|| '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
+        <input type="hidden" name="createUserId" id="createUserId" value="{{=it.createUserId||'<%=SessionUtil.getCurrentUserId() %>'||''}}" readonly="readonly"/>
+      <input type="text" name="createUserName" id="createUserName" class="form-control col-sm-1 " value="{{=it.createUserName||'<%=SessionUtil.getCurrentUserName() %>'||''}}" readonly="readonly"/>
     </div>
   </div>
   <label class="col-sm-1 control-label no-padding-right" for="name">Updated By:</label>
   <div class="col-sm-4">
     <div class="clearfix">
-      <input type="text" name="wechatId" id="wechatId" class="form-control col-sm-1 " value="{{=it.wechatId|| '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
+    <input type="hidden" name="updateUserId" id="updateUserId" value="{{=it.updateUserId||'<%=SessionUtil.getCurrentUserId() %>'||''}}" readonly="readonly"/>
+      <input type="text" name="updateUserName" id="updateUserName" class="form-control col-sm-1 " value="{{=it.updateUserName||'<%=SessionUtil.getCurrentUserName() %>'||''}}" readonly="readonly"/>
     </div>
   </div>
 </div>
@@ -124,7 +128,7 @@
   <label class="col-sm-2 control-label no-padding-right" for="university">Sales:</label>
   <div class="col-sm-4">
     <div class="clearfix">
-      <input type="text" name="email" id="university" class="form-control col-sm-1 " value="{{=it.university|| '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
+      <input type="text" name="sales" id="sales" class="form-control col-sm-1 " value="{{=it.sales||'<%=SessionUtil.getCurrentUserName() %>'||''}}" readonly="readonly"/>
     </div>
   </div>
 </div>
@@ -202,15 +206,20 @@
   <div class="col-sm-9">
       <label style="margin-right: 10px; margin-top: 5px;">
       <input id="form-search-status-unconfirm" name="form-search-status-unconfirm" type="checkbox" class="ace" {{? it.readonly}}disabled="disabled"{{?}} {{? it.serviceInfo&&it.serviceInfo.s1}}checked="checked"{{?}}/>
-      <span class="lbl">Car Buying&nbsp;&nbsp;</span>
-      <span class="lbl">{{?it.serviceInfo&&it.serviceInfo.s1}}<a href="getCarBuying?customerId={{=it.id }}&customerName={{=it.name}}" target="_blank">view </a>{{?}}{{?!it.serviceInfo||(it.serviceInfo&&!it.serviceInfo.s1)}}<a href="getCarBuying?customerId={{=it.id }}&customerName={{=it.name}}" target="_blank">add</a>{{?}}</span>
+      <span class="lbl">Car Buying</span>
+        <span class="lbl">
+        {{?it.serviceInfo&&it.serviceInfo.s1}}<a href="getCarBuying?customerId={{=it.id }}&customerName={{=it.name}}" target="_blank">view</a>{{?}}
+        {{?!it.serviceInfo||(it.serviceInfo&&!it.serviceInfo.s1)}}<a href="javascript:addCarBuying('{{=it.id }}','{{=it.name }}');">add</a>{{?}}
+        </span>
       </label>
       <label style="margin-right: 10px; margin-top: 5px;">
-      <input id="form-search-status-confirm" name="form-search-status-confirm" type="checkbox" class="ace" {{? it.serviceInfo&&it.serviceInfo.s2}}checked="checked"{{?}} {{?!it.id}}disabled="disabled"{{?}}/>
-      <span class="lbl">Emergency Contact&nbsp;&nbsp;</span>
-			<span class="lbl">
-			{{?it.serviceInfo&&it.serviceInfo.s2}}<a href="getEmergencyContact?customerId={{=it.id }}&customerName={{=it.name}}" target="_blank">view </a>{{?}}
-			{{?it.id&&(!it.serviceInfo||(it.serviceInfo&&!it.serviceInfo.s2))}}<a href="getEmergencyContact?customerId={{=it.id }}&customerName={{=it.name}}" target="_blank">add</a>{{?}}</span>
+      <input id="form-search-status-confirm" name="form-search-status-confirm" type="checkbox" class="ace" {{? it.serviceInfo&&it.serviceInfo.s2}}checked="checked"{{?}}/>
+      <span class="lbl">Emergency Contact</span>
+		<span class="lbl">
+        {{?it.serviceInfo&&it.serviceInfo.s2}}<a href="getEmergencyContact?customerId={{=it.id }}&customerName={{=it.name}}" target="_blank">view </a>{{?}}
+        {{?!it.serviceInfo||(it.serviceInfo&&!it.serviceInfo.s2)}}<a href="javascript:addEmergencyContact('{{=it.id }}','{{=it.name }}');">add</a>{{?}}
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        </span>
       <label style="margin-right: 10px; margin-top: 5px;">
       <input id="form-search-status-failed" name="form-search-status-failed" type="checkbox" class="ace" disabled="disabled" />
       <span class="lbl">Car Selling&nbsp;&nbsp;</span>
@@ -242,23 +251,23 @@
   <label class="col-sm-2 control-label no-padding-right">Status:</label>
   <div class="col-sm-9">
     <label style="margin-right: 10px; margin-top: 5px;">
-    <input id="form-status" name="form-status" type="radio" class="ace" {{? it.readonly && 1 != it.status}}disabled="disabled"{{?}} {{? 1 == it.status}}checked="checked"{{?}}/>
+    <input id="status1" name="status" type="radio" value="1" class="ace" {{? it.readonly && 1 != it.status}}disabled="disabled"{{?}} {{? !it.status||1 == it.status}}checked="checked"{{?}}/>
     <span class="lbl">Appointmented&nbsp;&nbsp;</span>
     </label>
     <label style="margin-right: 10px; margin-top: 5px;">
-    <input id="form-status" name="form-status" type="radio" class="ace" />
+    <input id="status2" name="status" type="radio" value="2" class="ace" {{? 2 == it.status}}checked="checked"{{?}} />
     <span class="lbl">Sold by Lumei&nbsp;&nbsp;</span>
     </label>
     <label style="margin-right: 10px; margin-top: 5px;">
-    <input id="form-status" name="form-status" type="radio" class="ace" />
+    <input id="status3" name="status" type="radio" value="3" class="ace" {{? 3 == it.status}}checked="checked"{{?}}/>
     <span class="lbl">Buy from Other&nbsp;&nbsp;</span>
     </label>
     <label style="margin-right: 10px; margin-top: 5px;">
-    <input id="form-status" name="form-status" type="radio" class="ace" />
+    <input id="status4" name="status" type="radio" value="4" class="ace" {{? 4 == it.status}}checked="checked"{{?}}/>
     <span class="lbl">No Response&nbsp;&nbsp;</span>
     </label>
     <label style="margin-right: 10px; margin-top: 5px;">
-    <input id="form-status" name="form-status" type="radio" class="ace" />
+    <input id="status5" name="status" type="radio" value="5" class="ace" {{? 5 == it.status}}checked="checked"{{?}} />
     <span class="lbl">Still in the Market&nbsp;&nbsp;</span>
     </label>
   </div>
@@ -294,7 +303,11 @@
 		<td>{{=p.createUserName||''}}</td>
 		<td>{{=new Date(p.createTime).toChString(true) ||''}}</td>
 		<td>{{=p.content||''}}</td>
-		<td><a onclick="javascript:addNote('{{=p.id}}','{{=p.createUserId}}','{{=p.createUserName}}',{{=p.createTime}},'{{=p.content}}')">Detaill</a></td>
+		<td>
+    <a onclick="javascript:addNote('{{=p.id}}','{{=p.createUserId}}','{{=p.createUserName}}',{{=p.createTime}},'{{=p.content}}')">Detail</a>
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    <a onclick="javascript:deleteNotes('{{=p.id}}');">Delete</a>&nbsp;&nbsp;
+    </td>
 	</tr>
 {{~}}
 {{? !it||!it.data||!it.data.length}}
@@ -334,13 +347,15 @@
 <form class="form-horizontal" id="add-notes-form">
 <div class="form-group">
 	<input type="hidden" id="userId" name="userId" value="{{=it.customerId||''}}" class="col-xs-12 col-sm-12" value=""/>
+		<input type="hidden" id="noteId" name="noteId" value="{{=it.noteId||''}}" class="col-xs-12 col-sm-12" />
+		<input type="hidden" id="createUserId" name="createUserId" value="{{=it.noteCrtUId||''}}" class="col-xs-12 col-sm-12" />
 	<label class="col-sm-2 control-label no-padding-right" for="id">Created By:</label>
 	<div class="col-sm-4">
-		<input type="text" id="createdBy" name="createdBy" class="col-xs-12 col-sm-12" value="{{=it.createUserName||''}}" disabled="disabled"/>
+		<input type="text" id="createdBy" name="createdBy" class="col-xs-12 col-sm-12" value="{{=it.createUserName||''}}" readonly="readonly"/>
 	</div>
 	<label class="col-sm-2 control-label no-padding-right" for="id">Create Time:</label>
 	<div class="col-sm-4">
-		<input type="text" id="createTime" name="createTime" class="col-xs-12 col-sm-12" value="{{=new Date(it.createTime).toChString(true) ||it.createTime||''}}" disabled="disabled"/>
+		<input type="text" id="createTime" name="createTime" class="col-xs-12 col-sm-12" value="{{=new Date(it.createTime).toChString(true) ||new Date().toChString(true)||''}}" readonly="readonly"/>
 	</div>
 </div>
 <div class="form-group" style="width:600px">

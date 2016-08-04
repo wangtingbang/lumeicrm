@@ -158,7 +158,16 @@ public class Profile extends BaseModel<String> implements Serializable {
 
   private ServiceInfo serviceInfo;
   
+  private String wechatId;
   
+  public String getWechatId() {
+    return wechatId;
+  }
+
+  public void setWechatId(String wechatId) {
+    this.wechatId = wechatId;
+  }
+
   public ServiceInfo getServiceInfo() {
     return serviceInfo;
   }

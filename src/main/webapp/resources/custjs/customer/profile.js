@@ -31,10 +31,9 @@ function saveProfile(){
 	$.ipost(
 	contextPath + '/customer/profile/save',
 	param,
-	function(){
-		//TODO
+	function(data){
 		$.ialert("Saved!");
-		searchSubmit();
+		location.href = contextPath + '/customer/list?active=customerList';
 	},
 	function(errmsg){
 		$.ialert("Save failed! "+errmsg,"error");
@@ -78,10 +77,25 @@ function searchSubmit(){
 function addNote(noteId, noteCrtUId, noteCrtUName, noteCrtTm, noteCont){
 
 	var customerId = $("#customerId").val();
+	if(!customerId||customerId===''||customerId==='undefined'){
+		$.ialert("Please save profile before add notes");
+		return;
+	}
+	var userId = $("#userId").val();
+	var serviceType = $("#noteservicetype-select").val();
+	var serviceType1 = $("#noteServiceType").val();
+	var content = $("#content").val();
+
 	var notesfn = doT.template($('#add-notes-temp').text());
 
 	var t =  new Date(noteCrtTm).toChString(true);
-	var note = {id:noteId, createUserId:noteCrtUId,createUserName:noteCrtUName,createTime:noteCrtTm, content:noteCont};
+	if(!noteCrtUId||noteCrtUId===''){
+		noteCrtUId = $("#currentUserId").val();
+	}
+	if(!noteCrtUName||noteCrtUName===''){
+		noteCrtUName = $("#currentUserName").val();
+	}
+	var note = {noteId:noteId, createUserId:noteCrtUId,createUserName:noteCrtUName,createTime:noteCrtTm, content:noteCont};
 	var data = $.extend({},{userId:customerId,datadic:{serviceType:datadicArray(datadic["serviceType"])}},note);
 
 	$.imodal({
@@ -98,12 +112,18 @@ function addNote(noteId, noteCrtUId, noteCrtUName, noteCrtTm, noteCont){
 }
 
 function addNote2(msgDom){
-	var data = $('#add-notes-form').serialize();
+
 	var customerId = $("#customerId").val();
-	data = $.extend({}, data, {userId:customerId});
+	var userId = $("#userId").val();
+	var serviceType = $("#noteservicetype-select").val();
+	var content = $("#content").val();
+	var noteId = $("#noteId").val();
+	var createTime = $("#createTime").val();
+	var createUserId = $("#createUserId").val();
+	var data = {id:noteId,userId:customerId, noteServiceType:serviceType,content:content,createTime:createTime, createUserId:createUserId};
 	$.ipost(
 		contextPath+'/customer/notes/save',
-		$('#add-notes-form').serialize(),
+		data,
 		function (result) {
 			msgDom.imsg({
 				type:'success',
@@ -117,4 +137,38 @@ function addNote2(msgDom){
 			});
 		}
 	);
+}
+
+function deleteNotes(id){
+	$.iconfirm("Confirm to delete this note?",function(){
+		$.ipost(
+			contextPath+'/customer/notes/delete',
+			{id:id},
+			function(){
+				$.ialert("Success!");
+				searchSubmit();
+			},
+			function(errmsg){
+				$.ialert(errmsg,"Fail");
+			});
+	});
+
+}
+
+function addCarBuying(customerId, customerName) {
+	if(!customerId||customerId===''||customerId==='undefined'){
+		$.ialert("Please save profile before add car buying service");
+		return;
+	}
+	window.open(contextPath + '/customer/getCarBuying?customerId='+customerId+"&customerName="+customerName);
+}
+
+function addEmergencyContact(customerId, customerName) {
+	if(!customerId||customerId===''||customerId==='undefined'){
+		$.ialert("Please save profile before add emergency contact service");
+		return;
+	}
+
+	//window.open.location.href = contextPath + '/customer/getProfile?customerId=';
+	window.open(contextPath + '/customer/getEmergencyContact?customerId='+customerId+"&customerName="+customerName);
 }

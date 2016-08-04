@@ -119,7 +119,7 @@
 			<td>{{=p.email||''}}</td>
 			<td>{{=datadic['customerStatus'][p.status]}}</td>
 			<td>{{=p.sales||''}}</td>
-			<td><a href="customer/getProfile?customerId={{=p.id }}">View Profile</a></td>
+			<td><a href="javascript:viewProfile('{{=p.id }}','{{=p.name }}');">View Profile</a></td>
 		</tr>
 {{~}}
 {{? !it.data.length}}

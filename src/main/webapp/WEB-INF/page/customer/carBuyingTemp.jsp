@@ -46,10 +46,10 @@
 </div>
 
 <div class="form-group">
-	<label class="col-sm-2 control-label no-padding-right" for="activityName">Sales Name:</label>
+	<label class="col-sm-2 control-label no-padding-right" for="">Sales Name:</label>
 	<div class="col-sm-4">
 		<div class="clearfix">
-			<input type="text" name="salesName" id="salesName" class="form-control col-sm-12" value="{{=it.salesName || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
+			<input type="text" name="salesName" id="salesName" class="form-control col-sm-12" value="{{=it.salesName||'<%=SessionUtil.getCurrentUserName() %>'||''}}" readonly="readonly"/>
 		</div>
 	</div>
 	<label class="col-sm-1 control-label no-padding-right" for="category">Category:</label>
@@ -61,7 +61,7 @@
 </div>
 
 <div class="form-group">
-	<label class="col-sm-2 control-label no-padding-right" for="activityName">Makes:</label>
+	<label class="col-sm-2 control-label no-padding-right" for="">Makes:</label>
 	<div class="col-sm-4">
 		<div class="clearfix">
 			<input type="text" name="makes" id="makes" class="form-control col-sm-12" value="{{=it.makes || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
@@ -92,7 +92,7 @@
 				<span class="lbl">New</span>
 			</label>
 			<label class="line-height-1" style="margin-right: 10px;">
-				<input name="isNew" value="0" type="radio" class="ace" {{? it.readonly && 0 != it.isNew}}disabled="disabled"{{?}} {{? 2 == it.isNew}}checked="checked"{{?}}/>
+				<input name="isNew" value="0" type="radio" class="ace" {{? it.readonly && 0 != it.isNew}}disabled="disabled"{{?}} {{? 0 == it.isNew}}checked="checked"{{?}}/>
 				<span class="lbl">Used</span>
 			</label>
 	</div>
@@ -153,51 +153,51 @@
 </div>
 
 <div class="form-group"  style="margin-left:8.3%">
-<label class="col-sm-11"><h5 class="header ligth blue" style="margin-top:0px,margin-bottom:0px">Finance</h5></label>
+<label class="col-sm-11"><h5 class="header ligth blue" style="margin-top:0px;margin-bottom:0px">Finance</h5></label>
 </div>
 
 
 <div class="form-group">
-	<label class="col-sm-2 control-label no-padding-right" for="downPayment">Down Payment:</label>
+	<label class="col-sm-2 control-label no-padding-right" for="financeDownPayment">Down Payment:</label>
 	<div class="col-sm-4">
 		<div class="clearfix">
-			<input type="text" name="downPayment" id="downPayment" class="form-control col-sm-12" value="{{=it.downPayment || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
+			<input type="text" name="financeDownPayment" id="financeDownPayment" class="form-control col-sm-12" value="{{=it.financeDownPayment || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
 		</div>
 	</div>
-	<label class="col-sm-1 control-label no-padding-right" for="rate">Rate:</label>
+	<label class="col-sm-1 control-label no-padding-right" for="financeRate">Rate:</label>
 	<div class="col-sm-4">
 		<div class="clearfix">
-			<input type="text" name="rate" id="rate" class="form-control col-sm-12" value="{{=it.rate || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
-		</div>
-	</div>
-</div>
-
-<div class="form-group">
-	<label class="col-sm-2 control-label no-padding-right" for="terms">Terms:</label>
-	<div class="col-sm-4">
-		<div class="clearfix">
-			<input type="text" name="terms" id="terms" class="form-control col-sm-12" value="{{=it.terms || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
-		</div>
-	</div>
-	<label class="col-sm-1 control-label no-padding-right" for="monthlyPay">Monthly Pay:</label>
-	<div class="col-sm-4">
-		<div class="clearfix">
-			<input type="text" name="monthlyPay" id="monthlyPay" class="form-control col-sm-12" value="{{=it.monthlyPay || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
+			<input type="text" name="financeRate" id="financeRate" class="form-control col-sm-12" value="{{=it.financeRate || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
 		</div>
 	</div>
 </div>
 
 <div class="form-group">
-	<label class="col-sm-2 control-label no-padding-right" for="comments">Comments:</label>
+	<label class="col-sm-2 control-label no-padding-right" for="financeTerms">Terms:</label>
+	<div class="col-sm-4">
+		<div class="clearfix">
+			<input type="text" name="financeTerms" id="financeTerms" class="form-control col-sm-12" value="{{=it.financeTerms || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
+		</div>
+	</div>
+	<label class="col-sm-1 control-label no-padding-right" for="financeMonthlyPay">Monthly Pay:</label>
+	<div class="col-sm-4">
+		<div class="clearfix">
+			<input type="text" name="financeMonthlyPay" id="financeMonthlyPay" class="form-control col-sm-12" value="{{=it.financeMonthlyPay || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
+		</div>
+	</div>
+</div>
+
+<div class="form-group">
+	<label class="col-sm-2 control-label no-padding-right" for="financeComments">Comments:</label>
 	<div class="col-sm-4">
 	<div class="clearfix">
-	<textarea class="form-control limited" id="comments"  name="comments" maxlength="1000" {{? it.readonly}}readonly="readonly"{{?}}>{{=it.comments || ''}}</textarea>
+	<textarea class="form-control limited" id="financeComments"  name="financeComments" maxlength="1000" {{? it.readonly}}readonly="readonly"{{?}}>{{=it.financeComments || ''}}</textarea>
 	</div>
 	</div>
 </div>
 
 <div class="form-group" style="margin-left:8.3%">
-<label class="col-sm-11"><h5 class="header ligth blue" style="margin-top:0px,margin-bottom:0px">Additional Information</h5></label>
+<label class="col-sm-11"><h5 class="header ligth blue" style="margin-top:0px;margin-bottom:0px">Additional Information</h5></label>
 </div>
 
 <div class="form-group">
@@ -222,82 +222,89 @@
 			<input type="text" name="cvs" id="cvs" class="form-control col-sm-12" value="{{=it.cvs || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
 		</div>
 	</div>
-	<label class="col-sm-1 control-label no-padding-right" for="driverLicense">Driver License:</label>
+	<label class="col-sm-1 control-label no-padding-right" for="driversLicense">Driver License:</label>
 	<div class="col-sm-4">
 		<div class="clearfix">
-			<input type="text" name="driverLicense" id="driverLicense" class="form-control col-sm-12" value="{{=it.driverLicense || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
+			<input type="text" name="driversLicense" id="driversLicense" class="form-control col-sm-12" value="{{=it.driversLicense || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
 		</div>
 	</div>
 </div>
 
 
 <div class="form-group"  style="margin-left:8.3%">
-<label class="col-sm-11"><h5 class="header ligth blue" style="margin-top:0px,margin-bottom:0px">Lease</h5></label>
+<label class="col-sm-11"><h5 class="header ligth blue" style="margin-top:0px;margin-bottom:0px">Lease</h5></label>
 </div>
 
 <div class="form-group">
-	<label class="col-sm-2 control-label no-padding-right" for="downPayment">Down Payment:</label>
+	<label class="col-sm-2 control-label no-padding-right" for="leaseDownPayment">Down Payment:</label>
 	<div class="col-sm-4">
 		<div class="clearfix">
-			<input type="text" name="downPayment" id="downPayment" class="form-control col-sm-12" value="{{=it.downPayment || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
+			<input type="text" name="leaseDownPayment" id="leaseDownPayment" class="form-control col-sm-12" value="{{=it.leaseDownPayment || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
 		</div>
 	</div>
 	<label class="col-sm-1 control-label no-padding-right" for="terms">Terms:</label>
 	<div class="col-sm-4">
 		<div class="clearfix">
-			<input type="text" name="terms" id="terms" class="form-control col-sm-12" value="{{=it.terms || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
+			<input type="text" name="leaseTerms" id="leaseTerms" class="form-control col-sm-12" value="{{=it.leaseTerms || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
 		</div>
 	</div>
 </div>
 
 <div class="form-group">
-	<label class="col-sm-2 control-label no-padding-right" for="monthlyPay">Monthly Pay:</label>
+	<label class="col-sm-2 control-label no-padding-right" for="leaseMonthlyPay">Monthly Pay:</label>
 	<div class="col-sm-4">
 		<div class="clearfix">
-			<input type="text" name="monthlyPay" id="monthlyPay" class="form-control col-sm-12" value="{{=it.monthlyPay || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
+			<input type="text" name="leaseMonthlyPay" id="leaseMonthlyPay" class="form-control col-sm-12" value="{{=it.leaseMonthlyPay || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
 		</div>
 	</div>
 </div>
 
 <div class="form-group">
-	<label class="col-sm-2 control-label no-padding-right" for="comments">Comments:</label>
+	<label class="col-sm-2 control-label no-padding-right" for="leaseComments">Comments:</label>
 	<div class="col-sm-4">
 	<div class="clearfix">
-	<textarea class="form-control limited" id="comments"  name="comments" maxlength="1000" {{? it.readonly}}readonly="readonly"{{?}}>{{=it.comments || ''}}</textarea>
+	<textarea class="form-control limited" id="leaseComments"  name="leaseComments" maxlength="1000" {{? it.readonly}}readonly="readonly"{{?}}>{{=it.leaseComments || ''}}</textarea>
 	</div>
 	</div>
 </div>
 
 <div class="form-group"  style="margin-left:8.3%">
-<label class="col-sm-11"><h5 class="header ligth blue" style="margin-top:0px,margin-bottom:0px">Trade In</h5></label>
+<label class="col-sm-11"><h5 class="header ligth blue" style="margin-top:0px;margin-bottom:0px">Trade In</h5></label>
 </div>
 
 <div class="form-group">
-	<label class="col-sm-2 control-label no-padding-right" for="tradeIn">Trade In:</label>
+	<label class="col-sm-2 control-label no-padding-right">Trade In:</label>
 	<div class="col-sm-4">
-		<div class="clearfix">
-			<input type="text" name="tradeIn" id="tradeIn" class="form-control col-sm-12" value="{{=it.tradeIn || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
-		</div>
+	<div class="clearfix">
+		<label class="line-height-1" style="margin-right: 10px;">
+		<input id="tradeIn1" name="tradeIn" value="1" type="radio" class="ace" {{? it.readonly && 1 != it.tradeIn}}disabled="disabled"{{?}} {{? !it.tradeIn||1 == it.tradeIn}}checked="checked"{{?}}/>
+		<span class="lbl">Yes</span>
+		</label>
+		<label class="line-height-1" style="margin-right: 10px;">
+		<input id="tradeIn2" name="tradeIn" value="0" type="radio" class="ace" {{? it.readonly && 0 != it.tradeIn}}disabled="disabled"{{?}} {{? 0 == it.tradeIn}}checked="checked"{{?}}/>
+		<span class="lbl">No</span>
+		</label>
 	</div>
-	<label class="col-sm-1 control-label no-padding-right" for="makes">Makes:</label>
+	</div>
+	<label class="col-sm-1 control-label no-padding-right">Makes:</label>
 	<div class="col-sm-4">
 		<div class="clearfix">
-			<input type="text" name="makes" id="makes" class="form-control col-sm-12" value="{{=it.makes || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
+			<input type="text" name="tradeInMakes" id="tradeInMakes" class="form-control col-sm-12" value="{{=it.tradeInMakes || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
 		</div>
 	</div>
 </div>
 
 <div class="form-group">
-	<label class="col-sm-2 control-label no-padding-right" for="mileage">Mileage:</label>
+	<label class="col-sm-2 control-label no-padding-right">Mileage:</label>
 	<div class="col-sm-4">
 		<div class="clearfix">
-			<input type="text" name="mileage" id="mileage" class="form-control col-sm-12" value="{{=it.mileage || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
+			<input type="text" name="tradeInMileage" id="tradeInMileage" class="form-control col-sm-12" value="{{=it.tradeInMileage || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
 		</div>
 	</div>
 	<label class="col-sm-1 control-label no-padding-right" for="model">Model:</label>
 	<div class="col-sm-4">
 		<div class="clearfix">
-			<input type="text" name="model" id="model" class="form-control col-sm-12" value="{{=it.model || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
+			<input type="text" name="tradeInModel" id="tradeInModel" class="form-control col-sm-12" value="{{=it.tradeInModel || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
 		</div>
 	</div>
 </div>
@@ -306,42 +313,42 @@
 	<label class="col-sm-2 control-label no-padding-right" for="years">Years:</label>
 	<div class="col-sm-4">
 		<div class="clearfix">
-			<input type="text" name="years" id="years" class="form-control col-sm-12" value="{{=it.years || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
+			<input type="text" name="tradeInYears" id="tradeInYears" class="form-control col-sm-12" value="{{=it.tradeInYears || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
 		</div>
 	</div>
-	<label class="col-sm-1 control-label no-padding-right" for="value">Value:</label>
+	<label class="col-sm-1 control-label no-padding-right">Value:</label>
 	<div class="col-sm-4">
 		<div class="clearfix">
-			<input type="text" name="value" id="value" class="form-control col-sm-12" value="{{=it.value || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
+			<input type="text" name="tradeInValue" id="tradeInValue" class="form-control col-sm-12" value="{{=it.tradeInValue || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
 		</div>
 	</div>
 </div>
 
 <div class="form-group">
-	<label class="col-sm-2 control-label no-padding-right" for="exterior">Exterior:</label>
+	<label class="col-sm-2 control-label no-padding-right">Exterior:</label>
 	<div class="col-sm-4">
 		<div class="clearfix">
-			<input type="text" name="exterior" id="exterior" class="form-control col-sm-12" value="{{=it.exterior || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
+			<input type="text" name="tradeInExterior" id="tradeInExterior" class="form-control col-sm-12" value="{{=it.tradeInExterior || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
 		</div>
 	</div>
-	<label class="col-sm-1 control-label no-padding-right" for="interior">Interior:</label>
+	<label class="col-sm-1 control-label no-padding-right">Interior:</label>
 	<div class="col-sm-4">
 		<div class="clearfix">
-			<input type="text" name="interior" id="interior" class="form-control col-sm-12" value="{{=it.interior || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
+			<input type="text" name="tradeInInterior" id="tradeInInterior" class="form-control col-sm-12" value="{{=it.tradeInInterior || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
 		</div>
 	</div>
 </div>
 <div class="form-group">
-	<label class="col-sm-2 control-label no-padding-right" for="color">Color:</label>
+	<label class="col-sm-2 control-label no-padding-right">Color:</label>
 	<div class="col-sm-4">
 		<div class="clearfix">
-			<input type="text" name="color" id="color" class="form-control col-sm-12" value="{{=it.color || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
+			<input type="text" name="tradeInColor" id="tradeInColor" class="form-control col-sm-12" value="{{=it.tradeInColor || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
 		</div>
 	</div>
 </div>
 
 <div class="form-group" style="margin-bottom:0px">
-<label class="col-sm-12"><h5 class="header ligth blue" style="margin-top:0px,margin-bottom:0px"></h5></label>
+<label class="col-sm-12"><h5 class="header ligth blue" style="margin-top:0px;margin-bottom:0px"></h5></label>
 </div>
 
 <div class="col-sm-12 form-group">

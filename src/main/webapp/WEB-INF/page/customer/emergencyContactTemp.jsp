@@ -47,10 +47,10 @@
 	<label class="col-sm-2 control-label no-padding-right" for="salesName">Sales Name:</label>
 	<div class="col-sm-3">
 		<div class="clearfix">
-			<input type="text" name="salesName" id="salesName" class="form-control col-sm-12" value="{{=it.salesName || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
+			<input type="text" name="salesName" id="salesName" class="form-control col-sm-12" value="{{=it.salesName||'<%=SessionUtil.getCurrentUserName() %>'||''}}" readonly="readonly"/>
 		</div>
 	</div>
-	<label class="col-sm-2 control-label no-padding-right" for="category">DOB:</label>
+	<label class="col-sm-2 control-label no-padding-right">DOB:</label>
 	<div class="col-sm-3">
 		<div class="clearfix">
 			<input type="text" name="dob" id="dob" class="form-control col-sm-12" value="{{=it.dob || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
@@ -59,7 +59,7 @@
 </div>
 
 <div class="form-group">
-	<label class="col-sm-2 control-label no-padding-right" for="activityName">Chinese ID:</label>
+	<label class="col-sm-2 control-label no-padding-right" for="">Chinese ID:</label>
 	<div class="col-sm-3">
 		<div class="clearfix">
 			<input type="text" name="chineseId" id="chineseId" class="form-control col-sm-12" value="{{=it.chineseId || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
@@ -119,7 +119,7 @@
 </div>
 
 <div class="form-group"  style="margin-left:8.3%">
-<label class="col-sm-10"><h5 class="header ligth blue" style="margin-top:0px,margin-bottom:0px">Chinese Address</h5></label>
+<label class="col-sm-10"><h5 class="header ligth blue" style="margin-top:0px;margin-bottom:0px">Chinese Address</h5></label>
 </div>
 <div class="form-group">
   <label class="col-sm-2 control-label no-padding-right" for="chineseHomeAddress">Home Address:</label>
@@ -146,7 +146,7 @@
 	</div>
 
 <div class="form-group"  style="margin-left:8.3%">
-	<label class="col-sm-10"><h5 class="header ligth blue" style="margin-top:0px,margin-bottom:0px">USA Address</h5></label>
+	<label class="col-sm-10"><h5 class="header ligth blue" style="margin-top:0px;margin-bottom:0px">USA Address</h5></label>
 	</div>
 <div class="form-group">
   <label class="col-sm-2 control-label no-padding-right" for="usaHomeAddress">Home Address:</label>
@@ -194,7 +194,7 @@
 </div>
 
 <div class="form-group"  style="margin-left:8.3%">
-<label class="col-sm-10"><h5 class="header ligth blue" style="margin-top:0px,margin-bottom:0px">Parents - Father</h5></label>
+<label class="col-sm-10"><h5 class="header ligth blue" style="margin-top:0px;margin-bottom:0px">Parents - Father</h5></label>
 </div>
 <div class="form-group">
   <label class="col-sm-2 control-label no-padding-right" for="fatherChineseName">Chinese Name:</label>
@@ -242,7 +242,7 @@
 </div>
 
 <div class="form-group"  style="margin-left:8.3%">
-<label class="col-sm-10"><h5 class="header ligth blue" style="margin-top:0px,margin-bottom:0px">Parents - Mother</h5></label>
+<label class="col-sm-10"><h5 class="header ligth blue" style="margin-top:0px;margin-bottom:0px">Parents - Mother</h5></label>
 </div>
 <div class="form-group">
   <label class="col-sm-2 control-label no-padding-right" for="motherChineseName">Chinese Name:</label>
@@ -290,7 +290,7 @@
 </div>
 
 <div class="form-group"  style="margin-left:8.3%">
-<label class="col-sm-10"><h5 class="header ligth blue" style="margin-top:0px,margin-bottom:0px">Contact - Landlord</h5></label>
+<label class="col-sm-10"><h5 class="header ligth blue" style="margin-top:0px;margin-bottom:0px">Contact - Landlord</h5></label>
 </div>
 <div class="form-group">
   <label class="col-sm-2 control-label no-padding-right" for="landlordChineseName">Chinese Name:</label>
@@ -362,7 +362,7 @@
 </div>
 
 <div class="form-group"  style="margin-left:8.3%">
-<label class="col-sm-10"><h5 class="header ligth blue" style="margin-top:0px,margin-bottom:0px">Contact - Roommate</h5></label>
+<label class="col-sm-10"><h5 class="header ligth blue" style="margin-top:0px;margin-bottom:0px">Contact - Roommate</h5></label>
 </div>
 <div class="form-group">
   <label class="col-sm-2 control-label no-padding-right" for="roommateChineseName">Chinese Name:</label>
@@ -425,7 +425,7 @@
 </div>
 
 <div class="form-group"  style="margin-left:8.3%">
-<label class="col-sm-10"><h5 class="header ligth blue" style="margin-top:0px,margin-bottom:0px">Contact - Neighbor</h5></label>
+<label class="col-sm-10"><h5 class="header ligth blue" style="margin-top:0px;margin-bottom:0px">Contact - Neighbor</h5></label>
 </div>
 <div class="form-group">
   <label class="col-sm-2 control-label no-padding-right" for="neighborChineseName">Chinese Name:</label>
@@ -488,7 +488,7 @@
 </div>
 
 <div class="form-group"  style="margin-left:8.3%">
-<label class="col-sm-10"><h5 class="header ligth blue" style="margin-top:0px,margin-bottom:0px">Contact - Other</h5></label>
+<label class="col-sm-10"><h5 class="header ligth blue" style="margin-top:0px;margin-bottom:0px">Contact - Other</h5></label>
 </div>
 <div class="form-group">
   <label class="col-sm-2 control-label no-padding-right" for="otherChineseName">Chinese Name:</label>
@@ -551,14 +551,18 @@
 </div>
 
 <div class="form-group"  style="margin-left:8.3%">
-<label class="col-sm-10"><h5 class="header ligth blue" style="margin-top:0px,margin-bottom:0px">Special Information</h5></label>
+<label class="col-sm-10"><h5 class="header ligth blue" style="margin-top:0px;margin-bottom:0px">Special Information</h5></label>
 </div>
 <div class="form-group">
-  <label class="col-sm-2 control-label no-padding-right" for="special">Special:</label>
+  <label class="col-sm-2 control-label no-padding-right">Special:</label>
 	<div class="col-sm-3">
       <label style="margin-right: 10px; margin-top: 5px;">
-      <input id="special" name="special" type="checkbox" class="ace" {{? it.readonly && 1 != it.service/100}}disabled="disabled"{{?}} {{? 1 == it.service/100%100}}checked="checked"{{?}}/>
-      <span class="lbl">Yes</span>
+      <input id="special1" name="special" type="radio" value="1" class="ace" {{? it.readonly && 1 != it.special}}disabled="disabled"{{?}} {{? !it.special||1 == it.special}}checked="checked"{{?}}/>
+      <span class="lbl">Yes&nbsp;&nbsp;</span>
+      </label>
+      <label style="margin-right: 10px; margin-top: 5px;">
+      <input id="special2" name="special" type="radio" value="0" class="ace" {{? 0 == it.special}}checked="checked"{{?}} />
+      <span class="lbl">No&nbsp;&nbsp;</span>
       </label>
   </div>
 </div>

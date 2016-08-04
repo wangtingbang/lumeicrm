@@ -77,3 +77,8 @@ function searchSubmit() {
 		temp : "grid_temp"
 	});
 }
+
+
+function viewProfile(customerId, customerName) {
+	location.href = contextPath + '/customer/getProfile?customerId='+customerId+'&customerName='+customerName;
+}
