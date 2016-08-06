@@ -76,7 +76,7 @@
 
 <div class="col-sm-6">
 	<div class="form-group" style="margin-left:8.3%">
-	<label class="col-sm-12"><h5 class="header ligth blue" style="margin-top:0px;margin-bottom:0px">Basic Information</h5></label>
+	<label class="col-sm-12"><h5 class="header ligth blue" style="margin-top:0px;margin-bottom:0px">Basic</h5></label>
 	</div>
 	
 	<div class="form-group">
@@ -197,8 +197,8 @@
 	</div>
 	</div>
 </div>
-
 </div>
+
 <div class="col-sm-6">
 	<div class="form-group" style="margin-left:8.3%">
 	<label class="col-sm-12"><h5 class="header ligth blue" style="margin-top:0px;margin-bottom:0px">Notes</h5></label>
