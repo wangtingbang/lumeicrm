@@ -37,6 +37,12 @@ function searchSubmit(){
 				var htmlpage = pagefn(data);
 				$("#emergency-contact-content").html(htmlpage);
 
+				$page = $('#notesdiv').igrid({
+					url : contextPath + '/customer/notes/listByPage',
+					paginationBarTemp:"pagination_bar_temp2",
+					param : {customerId:param['customerId'], serviceType:2, serviceId:data.id},
+					temp : "notes_temp"
+				});
 
 				$page = $('#transaction-content').igrid({
 					//url : contextPath + '/consume/'+authType + '/postsalepay/listConsume',

@@ -1,7 +1,8 @@
 $(function () {
 	$('.date-timepicker').datetimepicker({
 		language: 'en',
-		format:'YYYY-MM-DD HH:mm:ss'
+		format:'YYYY-MM-DD',
+		pickTime: false
 	}).next().on(ace.click_event, function(){
 		$(this).prev().focus();
 	});

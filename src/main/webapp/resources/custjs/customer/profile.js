@@ -58,17 +58,19 @@ function searchSubmit(){
 				$("#profile-content").html(htmlpage);
 				$('.date-timepicker').datetimepicker({
 					language: 'en',
-					format:'YYYY-MM-DD HH:mm:ss'
+					format:'YYYY-MM-DD',
+					pickTime: false
 				}).next().on(ace.click_event, function(){
 					$(this).prev().focus();
 				});
-				/*
-				$page = $('#notes-content').igrid({
-					//url : contextPath + '/consume/'+authType + '/postsalepay/listConsume',
+
+
+				$page = $('#notesdiv').igrid({
 					url : contextPath + '/customer/notes/listByPage',
-					param : param,
-					temp : "note_grid_temp"
-				});//*/
+					paginationBarTemp:"pagination_bar_temp2",
+					param : {customerId:param['customerId']},
+					temp : "notes_temp"
+				});
 				$page = $('#transaction-content').igrid({
 					//url : contextPath + '/consume/'+authType + '/postsalepay/listConsume',
 					url : contextPath + '/customer/transaction/listByPage',
@@ -83,7 +85,7 @@ function searchSubmit(){
 	);
 }
 
-
+//*
 function addNote(noteId, noteCrtUId, noteCrtUName, noteCrtTm, noteCont){
 
 	var customerId = $("#customerId").val();
@@ -164,7 +166,7 @@ function deleteNotes(id){
 	});
 
 }
-
+//*/
 function addCarSelling(customerId, customerName) {
 	if(!customerId||customerId===''||customerId==='undefined'){
 		$.ialert("Please save profile before add car buying service");

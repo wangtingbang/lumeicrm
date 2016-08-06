@@ -1,8 +1,8 @@
 var datadic = {
 	serviceType:{
-		"1":"Car Buying",
+		"1":"Car Selling",
 		"2":"Emergency Contact",
-		"3":"Car Selling",
+		"3":"Car Buying",
 		"4":"Car Rental",
 		"5":"Cellphone",
 		"6":"Airport Pickup",

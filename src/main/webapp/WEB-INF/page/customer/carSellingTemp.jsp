@@ -3,6 +3,7 @@
 	pageEncoding="UTF-8"%>
 
 <script src="<%=request.getContextPath()%>/resources/custjs/customer/carselling.js"></script>
+<script src="<%=request.getContextPath()%>/resources/custjs/customer/notemgr.js"></script>
 
 <div class="page-header">
 	<div class="row">
@@ -29,6 +30,8 @@
 			<label class="col-sm-2 control-label no-padding-right">customerId</label>
 			<div class="col-sm-4">
 				<input id="customerId" name="customerId"  class="form-control" value="<%=SessionUtil.getAttributes("customerId") %>" readonly="readonly"/>
+				<input id="currentUserId" name="currentUserId"  class="form-control" value="<%=SessionUtil.getCurrentUserId() %>" readonly="readonly"/>
+				<input id="currentUserName" name="currentUserName"  class="form-control" value="<%=SessionUtil.getCurrentUserNickName() %>" readonly="readonly"/>
 			</div>
 		</div>
 	</div>
@@ -52,15 +55,16 @@
 	<i class="ace-icon fa fa-quote-left"></i>
 	{{=p.content}}
 	</div>
-	</div>
+
 	<div class="tools">
 	<div class="action-buttons bigger-125">
-	<a href="#">
+	<a onclick="javascript:addNote('{{=p.id}}','{{=p.createUserId}}','{{=p.createUserName}}','{{=p.createTime}}','{{=p.content}}')">
 	<i class="ace-icon fa fa-pencil blue"></i>
 	</a>
-	<a href="#">
+	<a onclick="javascript:deleteNotes('{{=p.id}}');">
 	<i class="ace-icon fa fa-trash-o red"></i>
 	</a>
+	</div>
 	</div>
 	</div>
 	{{~}}
@@ -116,7 +120,7 @@
 </div>
 
 <div class="form-group">
-	<label class="col-sm-4 control-label no-padding-right" for="car description">Car Description:</label>
+	<label class="col-sm-4 control-label no-padding-right" for="carDescription">Car Description:</label>
 	<div class="col-sm-8">
 	<div class="clearfix">
 	<textarea class="form-control limited" id="carDescription"  name="carDescription" maxlength="1000" {{? it.readonly}}readonly="readonly"{{?}}>{{=it.carDescription || ''}}</textarea>
@@ -167,7 +171,7 @@
 	<label class="col-sm-4 control-label no-padding-right" for="exterior">Exterior:</label>
 	<div class="col-sm-8">
 		<div class="clearfix">
-			<input type="text" name="exterior" id="productName" class="form-control col-sm-12" value="{{=it.exterior || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
+			<input type="text" name="exterior" id="exterior" class="form-control col-sm-12" value="{{=it.exterior || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
 		</div>
 	</div>
 </div>
@@ -205,7 +209,7 @@
 </div>
 	<div class="comments" id="notesdiv"></div>
 	<div class="center">
-	{{? !it.readonly}}<a href="#"><i class="ace-icon fa fa-comments-o"></i>&nbsp; Add Note</a> {{?}}
+	{{? !it.readonly}}<a href="#" onclick="javascript:addNote();"><i class="ace-icon fa fa-comments-o"></i>&nbsp; Add Note</a> {{?}}
 	</div>
 </div>
 
@@ -423,6 +427,40 @@
 	</div>
 	<div class="col-sm-4 form-group center">
 	</div>
+</div>
+</form>
+</script>
+
+
+<script id="add-notes-temp" type="text/x-dot-template">
+<form class="form-horizontal" id="add-notes-form">
+<div class="form-group">
+<input type="hidden" id="userId" name="userId" value="{{=it.customerId||''}}" class="col-xs-12 col-sm-12" value=""/>
+<input type="hidden" id="noteId" name="noteId" value="{{=it.noteId||''}}" class="col-xs-12 col-sm-12" />
+<input type="hidden" id="serviceId" name="serviceId" value="{{=it.serviceId||''}}" class="col-xs-12 col-sm-12" />
+<input type="hidden" id="createUserId" name="createUserId" value="{{=it.noteCrtUId||''}}" class="col-xs-12 col-sm-12" />
+<label class="col-sm-2 control-label no-padding-right" for="id">Created By:</label>
+<div class="col-sm-4">
+<input type="text" id="createdBy" name="createdBy" class="col-xs-12 col-sm-12" value="{{=it.createUserName||''}}" readonly="readonly"/>
+</div>
+<label class="col-sm-2 control-label no-padding-right" for="id">Create Time:</label>
+<div class="col-sm-4">
+<input type="text" id="createTime" name="createTime" class="col-xs-12 col-sm-12" value="{{=new Date(it.createTime).toChString(true) ||new Date().toChString(true)||''}}" readonly="readonly"/>
+</div>
+</div>
+<div class="form-group" style="width:600px">
+<label class="col-sm-2 control-label no-padding-right" for="id">Service:</label>
+<div class="col-sm-10">
+	<select class="input-large" id="noteservicetype-select" name="noteServiceType" {{? it.readonly }}disabled="disabled"{{?}} disabled="disabled">
+	<option value="1" selected="selected">Car Selling</option>
+	</select>
+</div>
+</div>
+<div class="form-group">
+<label class="col-sm-2 control-label no-padding-right" for="id">Content:</label>
+<div class="col-sm-10">
+<textarea class="form-control limited" id="content"  name="content" maxlength="1000" {{? it.readonly}}readonly="readonly"{{?}}>{{=it.content || ''}}</textarea>
+</div>
 </div>
 </form>
 </script>

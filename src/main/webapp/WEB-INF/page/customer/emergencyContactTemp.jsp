@@ -2,6 +2,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
+<script src="<%=request.getContextPath()%>/resources/custjs/customer/notemgr.js"></script>
 <script src="<%=request.getContextPath()%>/resources/custjs/customer/emergencycontact.js"></script>
 
 <div class="page-header">
@@ -29,12 +30,49 @@
 			<label class="col-sm-2 control-label no-padding-right" for="form-field-1">customerId</label>
 			<div class="col-sm-9">
 				<input id="customerId" name="customerId"  class="form-control" value="<%=SessionUtil.getAttributes("customerId") %>" readonly="readonly"/>
+                <input id="currentUserId" name="currentUserId"  class="form-control" value="<%=SessionUtil.getCurrentUserId() %>" readonly="readonly"/>
+                <input id="currentUserName" name="currentUserName"  class="form-control" value="<%=SessionUtil.getCurrentUserNickName() %>" readonly="readonly"/>
 			</div>
 		</div>
 	</div>
 </form>
 
 <div id="emergency-contact-content"></div>
+
+<script id="notes_temp" type="text/x-dot-template">
+  <div class="itemdiv commentdiv">
+
+  {{~it.data:p:index}}
+  <div class="body">
+  <div class="name blue" >
+  {{=p.createUserName||''}}
+  </div>
+  <div class="time">
+  <i class="ace-icon fa fa-clock-o"></i>
+  <span class="blue">{{=new Date(p.createTime).toChString(false) ||''}}</span>
+  </div>
+  <div class="text">
+  <i class="ace-icon fa fa-quote-left"></i>
+  {{=p.content}}
+  </div>
+
+  <div class="tools">
+  <div class="action-buttons bigger-125">
+  <a onclick="javascript:addNote('{{=p.id}}','{{=p.createUserId}}','{{=p.createUserName}}','{{=p.createTime}}','{{=p.content}}')">
+  <i class="ace-icon fa fa-pencil blue"></i>
+  </a>
+  <a onclick="javascript:deleteNotes('{{=p.id}}');">
+  <i class="ace-icon fa fa-trash-o red"></i>
+  </a>
+  </div>
+  </div>
+  </div>
+  {{~}}
+  {{? !it||!it.data||!it.data.length}}
+  <div class="body"><div class="text">No notes</div></div>
+  {{?}}
+  </div>
+</script>
 
 <script id="step_temp_1" type="text/x-dot-template">
 <form class="form-horizontal" id="submit-form1">
@@ -43,15 +81,19 @@
 <div class="form-group"  style="margin-left:8.3%">
 <label class="col-sm-10"><h5 class="header ligth blue" style="margin-top:0px,margin-bottom:0px">Basic</h5></label>
 </div>
+<div class="col-sm-6">
 <div class="form-group">
-	<label class="col-sm-2 control-label no-padding-right" for="salesName">Sales Name:</label>
-	<div class="col-sm-3">
+	<label class="col-sm-4 control-label no-padding-right" for="salesName">Sales Name:</label>
+	<div class="col-sm-8">
 		<div class="clearfix">
 			<input type="text" name="salesName" id="salesName" class="form-control col-sm-12" value="{{=it.salesName||'<%=SessionUtil.getCurrentUserName() %>'||''}}" readonly="readonly"/>
 		</div>
 	</div>
-	<label class="col-sm-2 control-label no-padding-right">DOB:</label>
-	<div class="col-sm-3">
+  </div>
+
+  <div class="form-group">
+	<label class="col-sm-4 control-label no-padding-right">DOB:</label>
+	<div class="col-sm-8">
 		<div class="clearfix">
 			<input type="text" name="dob" id="dob" class="form-control col-sm-12" value="{{=it.dob || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
 		</div>
@@ -59,14 +101,17 @@
 </div>
 
 <div class="form-group">
-	<label class="col-sm-2 control-label no-padding-right" for="">Chinese ID:</label>
-	<div class="col-sm-3">
+	<label class="col-sm-4 control-label no-padding-right" for="">Chinese ID:</label>
+	<div class="col-sm-8">
 		<div class="clearfix">
 			<input type="text" name="chineseId" id="chineseId" class="form-control col-sm-12" value="{{=it.chineseId || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
 		</div>
 	</div>
-	<label class="col-sm-2 control-label no-padding-right" for="passport">Passport:</label>
-	<div class="col-sm-3">
+  </div>
+
+  <div class="form-group">
+	<label class="col-sm-4 control-label no-padding-right" for="passport">Passport:</label>
+	<div class="col-sm-8">
 		<div class="clearfix">
 			<input type="text" name="passport" id="passport" class="form-control col-sm-12" value="{{=it.passport || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
 		</div>
@@ -74,14 +119,17 @@
 </div>
 
 <div class="form-group">
-	<label class="col-sm-2 control-label no-padding-right" for="university">University:</label>
-	<div class="col-sm-3">
+	<label class="col-sm-4 control-label no-padding-right" for="university">University:</label>
+	<div class="col-sm-8">
 	<div class="clearfix">
 	<input type="text" class="form-control limited" id="university"  name="university" maxlength="1000" {{? it.readonly}}readonly="readonly"{{?}} value="{{=it.university || ''}}"/>
 	</div>
 	</div>
-  <label class="col-sm-2 control-label no-padding-right" for="school">School:</label>
-  <div class="col-sm-3">
+  </div>
+
+  <div class="form-group">
+  <label class="col-sm-4 control-label no-padding-right" for="school">School:</label>
+  <div class="col-sm-8">
   <div class="clearfix">
   <input type="text" class="form-control limited" id="school"  name="school" maxlength="1000" {{? it.readonly}}readonly="readonly"{{?}} value="{{=it.school || ''}}"/>
   </div>
@@ -89,14 +137,17 @@
 </div>
 
 <div class="form-group">
-  <label class="col-sm-2 control-label no-padding-right" for="department">Department:</label>
-  <div class="col-sm-3">
+  <label class="col-sm-4 control-label no-padding-right" for="department">Department:</label>
+  <div class="col-sm-8">
   <div class="clearfix">
   <input type="text" class="form-control limited" id="department"  name="department" maxlength="1000" {{? it.readonly}}readonly="readonly"{{?}} value="{{=it.university || ''}}"/>
   </div>
   </div>
-  <label class="col-sm-2 control-label no-padding-right" for="schoolEmail">School Email:</label>
-  <div class="col-sm-3">
+  </div>
+
+  <div class="form-group">
+  <label class="col-sm-4 control-label no-padding-right" for="schoolEmail">School Email:</label>
+  <div class="col-sm-8">
   <div class="clearfix">
   <input type="text" class="form-control limited" id="schoolEmail"  name="schoolEmail" maxlength="1000" {{? it.readonly}}readonly="readonly"{{?}} value="{{=it.schoolEmail || ''}}"/>
   </div>
@@ -104,32 +155,45 @@
 </div>
 
 <div class="form-group">
-  <label class="col-sm-2 control-label no-padding-right" for="personalEmail">Personal Email:</label>
-  <div class="col-sm-3">
+  <label class="col-sm-4 control-label no-padding-right" for="personalEmail">Personal Email:</label>
+  <div class="col-sm-8">
   <div class="clearfix">
   <input type="text" class="form-control limited" id="personalEmail"  name="personalEmail" maxlength="1000" {{? it.readonly}}readonly="readonly"{{?}} value="{{=it.personalEmail || ''}}"/>
   </div>
   </div>
-  <label class="col-sm-2 control-label no-padding-right" for="wechatId">Wechat:</label>
-  <div class="col-sm-3">
+  </div>
+
+  <div class="form-group">
+  <label class="col-sm-4 control-label no-padding-right" for="wechatId">Wechat:</label>
+  <div class="col-sm-8">
   <div class="clearfix">
   <input type="text" class="form-control limited" id="wechatId"  name="department" maxlength="1000" {{? it.readonly}}readonly="readonly"{{?}} value="{{=it.wechatId || ''}}"/>
   </div>
   </div>
 </div>
+  </div>
+  <div class="col-sm-6">
+  <div class="form-group" style="margin-left:8.3%">
+  <label class="col-sm-12"><h5 class="header ligth blue" style="margin-top:0px;margin-bottom:0px">Notes</h5></label>
+  </div>
+  <div class="comments" id="notesdiv"></div>
+  <div class="center">
+  {{? !it.readonly}}<a href="#" onclick="javascript:addNote();"><i class="ace-icon fa fa-comments-o"></i>&nbsp; Add Note</a> {{?}}
+  </div>
+  </div>
 
 <div class="form-group"  style="margin-left:8.3%">
 <label class="col-sm-10"><h5 class="header ligth blue" style="margin-top:0px;margin-bottom:0px">Chinese Address</h5></label>
 </div>
 <div class="form-group">
   <label class="col-sm-2 control-label no-padding-right" for="chineseHomeAddress">Home Address:</label>
-  <div class="col-sm-3">
+  <div class="col-sm-4">
   <div class="clearfix">
   <input type="text" class="form-control limited" id="chineseHomeAddress"  name="chineseHomeAddress" maxlength="1000" {{? it.readonly}}readonly="readonly"{{?}} value="{{=it.chineseHomeAddress || ''}}"/>
   </div>
   </div>
-  <label class="col-sm-2 control-label no-padding-right" for="chineseHomeZip">Home ZIP:</label>
-  <div class="col-sm-3">
+  <label class="col-sm-1 control-label no-padding-right" for="chineseHomeZip">Home ZIP:</label>
+  <div class="col-sm-4">
   <div class="clearfix">
   <input type="text" class="form-control limited" id="chineseHomeZip"  name="chineseHomeZip" maxlength="1000" {{? it.readonly}}readonly="readonly"{{?}} value="{{=it.chineseHomeZip || ''}}"/>
   </div>
@@ -138,7 +202,7 @@
 
 <div class="form-group">
   <label class="col-sm-2 control-label no-padding-right" for="chineseHomeTelephone">Home Telephone:</label>
-  <div class="col-sm-3">
+  <div class="col-sm-4">
   <div class="clearfix">
   <input type="text" class="form-control limited" id="chineseHomeTelephone"  name="chineseHomeTelephone" maxlength="1000" {{? it.readonly}}readonly="readonly"{{?}} value="{{=it.chineseHomeTelephone || ''}}"/>
   </div>
@@ -150,13 +214,13 @@
 	</div>
 <div class="form-group">
   <label class="col-sm-2 control-label no-padding-right" for="usaHomeAddress">Home Address:</label>
-  <div class="col-sm-3">
+  <div class="col-sm-4">
   <div class="clearfix">
   <input type="text" class="form-control limited" id="usaHomeAddress"  name="usaHomeAddress" maxlength="1000" {{? it.readonly}}readonly="readonly"{{?}} value="{{=it.usaHomeAddress || ''}}"/>
   </div>
   </div>
-  <label class="col-sm-2 control-label no-padding-right" for="usaHomeCity">Home City:</label>
-  <div class="col-sm-3">
+  <label class="col-sm-1 control-label no-padding-right" for="usaHomeCity">Home City:</label>
+  <div class="col-sm-4">
   <div class="clearfix">
   <input type="text" class="form-control limited" id="usaHomeCity"  name="usaHomeCity" maxlength="1000" {{? it.readonly}}readonly="readonly"{{?}} value="{{=it.usaHomeCity || ''}}"/>
   </div>
@@ -165,13 +229,13 @@
 
 <div class="form-group">
   <label class="col-sm-2 control-label no-padding-right" for="usaHomeState">Home State:</label>
-  <div class="col-sm-3">
+  <div class="col-sm-4">
   <div class="clearfix">
   <input type="text" class="form-control limited" id="usaHomeState"  name="usaHomeState" maxlength="1000" {{? it.readonly}}readonly="readonly"{{?}} value="{{=it.usaHomeState || ''}}"/>
   </div>
   </div>
-  <label class="col-sm-2 control-label no-padding-right" for="usaHomeZip">Home ZIP:</label>
-  <div class="col-sm-3">
+  <label class="col-sm-1 control-label no-padding-right" for="usaHomeZip">Home ZIP:</label>
+  <div class="col-sm-4">
   <div class="clearfix">
   <input type="text" class="form-control limited" id="usaHomeZip"  name="usaHomeZip" maxlength="1000" {{? it.readonly}}readonly="readonly"{{?}} value="{{=it.usaHomeZip || ''}}"/>
   </div>
@@ -180,13 +244,13 @@
 
 <div class="form-group">
   <label class="col-sm-2 control-label no-padding-right" for="usaHomeTelephone">Home Telephone:</label>
-  <div class="col-sm-3">
+  <div class="col-sm-4">
   <div class="clearfix">
   <input type="text" class="form-control limited" id="usaHomeTelephone"  name="usaHomeTelephone" maxlength="1000" {{? it.readonly}}readonly="readonly"{{?}} value="{{=it.usaHomeTelephone || ''}}"/>
   </div>
   </div>
-  <label class="col-sm-2 control-label no-padding-right" for="usaHomeCellphone">Home Cellphone:</label>
-  <div class="col-sm-3">
+  <label class="col-sm-1 control-label no-padding-right" for="usaHomeCellphone">Home Cellphone:</label>
+  <div class="col-sm-4">
   <div class="clearfix">
   <input type="text" class="form-control limited" id="usaHomeCellphone"  name="usaHomeCellphone" maxlength="1000" {{? it.readonly}}readonly="readonly"{{?}} value="{{=it.usaHomeCellphone || ''}}"/>
   </div>
@@ -198,13 +262,13 @@
 </div>
 <div class="form-group">
   <label class="col-sm-2 control-label no-padding-right" for="fatherChineseName">Chinese Name:</label>
-  <div class="col-sm-3">
+  <div class="col-sm-4">
   <div class="clearfix">
   <input type="text" class="form-control limited" id="fatherChineseName"  name="fatherChineseName" maxlength="1000" {{? it.readonly}}readonly="readonly"{{?}} value="{{=it.fatherChineseName || ''}}"/>
   </div>
   </div>
-  <label class="col-sm-2 control-label no-padding-right" for="fatherEnglishName">English Name:</label>
-  <div class="col-sm-3">
+  <label class="col-sm-1 control-label no-padding-right" for="fatherEnglishName">English Name:</label>
+  <div class="col-sm-4">
   <div class="clearfix">
   <input type="text" class="form-control limited" id="fatherEnglishName"  name="fatherEnglishName" maxlength="1000" {{? it.readonly}}readonly="readonly"{{?}} value="{{=it.fatherEnglishName || ''}}"/>
   </div>
@@ -213,13 +277,13 @@
 
 <div class="form-group">
   <label class="col-sm-2 control-label no-padding-right" for="fatherAddress">Address:</label>
-  <div class="col-sm-3">
+  <div class="col-sm-4">
   <div class="clearfix">
   <input type="text" class="form-control limited" id="fatherAddress"  name="fatherAddress" maxlength="1000" {{? it.readonly}}readonly="readonly"{{?}} value="{{=it.fatherAddress || ''}}"/>
   </div>
   </div>
-  <label class="col-sm-2 control-label no-padding-right" for="fatherTelephone">Telephone:</label>
-  <div class="col-sm-3">
+  <label class="col-sm-1 control-label no-padding-right" for="fatherTelephone">Telephone:</label>
+  <div class="col-sm-4">
   <div class="clearfix">
   <input type="text" class="form-control limited" id="fatherTelephone"  name="fatherTelephone" maxlength="1000" {{? it.readonly}}readonly="readonly"{{?}} value="{{=it.fatherTelephone || ''}}"/>
   </div>
@@ -228,13 +292,13 @@
 
 <div class="form-group">
   <label class="col-sm-2 control-label no-padding-right" for="fatherCellphone">Cellphone:</label>
-  <div class="col-sm-3">
+  <div class="col-sm-4">
   <div class="clearfix">
   <input type="text" class="form-control limited" id="fatherCellphone"  name="fatherCellphone" maxlength="1000" {{? it.readonly}}readonly="readonly"{{?}} value="{{=it.fatherCellphone || ''}}"/>
   </div>
   </div>
-  <label class="col-sm-2 control-label no-padding-right" for="fatherWechatId">Wechat:</label>
-  <div class="col-sm-3">
+  <label class="col-sm-1 control-label no-padding-right" for="fatherWechatId">Wechat:</label>
+  <div class="col-sm-4">
   <div class="clearfix">
   <input type="text" class="form-control limited" id="fatherWechatId"  name="fatherWechatId" maxlength="1000" {{? it.readonly}}readonly="readonly"{{?}} value="{{=it.fatherWechatId || ''}}"/>
   </div>
@@ -246,13 +310,13 @@
 </div>
 <div class="form-group">
   <label class="col-sm-2 control-label no-padding-right" for="motherChineseName">Chinese Name:</label>
-  <div class="col-sm-3">
+  <div class="col-sm-4">
   <div class="clearfix">
   <input type="text" class="form-control limited" id="motherChineseName"  name="motherChineseName" maxlength="1000" {{? it.readonly}}readonly="readonly"{{?}} value="{{=it.motherChineseName || ''}}"/>
   </div>
   </div>
-  <label class="col-sm-2 control-label no-padding-right" for="motherEnglishName">English Name:</label>
-  <div class="col-sm-3">
+  <label class="col-sm-1 control-label no-padding-right" for="motherEnglishName">English Name:</label>
+  <div class="col-sm-4">
   <div class="clearfix">
   <input type="text" class="form-control limited" id="motherEnglishName"  name="motherEnglishName" maxlength="1000" {{? it.readonly}}readonly="readonly"{{?}} value="{{=it.motherEnglishName || ''}}"/>
   </div>
@@ -261,13 +325,13 @@
 
 <div class="form-group">
   <label class="col-sm-2 control-label no-padding-right" for="motherAddress">Address:</label>
-  <div class="col-sm-3">
+  <div class="col-sm-4">
   <div class="clearfix">
   <input type="text" class="form-control limited" id="motherAddress"  name="motherAddress" maxlength="1000" {{? it.readonly}}readonly="readonly"{{?}} value="{{=it.motherAddress || ''}}"/>
   </div>
   </div>
-  <label class="col-sm-2 control-label no-padding-right" for="motherTelephone">Telephone:</label>
-  <div class="col-sm-3">
+  <label class="col-sm-1 control-label no-padding-right" for="motherTelephone">Telephone:</label>
+  <div class="col-sm-4">
   <div class="clearfix">
   <input type="text" class="form-control limited" id="motherTelephone"  name="motherTelephone" maxlength="1000" {{? it.readonly}}readonly="readonly"{{?}} value="{{=it.motherTelephone || ''}}"/>
   </div>
@@ -276,13 +340,13 @@
 
 <div class="form-group">
   <label class="col-sm-2 control-label no-padding-right" for="motherCellphone">Cellphone:</label>
-  <div class="col-sm-3">
+  <div class="col-sm-4">
   <div class="clearfix">
   <input type="text" class="form-control limited" id="motherCellphone"  name="motherCellphone" maxlength="1000" {{? it.readonly}}readonly="readonly"{{?}} value="{{=it.motherCellphone || ''}}"/>
   </div>
   </div>
-  <label class="col-sm-2 control-label no-padding-right" for="motherWechatId">Wechat:</label>
-  <div class="col-sm-3">
+  <label class="col-sm-1 control-label no-padding-right" for="motherWechatId">Wechat:</label>
+  <div class="col-sm-4">
   <div class="clearfix">
   <input type="text" class="form-control limited" id="motherWechatId"  name="motherWechatId" maxlength="1000" {{? it.readonly}}readonly="readonly"{{?}} value="{{=it.motherWechatId || ''}}"/>
   </div>
@@ -294,13 +358,13 @@
 </div>
 <div class="form-group">
   <label class="col-sm-2 control-label no-padding-right" for="landlordChineseName">Chinese Name:</label>
-  <div class="col-sm-3">
+  <div class="col-sm-4">
   <div class="clearfix">
   <input type="text" class="form-control limited" id="landlordChineseName"  name="landlordChineseName" maxlength="1000" {{? it.readonly}}readonly="readonly"{{?}} value="{{=it.landlordChineseName || ''}}"/>
   </div>
   </div>
-  <label class="col-sm-2 control-label no-padding-right" for="landlordEnglishName">English Name:</label>
-  <div class="col-sm-3">
+  <label class="col-sm-1 control-label no-padding-right" for="landlordEnglishName">English Name:</label>
+  <div class="col-sm-4">
   <div class="clearfix">
   <input type="text" class="form-control limited" id="landlordEnglishName"  name="landlordEnglishName" maxlength="1000" {{? it.readonly}}readonly="readonly"{{?}} value="{{=it.landlordEnglishName || ''}}"/>
   </div>
@@ -309,13 +373,13 @@
 
 <div class="form-group">
   <label class="col-sm-2 control-label no-padding-right" for="landlordAddress">Address:</label>
-  <div class="col-sm-3">
+  <div class="col-sm-4">
   <div class="clearfix">
   <input type="text" class="form-control limited" id="landlordAddress"  name="landlordAddress" maxlength="1000" {{? it.readonly}}readonly="readonly"{{?}} value="{{=it.landlordAddress || ''}}"/>
   </div>
   </div>
-  <label class="col-sm-2 control-label no-padding-right" for="landlordCity">City:</label>
-  <div class="col-sm-3">
+  <label class="col-sm-1 control-label no-padding-right" for="landlordCity">City:</label>
+  <div class="col-sm-4">
   <div class="clearfix">
   <input type="text" class="form-control limited" id="landlordCity"  name="landlordCity" maxlength="1000" {{? it.readonly}}readonly="readonly"{{?}} value="{{=it.landlordCity || ''}}"/>
   </div>
@@ -324,13 +388,13 @@
 
 <div class="form-group">
   <label class="col-sm-2 control-label no-padding-right" for="landlordState">State:</label>
-  <div class="col-sm-3">
+  <div class="col-sm-4">
   <div class="clearfix">
   <input type="text" class="form-control limited" id="landlordState"  name="landlordState" maxlength="1000" {{? it.readonly}}readonly="readonly"{{?}} value="{{=it.landlordState || ''}}"/>
   </div>
   </div>
-  <label class="col-sm-2 control-label no-padding-right" for="landlordZip">ZIP:</label>
-  <div class="col-sm-3">
+  <label class="col-sm-1 control-label no-padding-right" for="landlordZip">ZIP:</label>
+  <div class="col-sm-4">
   <div class="clearfix">
   <input type="text" class="form-control limited" id="landlordZip"  name="landlordZip" maxlength="1000" {{? it.readonly}}readonly="readonly"{{?}} value="{{=it.landlordZip || ''}}"/>
   </div>
@@ -339,13 +403,13 @@
 
 <div class="form-group">
   <label class="col-sm-2 control-label no-padding-right" for="landlordTelephone">Telephone:</label>
-  <div class="col-sm-3">
+  <div class="col-sm-4">
   <div class="clearfix">
   <input type="text" class="form-control limited" id="landlordTelephone"  name="landlordTelephone" maxlength="1000" {{? it.readonly}}readonly="readonly"{{?}} value="{{=it.landlordTelephone || ''}}"/>
   </div>
   </div>
-  <label class="col-sm-2 control-label no-padding-right" for="landlordCellphone">Cellphone:</label>
-  <div class="col-sm-3">
+  <label class="col-sm-1 control-label no-padding-right" for="landlordCellphone">Cellphone:</label>
+  <div class="col-sm-4">
   <div class="clearfix">
   <input type="text" class="form-control limited" id="landlordCellphone"  name="landlordCellphone" maxlength="1000" {{? it.readonly}}readonly="readonly"{{?}} value="{{=it.landlordCellphone || ''}}"/>
   </div>
@@ -354,7 +418,7 @@
 
 <div class="form-group">
   <label class="col-sm-2 control-label no-padding-right" for="landlordWechatId">Wechat:</label>
-  <div class="col-sm-3">
+  <div class="col-sm-4">
   <div class="clearfix">
   <input type="text" class="form-control limited" id="landlordWechatId"  name="landlordWechatId" maxlength="1000" {{? it.readonly}}readonly="readonly"{{?}} value="{{=it.landlordWechatId || ''}}"/>
   </div>
@@ -366,13 +430,13 @@
 </div>
 <div class="form-group">
   <label class="col-sm-2 control-label no-padding-right" for="roommateChineseName">Chinese Name:</label>
-  <div class="col-sm-3">
+  <div class="col-sm-4">
   <div class="clearfix">
   <input type="text" class="form-control limited" id="roommateChineseName"  name="roommateChineseName" maxlength="1000" {{? it.readonly}}readonly="readonly"{{?}} value="{{=it.roommateChineseName || ''}}"/>
   </div>
   </div>
-  <label class="col-sm-2 control-label no-padding-right" for="roommateEnglishName">English Name:</label>
-  <div class="col-sm-3">
+  <label class="col-sm-1 control-label no-padding-right" for="roommateEnglishName">English Name:</label>
+  <div class="col-sm-4">
   <div class="clearfix">
   <input type="text" class="form-control limited" id="roommateEnglishName"  name="roommateEnglishName" maxlength="1000" {{? it.readonly}}readonly="readonly"{{?}} value="{{=it.roommateEnglishName || ''}}"/>
   </div>
@@ -381,13 +445,13 @@
 
 <div class="form-group">
   <label class="col-sm-2 control-label no-padding-right" for="roommateAddress">Address:</label>
-  <div class="col-sm-3">
+  <div class="col-sm-4">
   <div class="clearfix">
   <input type="text" class="form-control limited" id="roommateAddress"  name="roommateAddress" maxlength="1000" {{? it.readonly}}readonly="readonly"{{?}} value="{{=it.roommateAddress || ''}}"/>
   </div>
   </div>
-  <label class="col-sm-2 control-label no-padding-right" for="roommateCity">City:</label>
-  <div class="col-sm-3">
+  <label class="col-sm-1 control-label no-padding-right" for="roommateCity">City:</label>
+  <div class="col-sm-4">
   <div class="clearfix">
   <input type="text" class="form-control limited" id="roommateCity"  name="roommateCity" maxlength="1000" {{? it.readonly}}readonly="readonly"{{?}} value="{{=it.roommateCity || ''}}"/>
   </div>
@@ -396,13 +460,13 @@
 
 <div class="form-group">
   <label class="col-sm-2 control-label no-padding-right" for="roommateState">State:</label>
-  <div class="col-sm-3">
+  <div class="col-sm-4">
   <div class="clearfix">
   <input type="text" class="form-control limited" id="roommateState"  name="roommateState" maxlength="1000" {{? it.readonly}}readonly="readonly"{{?}} value="{{=it.roommateState || ''}}"/>
   </div>
   </div>
-  <label class="col-sm-2 control-label no-padding-right" for="roommateZip">ZIP:</label>
-  <div class="col-sm-3">
+  <label class="col-sm-1 control-label no-padding-right" for="roommateZip">ZIP:</label>
+  <div class="col-sm-4">
   <div class="clearfix">
   <input type="text" class="form-control limited" id="roommateZip"  name="roommateZip" maxlength="1000" {{? it.readonly}}readonly="readonly"{{?}} value="{{=it.roommateZip || ''}}"/>
   </div>
@@ -411,13 +475,13 @@
 
 <div class="form-group">
   <label class="col-sm-2 control-label no-padding-right" for="roommateTelephone">Telephone:</label>
-  <div class="col-sm-3">
+  <div class="col-sm-4">
   <div class="clearfix">
   <input type="text" class="form-control limited" id="roommateTelephone"  name="roommateTelephone" maxlength="1000" {{? it.readonly}}readonly="readonly"{{?}} value="{{=it.roommateTelephone || ''}}"/>
   </div>
   </div>
-  <label class="col-sm-2 control-label no-padding-right" for="roommateCellphone">Cellphone:</label>
-  <div class="col-sm-3">
+  <label class="col-sm-1 control-label no-padding-right" for="roommateCellphone">Cellphone:</label>
+  <div class="col-sm-4">
   <div class="clearfix">
   <input type="text" class="form-control limited" id="roommateCellphone"  name="roommateCellphone" maxlength="1000" {{? it.readonly}}readonly="readonly"{{?}} value="{{=it.roommateCellphone || ''}}"/>
   </div>
@@ -429,13 +493,13 @@
 </div>
 <div class="form-group">
   <label class="col-sm-2 control-label no-padding-right" for="neighborChineseName">Chinese Name:</label>
-  <div class="col-sm-3">
+  <div class="col-sm-4">
   <div class="clearfix">
   <input type="text" class="form-control limited" id="neighborChineseName"  name="neighborChineseName" maxlength="1000" {{? it.readonly}}readonly="readonly"{{?}} value="{{=it.neighborChineseName || ''}}"/>
   </div>
   </div>
-  <label class="col-sm-2 control-label no-padding-right" for="neighborEnglishName">English Name:</label>
-  <div class="col-sm-3">
+  <label class="col-sm-1 control-label no-padding-right" for="neighborEnglishName">English Name:</label>
+  <div class="col-sm-4">
   <div class="clearfix">
   <input type="text" class="form-control limited" id="neighborEnglishName"  name="neighborEnglishName" maxlength="1000" {{? it.readonly}}readonly="readonly"{{?}} value="{{=it.neighborEnglishName || ''}}"/>
   </div>
@@ -444,13 +508,13 @@
 
 <div class="form-group">
   <label class="col-sm-2 control-label no-padding-right" for="neighborAddress">Address:</label>
-  <div class="col-sm-3">
+  <div class="col-sm-4">
   <div class="clearfix">
   <input type="text" class="form-control limited" id="neighborAddress"  name="neighborAddress" maxlength="1000" {{? it.readonly}}readonly="readonly"{{?}} value="{{=it.neighborAddress || ''}}"/>
   </div>
   </div>
-  <label class="col-sm-2 control-label no-padding-right" for="neighborCity">City:</label>
-  <div class="col-sm-3">
+  <label class="col-sm-1 control-label no-padding-right" for="neighborCity">City:</label>
+  <div class="col-sm-4">
   <div class="clearfix">
   <input type="text" class="form-control limited" id="neighborCity"  name="neighborCity" maxlength="1000" {{? it.readonly}}readonly="readonly"{{?}} value="{{=it.neighborCity || ''}}"/>
   </div>
@@ -459,13 +523,13 @@
 
 <div class="form-group">
   <label class="col-sm-2 control-label no-padding-right" for="neighborState">State:</label>
-  <div class="col-sm-3">
+  <div class="col-sm-4">
   <div class="clearfix">
   <input type="text" class="form-control limited" id="neighborState"  name="neighborState" maxlength="1000" {{? it.readonly}}readonly="readonly"{{?}} value="{{=it.neighborState || ''}}"/>
   </div>
   </div>
-  <label class="col-sm-2 control-label no-padding-right" for="neighborZip">ZIP:</label>
-  <div class="col-sm-3">
+  <label class="col-sm-1 control-label no-padding-right" for="neighborZip">ZIP:</label>
+  <div class="col-sm-4">
   <div class="clearfix">
   <input type="text" class="form-control limited" id="neighborZip"  name="neighborZip" maxlength="1000" {{? it.readonly}}readonly="readonly"{{?}} value="{{=it.neighborZip || ''}}"/>
   </div>
@@ -474,13 +538,13 @@
 
 <div class="form-group">
   <label class="col-sm-2 control-label no-padding-right" for="neighborTelephone">Telephone:</label>
-  <div class="col-sm-3">
+  <div class="col-sm-4">
   <div class="clearfix">
   <input type="text" class="form-control limited" id="neighborTelephone"  name="neighborTelephone" maxlength="1000" {{? it.readonly}}readonly="readonly"{{?}} value="{{=it.neighborTelephone || ''}}"/>
   </div>
   </div>
-  <label class="col-sm-2 control-label no-padding-right" for="neighborCellphone">Cellphone:</label>
-  <div class="col-sm-3">
+  <label class="col-sm-1 control-label no-padding-right" for="neighborCellphone">Cellphone:</label>
+  <div class="col-sm-4">
   <div class="clearfix">
   <input type="text" class="form-control limited" id="neighborCellphone"  name="neighborCellphone" maxlength="1000" {{? it.readonly}}readonly="readonly"{{?}} value="{{=it.neighborCellphone || ''}}"/>
   </div>
@@ -492,13 +556,13 @@
 </div>
 <div class="form-group">
   <label class="col-sm-2 control-label no-padding-right" for="otherChineseName">Chinese Name:</label>
-  <div class="col-sm-3">
+  <div class="col-sm-4">
   <div class="clearfix">
   <input type="text" class="form-control limited" id="otherChineseName"  name="otherChineseName" maxlength="1000" {{? it.readonly}}readonly="readonly"{{?}} value="{{=it.otherChineseName || ''}}"/>
   </div>
   </div>
-  <label class="col-sm-2 control-label no-padding-right" for="otherEnglishName">English Name:</label>
-  <div class="col-sm-3">
+  <label class="col-sm-1 control-label no-padding-right" for="otherEnglishName">English Name:</label>
+  <div class="col-sm-4">
   <div class="clearfix">
   <input type="text" class="form-control limited" id="otherEnglishName"  name="otherEnglishName" maxlength="1000" {{? it.readonly}}readonly="readonly"{{?}} value="{{=it.otherEnglishName || ''}}"/>
   </div>
@@ -507,13 +571,13 @@
 
 <div class="form-group">
   <label class="col-sm-2 control-label no-padding-right" for="otherAddress">Address:</label>
-  <div class="col-sm-3">
+  <div class="col-sm-4">
   <div class="clearfix">
   <input type="text" class="form-control limited" id="otherAddress"  name="otherAddress" maxlength="1000" {{? it.readonly}}readonly="readonly"{{?}} value="{{=it.otherAddress || ''}}"/>
   </div>
   </div>
-  <label class="col-sm-2 control-label no-padding-right" for="otherCity">City:</label>
-  <div class="col-sm-3">
+  <label class="col-sm-1 control-label no-padding-right" for="otherCity">City:</label>
+  <div class="col-sm-4">
   <div class="clearfix">
   <input type="text" class="form-control limited" id="otherCity"  name="otherCity" maxlength="1000" {{? it.readonly}}readonly="readonly"{{?}} value="{{=it.otherCity || ''}}"/>
   </div>
@@ -522,13 +586,13 @@
 
 <div class="form-group">
   <label class="col-sm-2 control-label no-padding-right" for="otherState">State:</label>
-  <div class="col-sm-3">
+  <div class="col-sm-4">
   <div class="clearfix">
   <input type="text" class="form-control limited" id="otherState"  name="otherState" maxlength="1000" {{? it.readonly}}readonly="readonly"{{?}} value="{{=it.otherState || ''}}"/>
   </div>
   </div>
-  <label class="col-sm-2 control-label no-padding-right" for="otherZip">ZIP:</label>
-  <div class="col-sm-3">
+  <label class="col-sm-1 control-label no-padding-right" for="otherZip">ZIP:</label>
+  <div class="col-sm-4">
   <div class="clearfix">
   <input type="text" class="form-control limited" id="otherZip"  name="otherZip" maxlength="1000" {{? it.readonly}}readonly="readonly"{{?}} value="{{=it.otherZip || ''}}"/>
   </div>
@@ -537,13 +601,13 @@
 
 <div class="form-group">
   <label class="col-sm-2 control-label no-padding-right" for="otherTelephone">Telephone:</label>
-  <div class="col-sm-3">
+  <div class="col-sm-4">
   <div class="clearfix">
   <input type="text" class="form-control limited" id="otherTelephone"  name="otherTelephone" maxlength="1000" {{? it.readonly}}readonly="readonly"{{?}} value="{{=it.otherTelephone || ''}}"/>
   </div>
   </div>
-  <label class="col-sm-2 control-label no-padding-right" for="otherCellphone">Cellphone:</label>
-  <div class="col-sm-3">
+  <label class="col-sm-1 control-label no-padding-right" for="otherCellphone">Cellphone:</label>
+  <div class="col-sm-4">
   <div class="clearfix">
   <input type="text" class="form-control limited" id="otherCellphone"  name="otherCellphone" maxlength="1000" {{? it.readonly}}readonly="readonly"{{?}} value="{{=it.otherCellphone || ''}}"/>
   </div>
@@ -555,7 +619,7 @@
 </div>
 <div class="form-group">
   <label class="col-sm-2 control-label no-padding-right">Special:</label>
-	<div class="col-sm-3">
+	<div class="col-sm-4">
       <label style="margin-right: 10px; margin-top: 5px;">
       <input id="special1" name="special" type="radio" value="1" class="ace" {{? it.readonly && 1 != it.special}}disabled="disabled"{{?}} {{? !it.special||1 == it.special}}checked="checked"{{?}}/>
       <span class="lbl">Yes&nbsp;&nbsp;</span>
@@ -569,7 +633,7 @@
 
 <div class="form-group">
   <label class="col-sm-2 control-label no-padding-right" for="specialComment">Comment:</label>
-  <div class="col-sm-3">
+  <div class="col-sm-4">
   <div class="clearfix">
   	<textarea class="form-control limited" id="specialComment"  name="specialComment" maxlength="1000" {{? it.readonly}}readonly="readonly"{{?}}>{{=it.specialComment || ''}}</textarea>
   </div>
@@ -582,13 +646,13 @@
   </div>
   <div class="form-group">
   <label class="col-sm-2 control-label no-padding-right">Total:</label>
-  <div class="col-sm-3">
+  <div class="col-sm-4">
   <div class="clearfix">
   <input type="text" class="form-control limited" id="total"  name="total" maxlength="1000" {{?it.id}}readonly="readonly"{{?}} value="{{=it.total || ''}}"/>
   </div>
   </div>
-  <label class="col-sm-2 control-label no-padding-right">Used:</label>
-  <div class="col-sm-3">
+  <label class="col-sm-1 control-label no-padding-right">Used:</label>
+  <div class="col-sm-4">
   <div class="clearfix">
   <input type="text" class="form-control limited" id="used"  name="used" maxlength="1000" {{?it.id}}readonly="readonly"{{?}} value="{{=it.used || ''}}"/>
   </div>
@@ -676,5 +740,40 @@
   </div>
   </div>
 
+  </form>
+  </script>
+
+
+
+  <script id="add-notes-temp" type="text/x-dot-template">
+  <form class="form-horizontal" id="add-notes-form">
+  <div class="form-group">
+  <input type="hidden" id="userId" name="userId" value="{{=it.customerId||''}}" class="col-xs-12 col-sm-12" value=""/>
+  <input type="hidden" id="noteId" name="noteId" value="{{=it.noteId||''}}" class="col-xs-12 col-sm-12" />
+  <input type="hidden" id="serviceId" name="serviceId" value="{{=it.serviceId||''}}" class="col-xs-12 col-sm-12" />
+  <input type="hidden" id="createUserId" name="createUserId" value="{{=it.noteCrtUId||''}}" class="col-xs-12 col-sm-12" />
+  <label class="col-sm-2 control-label no-padding-right" for="id">Created By:</label>
+  <div class="col-sm-4">
+  <input type="text" id="createdBy" name="createdBy" class="col-xs-12 col-sm-12" value="{{=it.createUserName||''}}" readonly="readonly"/>
+  </div>
+  <label class="col-sm-2 control-label no-padding-right" for="id">Create Time:</label>
+  <div class="col-sm-4">
+  <input type="text" id="createTime" name="createTime" class="col-xs-12 col-sm-12" value="{{=new Date(it.createTime).toChString(true) ||new Date().toChString(true)||''}}" readonly="readonly"/>
+  </div>
+  </div>
+  <div class="form-group" style="width:600px">
+  <label class="col-sm-2 control-label no-padding-right" for="id">Service:</label>
+  <div class="col-sm-10">
+  <select class="input-large" id="noteservicetype-select" name="noteServiceType" {{? it.readonly }}disabled="disabled"{{?}} disabled="disabled">
+  <option value="2" selected="selected">Emergency Contact</option>
+  </select>
+  </div>
+  </div>
+  <div class="form-group">
+  <label class="col-sm-2 control-label no-padding-right" for="id">Content:</label>
+  <div class="col-sm-10">
+  <textarea class="form-control limited" id="content"  name="content" maxlength="1000" {{? it.readonly}}readonly="readonly"{{?}}>{{=it.content || ''}}</textarea>
+  </div>
+  </div>
   </form>
   </script>
