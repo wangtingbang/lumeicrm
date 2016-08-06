@@ -124,39 +124,40 @@
     <label class="col-sm-4 control-label no-padding-right" for="name">Service:</label>
     <div class="col-sm-8">
     <label style="margin-right: 10px; margin-top: 5px;">
-    <input id="form-search-status-unconfirm" name="form-search-status-unconfirm" type="checkbox" class="ace" {{? it.readonly}}readonly="readonly"{{?}} {{? it.readonly}}disabled="disabled"{{?}} {{? it.serviceInfo&&it.serviceInfo.s1}}checked="checked"{{?}}/>
-    <span class="lbl">Car Selling</span>
-    <span class="lbl">
-    {{?it.serviceInfo&&it.serviceInfo.s1}}<a href="getCarSelling?customerId={{=it.id }}&customerName={{=it.name}}" target="_blank">view</a>{{?}}
-    {{?!it.serviceInfo||(it.serviceInfo&&!it.serviceInfo.s1)}}<a href="javascript:addCarSelling('{{=it.id }}','{{=it.name }}');">add</a>{{?}}
-    </span>
-    <span class="lbl">&nbsp;&nbsp;&nbsp;&nbsp;</span>
-    <input id="form-search-status-confirm" name="form-search-status-confirm" type="checkbox" class="ace" {{? it.readonly}}readonly="readonly"{{?}} {{? it.serviceInfo&&it.serviceInfo.s2}}checked="checked"{{?}}/>
-    <span class="lbl">Emergency Contact</span>
-    <span class="lbl">
-    {{?it.serviceInfo&&it.serviceInfo.s2}}<a href="getEmergencyContact?customerId={{=it.id }}&customerName={{=it.name}}" target="_blank">view </a>{{?}}
-    {{?!it.serviceInfo||(it.serviceInfo&&!it.serviceInfo.s2)}}<a href="javascript:addEmergencyContact('{{=it.id }}','{{=it.name }}');">add</a>{{?}}
-    </span>
+    <input id="service-car-selling-checkbox" name="service-car-selling-checkbox" type="checkbox" class="ace" {{? it.readonly}}readonly="readonly"{{?}} {{? it.readonly}}disabled="disabled"{{?}} {{? it.serviceInfo&&it.serviceInfo.s1&&it.serviceInfo.s1==1}}checked="checked"{{?}}>
+    <span class="lbl">Car Selling&nbsp;&nbsp;</span>
+    </label>
+
+    <label style="margin-right: 10px; margin-top: 5px;">
+    <input id="service-emergency-contact-checkbox" name="service-emergency-contact-checkbox" type="checkbox" class="ace" {{? it.readonly}}readonly="readonly"{{?}} {{? it.serviceInfo&&it.serviceInfo.s2&&it.serviceInfo.s2==1}}checked="checked"{{?}}/>
+    <span class="lbl">Emergency Contact&nbsp;&nbsp;</span>
+    </label>
+
     <label style="margin-right: 10px; margin-top: 5px;">
     <input id="form-search-status-failed" name="form-search-status-failed" type="checkbox" class="ace" disabled="disabled" />
     <span class="lbl">Car Buying&nbsp;&nbsp;</span>
     </label>
+
     <label style="margin-right: 10px; margin-top: 5px;">
     <input id="form-search-status-paied" name="form-search-status-paied" type="checkbox" class="ace" disabled="disabled" />
     <span class="lbl">Car Rental&nbsp;&nbsp;</span>
     </label>
+
     <label style="margin-right: 10px; margin-top: 5px;">
     <input id="form-search-status-paied" name="form-search-status-paied" type="checkbox" class="ace" disabled="disabled"/>
     <span class="lbl">Cellphone&nbsp;&nbsp;</span>
     </label>
+
     <label style="margin-right: 10px; margin-top: 5px;">
     <input id="form-search-status-paied" name="form-search-status-paied" type="checkbox" class="ace" disabled="disabled"/>
     <span class="lbl">Airport Pickup&nbsp;&nbsp;</span>
     </label>
+
     <label style="margin-right: 10px; margin-top: 5px;">
     <input id="form-search-status-paied" name="form-search-status-paied" type="checkbox" class="ace" disabled="disabled"/>
     <span class="lbl">Temporary House&nbsp;&nbsp;</span>
     </label>
+
     <label style="margin-right: 10px; margin-top: 5px;">
     <input id="form-search-status-paied" name="form-search-status-paied" type="checkbox" class="ace" disabled="disabled"/>
     <span class="lbl">AIM&nbsp;&nbsp;</span>

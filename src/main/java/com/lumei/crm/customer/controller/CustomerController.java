@@ -205,6 +205,7 @@ public class CustomerController {
       return new Profile();
     }
 
+    /*
     Example<TCarSelling> example0 = Example.newExample(TCarSelling.class);
     example0.param("userId", customerId);
     List<CarSelling> list0 = carSellingBusiness.list(example0);
@@ -212,14 +213,49 @@ public class CustomerController {
     Example<TEmergencyContact> example1 = Example.newExample(TEmergencyContact.class);
     example1.param("userId", customerId);
     List<EmergencyContact> list1 = emergencyContactBusiness.list(example1);
+    //*/
 
     ServiceInfo serviceInfo = new ServiceInfo();
+    /*
     if (list0 != null && list0.size() > 0) {
       serviceInfo.setS1(list0.get(0).getId());
     }
 
     if (list1 != null && list1.size() > 0) {
       serviceInfo.setS2(list1.get(0).getId());
+    }//*/
+    if(StringUtils.isBlank(profile.getService())){
+      serviceInfo.setS1("0");
+      serviceInfo.setS1("0");
+    }else{
+      int idx = 0;
+      for(char ch:profile.getService().toCharArray()){
+        if(idx==0) {
+          serviceInfo.setS1("" + ch);
+        }
+        if(idx==1) {
+          serviceInfo.setS2("" + ch);
+        }
+        if(idx==2) {
+          serviceInfo.setS3("" + ch);
+        }
+        if(idx==3) {
+          serviceInfo.setS4("" + ch);
+        }
+        if(idx==4) {
+          serviceInfo.setS5("" + ch);
+        }
+        if(idx==5) {
+          serviceInfo.setS6("" + ch);
+        }
+        if(idx==6) {
+          serviceInfo.setS7("" + ch);
+        }
+        if(idx==7) {
+          serviceInfo.setS6("" + ch);
+        }
+        idx++;
+      }
     }
 
     profile.setServiceInfo(serviceInfo);

@@ -25,7 +25,25 @@ function saveProfile(){
 			param[v.name]=v.value;
 		}
 	});
-	
+
+	var carSelling = $("#service-car-selling-checkbox").prop("checked");
+	var emergencyContact = $("#service-emergency-contact-checkbox").prop("checked");
+
+	var service = '';
+	if(carSelling){
+		service+='1';
+	}else{
+		service+='0';
+	}
+	if(emergencyContact){
+		service+='1';
+	}else{
+		service+='0';
+	}
+
+
+	param['service'] = service;
+
 	$.ipost(
 	contextPath + '/customer/profile/save',
 	param,
