@@ -38,6 +38,41 @@
 <div id="profile-content"></div>
 </div>
 
+    <script id="notes_temp" type="text/x-dot-template">
+    <div class="itemdiv commentdiv">
+
+    {{~it.data:p:index}}
+    <div class="body">
+    <div class="name blue" >
+    {{=p.createUserName||''}}
+    </div>
+    <div class="time">
+    <i class="ace-icon fa fa-clock-o"></i>
+    <span class="blue">{{=new Date(p.createTime).toChString(false) ||''}}</span>
+    </div>
+    <div class="text">
+    <i class="ace-icon fa fa-quote-left"></i>
+    {{=p.content}}
+    </div>
+
+    <div class="tools">
+    <div class="action-buttons bigger-125">
+    <a onclick="javascript:addNote('{{=p.id}}','{{=p.createUserId}}','{{=p.createUserName}}','{{=p.createTime}}','{{=p.content}}')">
+    <i class="ace-icon fa fa-pencil blue"></i>
+    </a>
+    <a onclick="javascript:deleteNotes('{{=p.id}}');">
+    <i class="ace-icon fa fa-trash-o red"></i>
+    </a>
+    </div>
+    </div>
+    </div>
+    {{~}}
+    {{? !it||!it.data||!it.data.length}}
+    <div class="body"><div class="text">No notes</div></div>
+    {{?}}
+    </div>
+    </script>
+
 <script id="step_temp_1" type="text/x-dot-template">
 <form class="form-horizontal" id="submit-form1">
 <input type="hidden" name="id" id="id" value="{{=it.id}}"/>
@@ -422,40 +457,4 @@
 {{?}}
 </tbody>
 </table>
-</script>
-
-<script id="add-notes-temp" type="text/x-dot-template">
-<form class="form-horizontal" id="add-notes-form">
-<div class="form-group">
-	<input type="hidden" id="userId" name="userId" value="{{=it.customerId||''}}" class="col-xs-12 col-sm-12" value=""/>
-		<input type="hidden" id="noteId" name="noteId" value="{{=it.noteId||''}}" class="col-xs-12 col-sm-12" />
-		<input type="hidden" id="createUserId" name="createUserId" value="{{=it.noteCrtUId||''}}" class="col-xs-12 col-sm-12" />
-	<label class="col-sm-2 control-label no-padding-right" for="id">Created By:</label>
-	<div class="col-sm-4">
-		<input type="text" id="createdBy" name="createdBy" class="col-xs-12 col-sm-12" value="{{=it.createUserName||''}}" readonly="readonly"/>
-	</div>
-	<label class="col-sm-2 control-label no-padding-right" for="id">Create Time:</label>
-	<div class="col-sm-4">
-		<input type="text" id="createTime" name="createTime" class="col-xs-12 col-sm-12" value="{{=new Date(it.createTime).toChString(true) ||new Date().toChString(true)||''}}" readonly="readonly"/>
-	</div>
-</div>
-<div class="form-group" style="width:600px">
-	<label class="col-sm-2 control-label no-padding-right" for="id">Service:</label>
-	<div class="col-sm-10">
-		<select class="input-medium" id="noteservicetype-select" name="noteServiceType" {{? it.readonly }}disabled="disabled"{{?}}>
-			{{~it.datadic.serviceType :p:index}}
-				<option value="{{=p.key }}" {{? it.service == p.key}}selected="selected"{{?}}>
-					{{=p.value }}
-				</option>
-			{{~}}
-		</select>
-	</div>
-</div>
-<div class="form-group">
-	<label class="col-sm-2 control-label no-padding-right" for="id">Content:</label>
-	<div class="col-sm-10">
-		  	<textarea class="form-control limited" id="content"  name="content" maxlength="1000" {{? it.readonly}}readonly="readonly"{{?}}>{{=it.content || ''}}</textarea>
-	</div>
-</div>
-</form>
 </script>
