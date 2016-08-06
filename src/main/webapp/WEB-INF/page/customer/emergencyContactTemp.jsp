@@ -79,9 +79,37 @@
 <input type="hidden" name="userId" id="userId" value="{{=it.userId}}"/>
 <input type="hidden" name="id" id="id" value="{{=it.id}}"/>
 <div class="form-group"  style="margin-left:8.3%">
-<label class="col-sm-10"><h5 class="header ligth blue" style="margin-top:0px,margin-bottom:0px">Basic</h5></label>
+<label class="col-sm-10"><h5 class="header ligth blue" style="margin-top:0px,margin-bottom:0px">Basic&nbsp;&nbsp;&nbsp;&nbsp;
+  {{?it&&it.id}}<a onclick="javascript:useService('{{=it.id}}');">+ Use Service</a>{{?}}</h5></label>
 </div>
 <div class="col-sm-6">
+  <div class="form-group">
+  <label class="col-sm-4 control-label no-padding-right">Total:</label>
+  <div class="col-sm-8">
+  <div class="clearfix">
+  <input type="text" class="form-control limited" id="total"  name="total" maxlength="1000" readonly="readonly" value="{{=it.total || ''}}"/>
+  </div>
+  </div>
+  </div>
+
+  <div class="form-group">
+  <label class="col-sm-4 control-label no-padding-right">Used:</label>
+  <div class="col-sm-8">
+  <div class="clearfix">
+  <input type="text" class="form-control limited" id="used"  name="used" maxlength="1000" readonly="readonly" {{?it.used||it.used==0}} value="{{=it.used || ''}}"{{?}}/>
+  </div>
+  </div>
+  </div>
+
+  <div class="form-group">
+  <label class="col-sm-4 control-label no-padding-right">Expiration Date:</label>
+  <div class="col-sm-8">
+  <div class="clearfix">
+  <input id="expirationDate" class="date-timepicker form-control col-sm-12 " type="text" name="expirationDate" value="{{=new Date(it.expirationDate).toChString(false)|| '' }}" readonly="readonly"/>
+  </div>
+  </div>
+  </div>
+
 <div class="form-group">
 	<label class="col-sm-4 control-label no-padding-right" for="salesName">Sales Name:</label>
 	<div class="col-sm-8">
@@ -641,21 +669,10 @@
 </div>
 
   <div class="form-group"  style="margin-left:8.3%">
-  <label class="col-sm-10"><h5 class="header ligth blue" style="margin-top:0px;margin-bottom:0px">Service Event&nbsp;&nbsp;&nbsp;&nbsp;
-  {{?it&&it.id}}<a onclick="javascript:useService('{{=it.id}}');">+ Use Service</a>{{?}}</h5></label>
+  <label class="col-sm-10"><h5 class="header ligth blue" style="margin-top:0px;margin-bottom:0px">Event</h5></label>
   </div>
   <div class="form-group">
-  <label class="col-sm-2 control-label no-padding-right">Total:</label>
-  <div class="col-sm-4">
-  <div class="clearfix">
-  <input type="text" class="form-control limited" id="total"  name="total" maxlength="1000" {{?it.id}}readonly="readonly"{{?}} value="{{=it.total || ''}}"/>
-  </div>
-  </div>
-  <label class="col-sm-1 control-label no-padding-right">Used:</label>
-  <div class="col-sm-4">
-  <div class="clearfix">
-  <input type="text" class="form-control limited" id="used"  name="used" maxlength="1000" {{?it.id}}readonly="readonly"{{?}} value="{{=it.used || ''}}"/>
-  </div>
+  <div class="col-sm-10" id="transaction-content" style="margin-left:8.3%">
   </div>
   </div>
 
@@ -686,16 +703,8 @@
 </script>
 
   <script id="transaction_grid_temp" type="text/x-dot-template">
-  <div class="form-group"  style="margin-left:8.3%">
-  <label class="col-sm-11"><h5 class="header ligth blue" style="margin-top:0px;margin-bottom:0px">Transaction
-  </h5></label>
-  </div>
-  <div class="form-group" style="margin-left:8.3%">
-  <div class="col-xs-11">
   <table id="sample-table-2" class="table table-striped table-bordered table-hover">
   <thead>
-  <div class="col-sm-2 form-group center">
-  </div>
   <tr>
   <th>Service Type</th>
   <th>Transaction Time</th>
@@ -715,32 +724,6 @@
   {{?}}
   </tbody>
   </table>
-  </div>
-  </div>
-  <div class="form-group" style="margin-bottom:0px">
-  <label class="col-sm-12"><h5 class="header ligth blue" style="margin-top:0px;margin-bottom:0px"></h5></label>
-  </div>
-
-  <div class="col-sm-12 form-group">
-  <div class="col-sm-4 form-group center">
-  </div>
-  <div class="col-sm-4 form-group center">
-  <div class="col-sm-6 form-group center">
-  <a class="btn btn-info btn-sm" id="save_btn" onclick="javascript:saveProfile();">
-  <i class="ace-icon fa fa-check bigger-110"></i> Save
-  </a>
-  </div>
-  <div class="col-sm-6 form-group center">
-  <a class="btn btn-sm btn-default" type="reset" id="create_btn">
-  <i class="ace-icon fa fa-times bigger-110"></i> Delete
-  </a>
-  </div>
-  </div>
-  <div class="col-sm-4 form-group center">
-  </div>
-  </div>
-
-  </form>
   </script>
 
 

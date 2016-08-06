@@ -28,14 +28,28 @@ function searchSubmit(){
 			{customerId:param['customerId']},
 			function(data){
 				if(!data.expirationDate){
+
+				}
+				var a = !param['customerId'];
+				if(!param['customerId']){
+					data['total']="6";
+					data['used']="0";
+					
 					var expirationDate = new Date();
 					expirationDate.setFullYear(expirationDate.getFullYear() + 1);
-
 					data['expirationDate'] = expirationDate;
 				}
 				var pagefn = doT.template($('#step_temp_1').text());
 				var htmlpage = pagefn(data);
 				$("#emergency-contact-content").html(htmlpage);
+
+				$('.date-timepicker').datetimepicker({
+					language: 'en',
+					format:'YYYY-MM-DD',
+					pickTime: false
+				}).next().on(ace.click_event, function(){
+					$(this).prev().focus();
+				});
 
 				$page = $('#notesdiv').igrid({
 					url : contextPath + '/customer/notes/listByPage',

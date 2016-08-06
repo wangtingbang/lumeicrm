@@ -86,69 +86,42 @@ function searchSubmit(){
 }
 
 //*
-function addNote(noteId, noteCrtUId, noteCrtUName, noteCrtTm, noteCont){
+function addTransaction(customerId, customerName){
 
-	var customerId = $("#customerId").val();
 	if(!customerId||customerId===''||customerId==='undefined'){
 		$.ialert("Please save profile before add notes");
 		return;
 	}
-	var userId = $("#userId").val();
-	var serviceType = $("#noteservicetype-select").val();
-	var serviceType1 = $("#noteServiceType").val();
-	var content = $("#content").val();
 
-	var notesfn = doT.template($('#add-notes-temp').text());
+	var notesfn = doT.template($('#add-tran-temp').text());
 
-	var t =  new Date(noteCrtTm).toChString(true);
-	if(!noteCrtUId||noteCrtUId===''){
-		noteCrtUId = $("#currentUserId").val();
-	}
-	if(!noteCrtUName||noteCrtUName===''){
-		noteCrtUName = $("#currentUserName").val();
-	}
-	var note = {noteId:noteId, createUserId:noteCrtUId,createUserName:noteCrtUName,createTime:noteCrtTm, content:noteCont};
-	var data = $.extend({},{userId:customerId,datadic:{serviceType:datadicArray(datadic["serviceType"])}},note);
+	var data = $.extend({},{userId:customerId,customerName:customerName,customerId:customerId,datadic:{serviceType:datadicArray(datadic["serviceType"])}});
 
 	$.imodal({
-		title:"Notes",
+		title:"Add Transaction",
 		contents:notesfn(data),
 		buttons:[
 				{addClass: 'btn btn-sm btn-default', text: '<i class="ace-icon fa fa-times  bigger-110"></i>Cancel', attr:'data-dismiss="modal"'},
 				{addClass: 'btn btn-sm btn-primary', text: '<i class="ace-icon fa fa-check  bigger-110"></i>Save', onClick: function(msgDom) {
-					addNote2(msgDom);
+					addTransaction2(msgDom);
 				}
 				}
 		]
 	});
 }
 
-function addNote2(msgDom){
+function addTransaction2(msgDom) {
 
 	var customerId = $("#customerId").val();
-	var userId = $("#userId").val();
-	var serviceType = $("#noteservicetype-select").val();
-	var content = $("#content").val();
-	var noteId = $("#noteId").val();
-	var createTime = $("#createTime").val();
-	var createUserId = $("#createUserId").val();
-	var data = {id:noteId,userId:customerId, noteServiceType:serviceType,content:content,createTime:createTime, createUserId:createUserId};
-	$.ipost(
-		contextPath+'/customer/notes/save',
-		data,
-		function (result) {
-			msgDom.imsg({
-				type:'success',
-				title:"Success !",
-				text:result.msg
-			});
-		}, function(error){
-			msgDom.imsg({
-				title:"Fail!",
-				text:error
-			});
-		}
-	);
+	var customerName = $("#customerName").val();
+	var a = $("#tran-servicetype-select").val();
+	if ($("#tran-servicetype-select").val() == 1) {
+		location.href = contextPath + '/customer/getCarSelling?customerId='+customerId+"&customerName="+customerName;
+	}else if ($("#tran-servicetype-select").val() ==2) {
+		location.href = contextPath + '/customer/getEmergencyContact?customerId='+customerId+"&customerName="+customerName
+	}
+
+
 }
 
 function deleteNotes(id){
@@ -184,3 +157,10 @@ function addEmergencyContact(customerId, customerName) {
 	//window.open.location.href = contextPath + '/customer/getProfile?customerId=';
 	window.open(contextPath + '/customer/getEmergencyContact?customerId='+customerId+"&customerName="+customerName);
 }
+
+function viewTran(p) {
+	var a = p;
+	$.ialert(a);
+}
+
+

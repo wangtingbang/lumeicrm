@@ -358,7 +358,8 @@
     </div>
     </div>
 <div class="form-group"  style="margin-left:8.3%">
-	<label class="col-sm-11"><h5 class="header ligth blue" style="margin-top:0px;margin-bottom:0px">Transaction</h5></label>
+	<label class="col-sm-11"><h5 class="header ligth blue" style="margin-top:0px;margin-bottom:0px">Transaction&nbsp;&nbsp;&nbsp;&nbsp;
+    {{?it&&it.id}}<a onclick="javascript:addTransaction('{{=it.id}}','{{=it.name }}');">+ Add</a>{{?}}</h5></label>
 </div>
 <div class="form-group">
 <div class="col-sm-10" id="transaction-content" style="margin-left:8.3%">
@@ -435,28 +436,30 @@
     </script>
 
 <script id="transaction_grid_temp" type="text/x-dot-template">
-<table id="sample-table-2" class="table table-striped table-bordered table-hover">
-<thead>
-	<tr>
-		<th>Service Type</th>
-		<th>Transaction Time</th>
-	</tr>
-</thead>
-<tbody>
-{{~it.data:p:index}}
-	<div class="col-sm-2 form-group center">
-	</div>
-	<tr>
-		<td>{{=datadic['serviceType'][p.serviceType]}}</td>
-		<td>{{=new Date(p.createTime).toChString(false) ||''}}</td>
-	</tr>
-{{~}}
-{{? !it||!it.data||!it.data.length}}
-<tr ><td colspan="12">No notes</td></tr>
-{{?}}
-</tbody>
-</table>
-</script>
+    <table id="sample-table-2" class="table table-striped table-bordered table-hover">
+    <thead>
+    <tr>
+    <th>Service Type</th>
+    <th>Transaction Date</th>
+    <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    {{~it.data:p:index}}
+    <div class="col-sm-2 form-group center">
+    </div>
+    <tr>
+    <td>{{=datadic['serviceType'][p.serviceType]}}</td>
+    <td>{{=new Date(p.createTime).toChString(false) ||''}}</td>
+    <td><a onclick="javascript:viewTran('{{=p.serviceId}}','{{=p.serviceType}}');">Detail</a></td>
+    </tr>
+    {{~}}
+    {{? !it||!it.data||!it.data.length}}
+    <tr ><td colspan="12">No notes</td></tr>
+    {{?}}
+    </tbody>
+    </table>
+    </script>
 
 <script id="add-notes-temp" type="text/x-dot-template">
 <form class="form-horizontal" id="add-notes-form">
@@ -493,6 +496,30 @@
 <label class="col-sm-2 control-label no-padding-right" for="id">Content:</label>
 <div class="col-sm-10">
 <textarea class="form-control limited" id="content"  name="content" maxlength="1000" {{? it.readonly}}readonly="readonly"{{?}}>{{=it.content || ''}}</textarea>
+</div>
+</div>
+</form>
+</script>
+
+
+<script id="add-tran-temp" type="text/x-dot-template">
+<form class="form-horizontal" id="add-notes-form">
+<input type="hidden" id="customerId" name="customerId" value="{{=it.customerId||''}}" class="col-xs-12 col-sm-12"/>
+<input type="hidden" id="customerName" name="customerName" value="{{=it.customerName||''}}" class="col-xs-12 col-sm-12"/>
+
+    <div class="form-group" style="width:600px">
+<label class="col-sm-2 control-label no-padding-right" for="id">Service:</label>
+<div class="col-sm-10">
+<select class="input-large" id="tran-servicetype-select" name="tranServiceType" {{? it.readonly }}disabled="disabled"{{?}}>
+<option value="1" >Car Selling</option>
+<option value="2" >Emergency Contact</option>
+<option value="3" >Car Buying</option>
+<option value="4" >Car Rental</option>
+<option value="5" >Cellphone</option>
+<option value="6" >Airport Pickup</option>
+<option value="7" >Temporary House</option>
+<option value="8" >AIM</option>
+</select>
 </div>
 </div>
 </form>
