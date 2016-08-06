@@ -14,9 +14,16 @@
 				<i class="ace-icon fa fa-home home-icon"></i>
 				<a href="<%=request.getContextPath() %>/">Home</a>
 				<i class="ace-icon fa fa-angle-double-right"></i>
+				<a href="<%=request.getContextPath() %>/customer/getProfile?customerId=<%=SessionUtil.getAttributes("customerId") %>">
 				<%=SessionUtil.getAttributes("customerName") %>
+				</a>
 				<i class="ace-icon fa fa-angle-double-right"></i>
 				Emergency Contact
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<a href="<%=request.getContextPath() %>/customer/getProfile?customerId=<%=SessionUtil.getAttributes("customerId") %>">
+				<i class="ace-icon fa fa-angle-double-left"></i>
+				Back
+				</a> 
 			</small>
 			</h1>
 		</div>

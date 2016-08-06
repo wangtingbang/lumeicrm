@@ -85,7 +85,7 @@ function saveEmergencyContact(){
 	contextPath + '/customer/service/emergencycontact/save',
 	param,
 	function(){
-		$.ialert("Saved!");
+		$.ialert("Save success!");
 		searchSubmit();
 	},
 	function(errmsg){

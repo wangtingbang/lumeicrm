@@ -63,7 +63,7 @@ function saveCarSelling(){
 	param,
 	function(){
 		//TODO
-		$.ialert("Saved!");
+		$.ialert("Save success!");
 		searchSubmit();
 	},
 	function(errmsg){

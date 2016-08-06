@@ -48,7 +48,7 @@ function saveProfile(){
 	contextPath + '/customer/profile/save',
 	param,
 	function(data){
-		$.ialert("Saved!");
+		$.ialert("Save success!");
 		location.href = contextPath + '/customer/list?active=customerList';
 	},
 	function(errmsg){
