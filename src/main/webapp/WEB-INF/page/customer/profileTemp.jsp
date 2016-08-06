@@ -13,7 +13,7 @@
 				<i class="ace-icon fa fa-home home-icon"></i>
 				<a href="<%=request.getContextPath() %>/">Home</a>
 				<i class="ace-icon fa fa-angle-double-right"></i>
-				Customers Profile
+				Profile
 			</small>
 			</h1>
 		</div>
@@ -33,48 +33,32 @@
 		</div>
 	</div>
 </form>
-<div id="profile-content"></div>
-<!-- <div class="row">
-	<div id="notes-content" class="col-xs-12 table-responsive"></div>
-</div> -->
-    </div>
 
-    <div class="row">
-    <div class="col-xs-12">
-    <hr class="no-margin-top"> </hr>
-    <div class="row">
-    <div class="col-xs-12 table-responsive" id="transaction-content"></div>
-    </div>
-    </div>
-    </div>
 <div class="row">
-<div class="col-xs-12">
-		<hr class="no-margin-top"> </hr>
-		<div class="row">
-				<div class="col-xs-12 table-responsive" id="notes-content"></div>
-		</div>
+<div id="profile-content"></div>
 </div>
-
 
 <script id="step_temp_1" type="text/x-dot-template">
 <form class="form-horizontal" id="submit-form1">
 <input type="hidden" name="id" id="id" value="{{=it.id}}"/>
 <input type="hidden" name="userId" id="userId" value="{{=it.userId}}"/>
 
-<div class="form-group"  style="margin-left:8.3%">
-<label class="col-sm-11"><h5 class="header ligth blue" style="margin-top:0px;margin-bottom:0px">Basic</h5></label>
-</div>
-
-<div class="form-group">
-    <label class="col-sm-2 control-label no-padding-right">Sales:</label>
-    <div class="col-sm-4">
+<div class="col-sm-6">
+	<div class="form-group"  style="margin-left:16.6%">
+	<label class="col-sm-12"><h5 class="header ligth blue" style="margin-top:0px;margin-bottom:0px">Basic</h5></label>
+	</div>
+	
+	<div class="form-group">
+	<label class="col-sm-4 control-label no-padding-right" for="name">Customer Name:</label>
+	<div class="col-sm-8">
     <div class="clearfix">
-    <input type="text" name="sales" id="sales" class="form-control col-sm-1 " value="{{=it.sales||'<%=SessionUtil.getCurrentUserName() %>'||''}}" readonly="readonly"/>
+    <input type="text" name="name" id="name" class="form-control col-sm-1 " value="{{=it.name|| '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
     </div>
-    </div>
-</div>
-<div class="form-group">
-    <label class="col-sm-2 control-label no-padding-right" for="name">Potential Buying Date:</label>
+ 	</div>
+	</div>
+	
+	<div class="form-group">
+    <label class="col-sm-4 control-label no-padding-right" for="name">Potential Buying Date:</label>
     <div class="col-sm-4">
     <div class="clearfix">
     <%--<input type="text" name="potentialBuyingDate" id="potentialBuyingDate" class="date-timepicker col-sm-12" value="{{=new Date(it.potentialBuyingDate).toChString(false)|| '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>--%>
@@ -82,10 +66,11 @@
     <%--<input id="potentialBuyingDate" class="date-timepicker form-control col-sm-12 " type="text" name="potentialBuyingDate" />--%>
     </div>
     </div>
-</div>
+	</div>
+
 <div class="form-group">
-    <label class="col-sm-2 control-label no-padding-right">Rating:</label>
-    <div class="col-sm-4">
+    <label class="col-sm-4 control-label no-padding-right">Rating:</label>
+    <div class="col-sm-8">
     <label style="margin-right: 10px; margin-top: 5px;">
     <input id="ratingA" name="rating" type="radio" value="1" class="ace" {{? it.readonly && 1 != it.rating}}disabled="disabled"{{?}} {{? !it.rating||1 == it.rating}}checked="checked"{{?}}/>
     <span class="lbl">A&nbsp;&nbsp;</span>
@@ -100,32 +85,10 @@
     </label>
     </div>
 </div>
-<div class="form-group">
-  <label class="col-sm-2 control-label no-padding-right" for="name">Customer Name:</label>
-  <div class="col-sm-4">
-    <div class="clearfix">
-      <input type="text" name="name" id="name" class="form-control col-sm-1 " value="{{=it.name|| '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
-    </div>
-  </div>
-</div>
-<div class="form-group">
-  <label class="col-sm-2 control-label no-padding-right">Gender:</label>
-  <div class="col-sm-4">
-      <label class="line-height-1" style="margin-right: 10px; margin-top: 5px;">
-        <input name="gender" value="1" type="radio" class="ace" {{? it.readonly && 1 != it.gender}}disabled="disabled"{{?}} {{? !it.gender|| 1 == it.gender}}checked="checked"{{?}} {{? it.readonly}}readonly="readonly"{{?}}/>
-        <span class="lbl"> F</span>
-      </label>
-      <label class="line-height-1" style="margin-right: 10px;">
-        <input name="gender" value="0" type="radio" class="ace" {{? it.readonly && 0 != it.gender}}disabled="disabled"{{?}} {{? 0 == it.gender}}checked="checked"{{?}} {{? it.readonly}}readonly="readonly"{{?}}/>
-        <span class="lbl"> M</span>
-      </label>
-  </div>
-</div>
-
 
     <div class="form-group">
-    <label class="col-sm-2 control-label no-padding-right" for="name">Service:</label>
-    <div class="col-sm-4">
+    <label class="col-sm-4 control-label no-padding-right" for="name">Service:</label>
+    <div class="col-sm-8">
     <label style="margin-right: 10px; margin-top: 5px;">
     <input id="form-search-status-unconfirm" name="form-search-status-unconfirm" type="checkbox" class="ace" {{? it.readonly}}readonly="readonly"{{?}} {{? it.readonly}}disabled="disabled"{{?}} {{? it.serviceInfo&&it.serviceInfo.s1}}checked="checked"{{?}}/>
     <span class="lbl">Car Selling</span>
@@ -169,28 +132,44 @@
     </div>
 
 
-    <div class="form-group">
-    <label class="col-sm-2 control-label no-padding-right">Created By:</label>
-    <div class="col-sm-4">
-    <div class="clearfix">
-    <input type="hidden" name="createUserId" id="createUserId" value="{{=it.createUserId||'<%=SessionUtil.getCurrentUserId() %>'||''}}" readonly="readonly"/>
-    <input type="text" name="createUserName" id="createUserName" class="form-control col-sm-1 " value="{{=it.createUserName||'<%=SessionUtil.getCurrentUserName() %>'||''}}" readonly="readonly"/>
+	<div class="form-group">
+    <label class="col-sm-4 control-label no-padding-right">Sales:</label>
+    <div class="col-sm-8">
+		<div class="clearfix">
+    		<input type="text" name="sales" id="sales" class="form-control col-sm-1 " value="{{=it.sales||'<%=SessionUtil.getCurrentUserName() %>'||''}}" readonly="readonly"/>
+    	</div>
     </div>
-    </div>
-    </div>
-    <div class="form-group">
-    <label class="col-sm-2 control-label no-padding-right" for="name">Updated By:</label>
-    <div class="col-sm-4">
-    <div class="clearfix">
-    <input type="hidden" name="updateUserId" id="updateUserId" value="{{=it.updateUserId||'<%=SessionUtil.getCurrentUserId() %>'||''}}" readonly="readonly"/>
-    <input type="text" name="updateUserName" id="updateUserName" class="form-control col-sm-1 " value="{{=it.updateUserName||'<%=SessionUtil.getCurrentUserName() %>'||''}}" readonly="readonly"/>
-    </div>
-    </div>
-    </div>
+	</div>
+
+</div>
+
+<div class="col-sm-6">
+	<div class="form-group" style="margin-left:8.3%">
+	<label class="col-sm-12"><h5 class="header ligth blue" style="margin-top:0px;margin-bottom:0px">Notes</h5></label>
+</div>
+	<div class="comments" id="notesdiv"></div>
+	<div class="center">
+	{{? !it.readonly}}<a href="#"><i class="ace-icon fa fa-comments-o"></i>&nbsp; Add Note</a> {{?}}
+	</div>
+</div>
 
     <div class="form-group"  style="margin-left:8.3%">
     <label class="col-sm-11"><h5 class="header ligth blue" style="margin-top:0px;margin-bottom:0px">Personal</h5></label>
     </div>
+<div class="form-group">
+  <label class="col-sm-2 control-label no-padding-right">Gender:</label>
+  <div class="col-sm-4">
+      <label class="line-height-1" style="margin-right: 10px; margin-top: 5px;">
+        <input name="gender" value="1" type="radio" class="ace" {{? it.readonly && 1 != it.gender}}disabled="disabled"{{?}} {{? !it.gender|| 1 == it.gender}}checked="checked"{{?}} {{? it.readonly}}readonly="readonly"{{?}}/>
+        <span class="lbl"> F</span>
+      </label>
+      <label class="line-height-1" style="margin-right: 10px;">
+        <input name="gender" value="0" type="radio" class="ace" {{? it.readonly && 0 != it.gender}}disabled="disabled"{{?}} {{? 0 == it.gender}}checked="checked"{{?}} {{? it.readonly}}readonly="readonly"{{?}}/>
+        <span class="lbl"> M</span>
+      </label>
+  </div>
+</div>
+<div class="form-group"><div class="col-sm-6"/></div>
     <div class="form-group">
     <label class="col-sm-2 control-label no-padding-right" for="phone">Phone:</label>
     <div class="col-sm-4">
@@ -221,10 +200,9 @@
     </div>
     </div>
 
-
     <div class="form-group"  style="margin-left:8.3%">
-<label class="col-sm-11"><h5 class="header ligth blue" style="margin-top:0px;margin-bottom:0px">Address</h5></label>
-</div>
+	<label class="col-sm-11"><h5 class="header ligth blue" style="margin-top:0px;margin-bottom:0px">Address</h5></label>
+	</div>
 
 <div class="form-group">
   <label class="col-sm-2 control-label no-padding-right" for="state">State:</label>
@@ -324,6 +302,56 @@
     </div>
     </div>
     <!-- finance status end-->
+
+    <div class="form-group"  style="margin-left:8.3%">
+	<label class="col-sm-11"><h5 class="header ligth blue" style="margin-top:0px;margin-bottom:0px">Others</h5></label>
+	</div>
+
+    <div class="form-group">
+    <label class="col-sm-2 control-label no-padding-right">Created By:</label>
+    <div class="col-sm-4">
+    	<div class="clearfix">
+    	<input type="hidden" name="createUserId" id="createUserId" value="{{=it.createUserId||'<%=SessionUtil.getCurrentUserId() %>'||''}}" readonly="readonly"/>
+    	<input type="text" name="createUserName" id="createUserName" class="form-control col-sm-1 " value="{{=it.createUserName||'<%=SessionUtil.getCurrentUserName() %>'||''}}" readonly="readonly"/>
+    	</div>
+    </div>
+    <label class="col-sm-1 control-label no-padding-right" for="name">Updated By:</label>
+    <div class="col-sm-4">
+    	<div class="clearfix">
+    	<input type="hidden" name="updateUserId" id="updateUserId" value="{{=it.updateUserId||'<%=SessionUtil.getCurrentUserId() %>'||''}}" readonly="readonly"/>
+    	<input type="text" name="updateUserName" id="updateUserName" class="form-control col-sm-1 " value="{{=it.updateUserName||'<%=SessionUtil.getCurrentUserName() %>'||''}}" readonly="readonly"/>
+    	</div>
+    </div>
+    </div>
+<div class="form-group"  style="margin-left:8.3%">
+	<label class="col-sm-11"><h5 class="header ligth blue" style="margin-top:0px;margin-bottom:0px">Transaction</h5></label>
+</div>
+<div class="form-group">
+<div class="col-sm-10" id="transaction-content" style="margin-left:8.3%">
+</div>
+</div>
+
+<div class="col-sm-12 form-group">
+<hr class="no-margin-top"> </hr>
+	<div class="col-sm-4 form-group center">
+	</div>
+	<div class="col-sm-4 form-group center">
+		<div class="col-sm-6 form-group center">
+			<a class="btn btn-info btn-sm" id="save_btn" {{? !it.readonly}}onclick="javascript:saveProfile();"{{?}}>
+				 <i class="ace-icon fa fa-check bigger-110"></i> Save
+			</a>
+		</div>
+		<div class="col-sm-6 form-group center">
+			<a class="btn btn-sm btn-default" type="reset" id="create_btn">
+				<i class="ace-icon fa fa-times bigger-110"></i> Delete
+			</a>
+		</div>
+	</div>
+	<div class="col-sm-4 form-group center">
+	</div>
+</div>
+
+</form>
 </script>
 
     <script id="note_grid_temp" type="text/x-dot-template">
@@ -373,16 +401,8 @@
     </script>
 
 <script id="transaction_grid_temp" type="text/x-dot-template">
-<div class="form-group"  style="margin-left:8.3%">
-<label class="col-sm-11"><h5 class="header ligth blue" style="margin-top:0px;margin-bottom:0px">Transaction
-</h5></label>
-</div>
-<div class="form-group" style="margin-left:8.3%">
-<div class="col-xs-11">
 <table id="sample-table-2" class="table table-striped table-bordered table-hover">
 <thead>
-	<div class="col-sm-2 form-group center">
-	</div>
 	<tr>
 		<th>Service Type</th>
 		<th>Transaction Time</th>
@@ -402,32 +422,6 @@
 {{?}}
 </tbody>
 </table>
-</div>
-</div>
-<div class="form-group" style="margin-bottom:0px">
-<label class="col-sm-12"><h5 class="header ligth blue" style="margin-top:0px;margin-bottom:0px"></h5></label>
-</div>
-
-<div class="col-sm-12 form-group">
-	<div class="col-sm-4 form-group center">
-	</div>
-	<div class="col-sm-4 form-group center">
-		<div class="col-sm-6 form-group center">
-			<a class="btn btn-info btn-sm" id="save_btn" {{? !it.readonly}}onclick="javascript:saveProfile();"{{?}}>
-				 <i class="ace-icon fa fa-check bigger-110"></i> Save
-			</a>
-		</div>
-		<div class="col-sm-6 form-group center">
-			<a class="btn btn-sm btn-default" type="reset" id="create_btn">
-				<i class="ace-icon fa fa-times bigger-110"></i> Delete
-			</a>
-		</div>
-	</div>
-	<div class="col-sm-4 form-group center">
-	</div>
-</div>
-
-</form>
 </script>
 
 <script id="add-notes-temp" type="text/x-dot-template">
