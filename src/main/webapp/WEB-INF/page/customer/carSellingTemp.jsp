@@ -36,39 +36,73 @@
 
 <div id="car-selling-content"></div>
 
+<script id="notes_temp" type="text/x-dot-template">
+<div class="itemdiv commentdiv">
+																<div class="body">
+																	<div class="name blue" >
+																		Jennifer
+																	</div>
+																	<div class="time">
+																		<i class="ace-icon fa fa-clock-o"></i>
+																		<span class="blue">15 min</span>
+																	</div>
+																	<div class="text">
+																		<i class="ace-icon fa fa-quote-left"></i>
+																		Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque commodo massa sed ipsum porttitor facilisis &hellip;
+																	</div>
+																</div>
+																<div class="tools">
+																	<div class="action-buttons bigger-125">
+																		<a href="#">
+																			<i class="ace-icon fa fa-pencil blue"></i>
+																		</a>
+																		<a href="#">
+																			<i class="ace-icon fa fa-trash-o red"></i>
+																		</a>
+																	</div>
+																</div>
+															</div>
+</script>
 <script id="step_temp_1" type="text/x-dot-template">
 <form class="form-horizontal" id="submit-form1">
 <input type="hidden" name="id" id="id" value="{{=it.id}}"/>
 <input type="hidden" name="userId" id="userId" value="{{=it.userId}}"/>
 
-<div class="form-group" style="margin-left:8.3%">
-<label class="col-sm-11"><h5 class="header ligth blue" style="margin-top:0px,margin-bottom:0px">Basic Information</h5></label>
-</div>
-
-<div class="form-group">
-	<label class="col-sm-2 control-label no-padding-right" for="">Sales Name:</label>
-	<div class="col-sm-4">
+<div class="col-sm-6">
+	<div class="form-group" style="margin-left:8.3%">
+	<label class="col-sm-12"><h5 class="header ligth blue" style="margin-top:0px,margin-bottom:0px">Basic Information</h5></label>
+	</div>
+	
+	<div class="form-group">
+	<label class="col-sm-4 control-label no-padding-right" for="">Sales Name:</label>
+	<div class="col-sm-8">
 		<div class="clearfix">
 			<input type="text" name="salesName" id="salesName" class="form-control col-sm-12" value="{{=it.salesName||'<%=SessionUtil.getCurrentUserName() %>'||''}}" readonly="readonly"/>
 		</div>
 	</div>
-	<label class="col-sm-1 control-label no-padding-right" for="category">Category:</label>
-	<div class="col-sm-4">
+	</div>
+
+	<div class="form-group">
+	<label class="col-sm-4 control-label no-padding-right" for="category">Category:</label>
+	<div class="col-sm-8">
 		<div class="clearfix">
 			<input type="text" name="category" id="category" class="form-control col-sm-12" value="{{=it.category || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
 		</div>
 	</div>
-</div>
+	</div>
+
 
 <div class="form-group">
-	<label class="col-sm-2 control-label no-padding-right" for="">Makes:</label>
-	<div class="col-sm-4">
+	<label class="col-sm-4 control-label no-padding-right" for="">Makes:</label>
+	<div class="col-sm-8">
 		<div class="clearfix">
 			<input type="text" name="makes" id="makes" class="form-control col-sm-12" value="{{=it.makes || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
 		</div>
 	</div>
-	<label class="col-sm-1 control-label no-padding-right" for="model">Model:</label>
-	<div class="col-sm-4">
+</div>
+<div class="form-group">
+	<label class="col-sm-4 control-label no-padding-right" for="model">Model:</label>
+	<div class="col-sm-8">
 		<div class="clearfix">
 			<input type="text" name="model" id="model" class="form-control col-sm-12" value="{{=it.model || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
 		</div>
@@ -76,8 +110,8 @@
 </div>
 
 <div class="form-group">
-	<label class="col-sm-2 control-label no-padding-right" for="car description">Car Description:</label>
-	<div class="col-sm-4">
+	<label class="col-sm-4 control-label no-padding-right" for="car description">Car Description:</label>
+	<div class="col-sm-8">
 	<div class="clearfix">
 	<textarea class="form-control limited" id="carDescription"  name="carDescription" maxlength="1000" {{? it.readonly}}readonly="readonly"{{?}}>{{=it.carDescription || ''}}</textarea>
 	</div>
@@ -85,8 +119,8 @@
 </div>
 
 <div class="form-group">
-	<label class="col-sm-2 control-label no-padding-right">Is New:</label>
-	<div class="col-sm-4">
+	<label class="col-sm-4 control-label no-padding-right">Is New:</label>
+	<div class="col-sm-8">
 			<label class="line-height-1" style="margin-right: 10px;">
 				<input name="isNew" value="1" type="radio" class="ace" {{? it.readonly && 1 != it.isNew}}disabled="disabled"{{?}} {{? 1 == it.isNew}}checked="checked"{{?}}/>
 				<span class="lbl">New</span>
@@ -96,8 +130,10 @@
 				<span class="lbl">Used</span>
 			</label>
 	</div>
-	<label class="col-sm-1 control-label no-padding-right" for="years">Years:</label>
-	<div class="col-sm-4">
+</div>
+<div class="form-group">
+	<label class="col-sm-4 control-label no-padding-right" for="years">Years:</label>
+	<div class="col-sm-8">
 		<div class="clearfix">
 			<input type="text" name="years" id="years" class="form-control col-sm-12" value="{{=it.years || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
 		</div>
@@ -105,14 +141,16 @@
 </div>
 
 <div class="form-group">
-	<label class="col-sm-2 control-label no-padding-right" for="mileages">Mileages:</label>
-	<div class="col-sm-4">
+	<label class="col-sm-4 control-label no-padding-right" for="mileages">Mileages:</label>
+	<div class="col-sm-8">
 		<div class="clearfix">
 			<input type="text" name="mileages" id="mileages" class="form-control col-sm-12" value="{{=it.mileages || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
 		</div>
 	</div>
-	<label class="col-sm-1 control-label no-padding-right" for="msrp">MSRP:</label>
-	<div class="col-sm-4">
+</div>
+<div class="form-group">
+	<label class="col-sm-4 control-label no-padding-right" for="msrp">MSRP:</label>
+	<div class="col-sm-8">
 		<div class="clearfix">
 			<input type="text" name="msrp" id="msrp" class="form-control col-sm-12" value="{{=it.msrp || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
 		</div>
@@ -120,14 +158,16 @@
 </div>
 
 <div class="form-group">
-	<label class="col-sm-2 control-label no-padding-right" for="exterior">Exterior:</label>
-	<div class="col-sm-4">
+	<label class="col-sm-4 control-label no-padding-right" for="exterior">Exterior:</label>
+	<div class="col-sm-8">
 		<div class="clearfix">
 			<input type="text" name="exterior" id="productName" class="form-control col-sm-12" value="{{=it.exterior || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
 		</div>
 	</div>
-	<label class="col-sm-1 control-label no-padding-right" for="interior">Interior:</label>
-	<div class="col-sm-4">
+</div>
+<div class="form-group">
+	<label class="col-sm-4 control-label no-padding-right" for="interior">Interior:</label>
+	<div class="col-sm-8">
 		<div class="clearfix">
 			<input type="text" name="interior" id="interior" class="form-control col-sm-12" value="{{=it.interior || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
 		</div>
@@ -135,8 +175,8 @@
 </div>
 
 <div class="form-group">
-	<label class="col-sm-2 control-label no-padding-right" for="color">Color:</label>
-	<div class="col-sm-4">
+	<label class="col-sm-4 control-label no-padding-right" for="color">Color:</label>
+	<div class="col-sm-8">
 		<div class="clearfix">
 			<input type="text" name="color" id="color" class="form-control col-sm-12" value="{{=it.color || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
 		</div>
@@ -144,19 +184,28 @@
 </div>
 
 <div class="form-group">
-	<label class="col-sm-2 control-label no-padding-right" for="comments">Comments:</label>
-	<div class="col-sm-4">
+	<label class="col-sm-4 control-label no-padding-right" for="comments">Comments:</label>
+	<div class="col-sm-8">
 	<div class="clearfix">
 	<textarea class="form-control limited" id="comments"  name="comments" maxlength="1000" {{? it.readonly}}readonly="readonly"{{?}}>{{=it.carDescription || ''}}</textarea>
 	</div>
 	</div>
 </div>
 
+</div>
+<div class="col-sm-6">
+	<div class="form-group" style="margin-left:8.3%">
+	<label class="col-sm-12"><h5 class="header ligth blue" style="margin-top:0px,margin-bottom:0px">Notes</h5></label>
+</div>
+	<div class="comments" id="notesdiv"></div>
+	<div class="center">
+	<a href="#"><i class="ace-icon fa fa-comments-o"></i>&nbsp; Add Note</a>
+	</div>
+</div>
+
 <div class="form-group"  style="margin-left:8.3%">
 <label class="col-sm-11"><h5 class="header ligth blue" style="margin-top:0px;margin-bottom:0px">Finance</h5></label>
 </div>
-
-
 <div class="form-group">
 	<label class="col-sm-2 control-label no-padding-right" for="financeDownPayment">Down Payment:</label>
 	<div class="col-sm-4">

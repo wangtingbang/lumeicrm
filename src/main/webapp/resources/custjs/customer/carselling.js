@@ -34,6 +34,12 @@ function searchSubmit(){
 				data = $.extend(data, {customerId:param['customerId']});
 				var htmlpage = pagefn(data);
 				$("#car-selling-content").html(htmlpage);
+				$page = $('#notesdiv').igrid({
+					url : contextPath + '/customer/notes/listByPage',
+					paginationBarTemp:"pagination_bar_temp2",
+					param : {},
+					temp : "notes_temp"
+				});
 			},
 			function(errmsg){
 				$.ialert(errmsg,"error");

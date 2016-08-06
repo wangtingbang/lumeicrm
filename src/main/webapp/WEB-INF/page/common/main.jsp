@@ -271,6 +271,39 @@
 </div>
 </div>
 </script>
+<script id="pagination_bar_temp2" type="text/x-dot-template">
+		<div class="row">
+				<div class="col-xs-12">
+				<form class="form-horizontal">
+					<div class="form-group">
+					<div class="col-sm-12 control-label no-padding-top">
+						<ul class="pagination no-margin-top no-margin-bottom">
+					    <li {{? it.firstpage }}class="disabled"{{?}}>
+						<a href="javascript:void(0);">
+						    <i class="ace-icon fa fa-angle-double-left"></i>
+							<input type="hidden" value="{{=it.page-1}}"/>
+						</a>
+					    </li>
+					    {{~it.pageArray :value:index}}
+					    <li {{? it.page == value }}class="active disabled"{{?}}>
+					        <a href="javascript:void(0);">{{=value}}<input type="hidden" value="{{=value}}"/></a>
+					    </li>
+					    {{~}}
+					    <li {{? it.totalPage==0 || it.totalPage == it.page }}class="disabled"{{?}}>
+							<a href="javascript:void(0);">
+							    <i class="ace-icon fa fa-angle-double-right"></i>
+								<input type="hidden" value="{{=it.page+1}}"/>
+							</a>
+					    </li>
+						</ul>
+					</div>
+					</div>
+					</form>
+				</div>
+		</div>
+</div>
+</div>
+</script>
 <script id="modaltemp" type="text/x-dot-template">
 <div class="modal-dialog text-left" style="display: inline-block; width: auto;">
 <div class="modal-content">

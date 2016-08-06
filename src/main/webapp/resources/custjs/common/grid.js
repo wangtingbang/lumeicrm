@@ -24,7 +24,7 @@
 		var pagefn = doT.template($('#'+settings.temp).html());
 		$this.html(pagefn({'data':data.result}));
 		var pageData = $.extend({}, settings, {firstpage:data.page==1, page:data.page,  limit:data.limit, total:data.total, totalPage:data.totalPage, pageArray:calpage(data.page, data.totalPage)});
-		var pagebarfn = doT.template($('#pagination_bar_temp').html());
+		var pagebarfn = doT.template($('#'+pageData.paginationBarTemp).html());
 		$this.append(pagebarfn(pageData));
 		
 		$this.find("ul li ").not(".disabled").find("a").click(function(){
@@ -100,6 +100,7 @@
      orderDesc:false,
      orderColumn:null,
      temp:null,
-     afterRender:null
+     afterRender:null,
+     paginationBarTemp:"pagination_bar_temp"
   };
 })(jQuery);
