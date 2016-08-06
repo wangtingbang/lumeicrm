@@ -1,6 +1,7 @@
 package com.lumei.crm.customer.controller;
 
 import com.google.common.collect.Lists;
+import com.lumei.crm.auth.bean.SysRole;
 import com.lumei.crm.auth.biz.OpAuthUserBusiness;
 import com.lumei.crm.auth.dto.OpAuthUser;
 import com.lumei.crm.auth.entity.TOpAuthUser;
@@ -101,9 +102,9 @@ public class CustomerController {
     if (potentialBuyingDateEnd != null) {
       example.paramLessThanOrEqualTo("potentialBuyingDate", potentialBuyingDateEnd);
     }
-    //    if(SessionUtil.getCurrentUser().getRoles().contains(SysRole.SALES.getKey())){
-    //      example.param("createUserId", SessionUtil.getCurrentUserId());
-    //    }
+//    if(SessionUtil.getCurrentUser().getRoles().contains(SysRole.SALES.getKey())){
+//      example.param("createUserId", SessionUtil.getCurrentUserId());
+//    }
     example.paramIn("carSellingStatus", status_s);
     //    example.paramIn("rating", rating_s);
     Pagination<Profile> profilePagination = profileBusiness.listByPage(example, page, limit);
@@ -188,6 +189,12 @@ public class CustomerController {
 
     profile.setServiceInfo(serviceInfo);
 
+    if(SessionUtil.getCurrentUser().getRoles().contains(SysRole.SALES)){
+      if(!SessionUtil.getCurrentUserId().equals(profile.getSalesId())){
+        profile.setReadonly(true);
+      }
+    }
+
     return profile;
   }
 
@@ -252,6 +259,13 @@ public class CustomerController {
     if (notes != null && notes.size() > 0) {
       carSelling.setNotes(notes.get(0).getContent());
     }
+
+    if(SessionUtil.getCurrentUser().getRoles().contains(SysRole.SALES)){
+      if(!SessionUtil.getCurrentUserId().equals(carSelling.getSalesId())){
+        carSelling.setReadonly(true);
+      }
+    }
+
     return carSelling;
   }
 
@@ -345,6 +359,12 @@ public class CustomerController {
     if (notes != null && notes.size() > 0) {
       emergencyContact.setNotes(notes.get(0).getContent());
     }
+
+    if(SessionUtil.getCurrentUser().getRoles().contains(SysRole.SALES)){
+      if(!SessionUtil.getCurrentUserId().equals(emergencyContact.getSalesId())){
+        emergencyContact.setReadonly(true);
+      }
+    }
     return emergencyContact;
   }
 
@@ -417,9 +437,9 @@ public class CustomerController {
 
     EmergencyContact existedemergencyContact = emergencyContactBusiness.find(id, EmergencyContact.class);
 
-    int use = emergencyContact.getUsed();
-    int total = emergencyContact.getTotal();
-    Date expDate = emergencyContact.getExpirationDate();
+    int use = existedemergencyContact.getUsed();
+    int total = existedemergencyContact.getTotal();
+    Date expDate = existedemergencyContact.getExpirationDate();
 
     Date now = DateTimeUtil.now();
     String opUserId = SessionUtil.getCurrentUserId();
@@ -429,8 +449,8 @@ public class CustomerController {
       throw new BusinessException("", "No service can use, service expired");
     } else{
       use++;
-      emergencyContact.setUsed(use);
-      result = emergencyContactBusiness.update(emergencyContact);
+      existedemergencyContact.setUsed(use);
+      result = emergencyContactBusiness.update(existedemergencyContact);
 
       Transaction transaction = new Transaction();
       transaction.setCreateTime(now);
@@ -438,6 +458,7 @@ public class CustomerController {
       transaction.setUpdateTime(now);
       transaction.setUpdateUserId(opUserId);
       transaction.setServiceId(id);
+      transaction.setUserId(transaction.getUserId());
       transaction.setServiceType(LumeiCrmConstants.SERVICE_TYPE.EMERGENCY_CONTACT.getValue());
       transactionBusiness.create(transaction);
     }
@@ -446,7 +467,9 @@ public class CustomerController {
 
   @RequestMapping(value = "notes/listByPage", method = RequestMethod.POST)
   @ResponseBody
-  public Pagination<Notes> listNotesByPage(String customerId, String serviceType, int page,
+  public Pagination<Notes> listNotesByPage(
+    String customerId, String serviceType, String serviceId,
+    int page,
     int limit) {
 
     log.debug("param, page:{}, limit:{}", customerId, serviceType);
@@ -462,6 +485,7 @@ public class CustomerController {
 
     example.param("userId", customerId);
     example.param("noteServiceType", serviceType);
+    example.param("serviceId", serviceId);
     example.orderBy("createTime");
     Pagination<Notes> pg = notesBusiness.listByPage(example, page, limit);
 

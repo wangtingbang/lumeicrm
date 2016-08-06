@@ -36,6 +36,14 @@ function searchSubmit(){
 				var pagefn = doT.template($('#step_temp_1').text());
 				var htmlpage = pagefn(data);
 				$("#emergency-contact-content").html(htmlpage);
+
+
+				$page = $('#transaction-content').igrid({
+					//url : contextPath + '/consume/'+authType + '/postsalepay/listConsume',
+					url : contextPath + '/customer/transaction/listByPage',
+					param : param,
+					temp : "transaction_grid_temp"
+				});
 			},
 			function(errmsg){
 				$.ialert(errmsg,"error");

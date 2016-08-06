@@ -38,30 +38,36 @@
 
 <script id="notes_temp" type="text/x-dot-template">
 <div class="itemdiv commentdiv">
-																<div class="body">
-																	<div class="name blue" >
-																		Jennifer
-																	</div>
-																	<div class="time">
-																		<i class="ace-icon fa fa-clock-o"></i>
-																		<span class="blue">15 min</span>
-																	</div>
-																	<div class="text">
-																		<i class="ace-icon fa fa-quote-left"></i>
-																		Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque commodo massa sed ipsum porttitor facilisis &hellip;
-																	</div>
-																</div>
-																<div class="tools">
-																	<div class="action-buttons bigger-125">
-																		<a href="#">
-																			<i class="ace-icon fa fa-pencil blue"></i>
-																		</a>
-																		<a href="#">
-																			<i class="ace-icon fa fa-trash-o red"></i>
-																		</a>
-																	</div>
-																</div>
-															</div>
+
+	{{~it.data:p:index}}
+	<div class="body">
+	<div class="name blue" >
+	{{=p.createUserName||''}}
+	</div>
+	<div class="time">
+	<i class="ace-icon fa fa-clock-o"></i>
+	<span class="blue">{{=new Date(p.createTime).toChString(false) ||''}}</span>
+	</div>
+	<div class="text">
+	<i class="ace-icon fa fa-quote-left"></i>
+	{{=p.content}}
+	</div>
+	</div>
+	<div class="tools">
+	<div class="action-buttons bigger-125">
+	<a href="#">
+	<i class="ace-icon fa fa-pencil blue"></i>
+	</a>
+	<a href="#">
+	<i class="ace-icon fa fa-trash-o red"></i>
+	</a>
+	</div>
+	</div>
+	{{~}}
+	{{? !it||!it.data||!it.data.length}}
+	<div class="body"><div class="text">No notes</div></div>
+	{{?}}
+</div>
 </script>
 <script id="step_temp_1" type="text/x-dot-template">
 <form class="form-horizontal" id="submit-form1">
@@ -122,11 +128,11 @@
 	<label class="col-sm-4 control-label no-padding-right">Is New:</label>
 	<div class="col-sm-8">
 			<label class="line-height-1" style="margin-right: 10px;">
-				<input name="isNew" value="1" type="radio" class="ace" {{? it.readonly && 1 != it.isNew}}disabled="disabled"{{?}} {{? 1 == it.isNew}}checked="checked"{{?}}/>
+				<input name="isNew" value="1" type="radio" class="ace" {{? it.readonly && 1 != it.isNew}}disabled="disabled"{{?}} {{? 1 == it.isNew}}checked="checked"{{?}}  {{? it.readonly}}readonly="readonly"{{?}}/>
 				<span class="lbl">New</span>
 			</label>
 			<label class="line-height-1" style="margin-right: 10px;">
-				<input name="isNew" value="0" type="radio" class="ace" {{? it.readonly && 0 != it.isNew}}disabled="disabled"{{?}} {{? 0 == it.isNew}}checked="checked"{{?}}/>
+				<input name="isNew" value="0" type="radio" class="ace" {{? it.readonly && 0 != it.isNew}}disabled="disabled"{{?}} {{? 0 == it.isNew}}checked="checked"{{?}}  {{? it.readonly}}readonly="readonly"{{?}}/>
 				<span class="lbl">Used</span>
 			</label>
 	</div>
@@ -195,11 +201,11 @@
 </div>
 <div class="col-sm-6">
 	<div class="form-group" style="margin-left:8.3%">
-	<label class="col-sm-12"><h5 class="header ligth blue" style="margin-top:0px,margin-bottom:0px">Notes</h5></label>
+	<label class="col-sm-12"><h5 class="header ligth blue" style="margin-top:0px;margin-bottom:0px">Notes</h5></label>
 </div>
 	<div class="comments" id="notesdiv"></div>
 	<div class="center">
-	<a href="#"><i class="ace-icon fa fa-comments-o"></i>&nbsp; Add Note</a>
+	{{? !it.readonly}}<a href="#"><i class="ace-icon fa fa-comments-o"></i>&nbsp; Add Note</a> {{?}}
 	</div>
 </div>
 
@@ -326,11 +332,11 @@
 	<div class="col-sm-4">
 	<div class="clearfix">
 		<label class="line-height-1" style="margin-right: 10px;">
-		<input id="tradeIn1" name="tradeIn" value="1" type="radio" class="ace" {{? it.readonly && 1 != it.tradeIn}}disabled="disabled"{{?}} {{? !it.tradeIn||1 == it.tradeIn}}checked="checked"{{?}}/>
+		<input id="tradeIn1" name="tradeIn" value="1" type="radio" class="ace" {{? it.readonly && 1 != it.tradeIn}}disabled="disabled"{{?}}  {{? it.readonly}}readonly="readonly"{{?}} {{? !it.tradeIn||1 == it.tradeIn}}checked="checked"{{?}}/>
 		<span class="lbl">Yes</span>
 		</label>
 		<label class="line-height-1" style="margin-right: 10px;">
-		<input id="tradeIn2" name="tradeIn" value="0" type="radio" class="ace" {{? it.readonly && 0 != it.tradeIn}}disabled="disabled"{{?}} {{? 0 == it.tradeIn}}checked="checked"{{?}}/>
+		<input id="tradeIn2" name="tradeIn" value="0" type="radio" class="ace" {{? it.readonly && 0 != it.tradeIn}}disabled="disabled"{{?}}  {{? it.readonly}}readonly="readonly"{{?}} {{? 0 == it.tradeIn}}checked="checked"{{?}}/>
 		<span class="lbl">No</span>
 		</label>
 	</div>
@@ -405,12 +411,12 @@
 	</div>
 	<div class="col-sm-4 form-group center">
 		<div class="col-sm-6 form-group center">
-			<a class="btn btn-info btn-sm" id="save_btn" onclick="javascript:saveCarSelling();">
+			<a class="btn btn-info btn-sm" id="save_btn"  {{? !it.readonly}}onclick="javascript:saveCarSelling();"{{?}}>
 				 <i class="ace-icon fa fa-check bigger-110"></i> Save
 			</a>
 		</div>
 		<div class="col-sm-6 form-group center">
-			<a class="btn btn-sm btn-default" type="reset" id="delete_btn">
+			<a class="btn btn-sm btn-default" type="reset" id="delete_btn"  {{? it.readonly}}onclick="javascript:saveCarSelling();"{{?}}>
 				<i class="ace-icon fa fa-times bigger-110"></i> Delete
 			</a>
 		</div>

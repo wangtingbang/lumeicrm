@@ -16,6 +16,15 @@ public class Profile extends BaseModel<String> implements Serializable {
 
   private static final long serialVersionUID = 1L;
 
+  private boolean readonly;
+
+  public boolean isReadonly() {
+    return readonly;
+  }
+
+  public void setReadonly(boolean readonly) {
+    this.readonly = readonly;
+  }
   /**
    * @field id
    */
@@ -489,4 +498,5 @@ public class Profile extends BaseModel<String> implements Serializable {
   public void setSales(String sales) {
     this.sales = sales;
   }
+
 }

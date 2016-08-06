@@ -110,7 +110,7 @@
   <input type="text" class="form-control limited" id="personalEmail"  name="personalEmail" maxlength="1000" {{? it.readonly}}readonly="readonly"{{?}} value="{{=it.personalEmail || ''}}"/>
   </div>
   </div>
-  <label class="col-sm-2 control-label no-padding-right" for="wechatId">Wechat Id:</label>
+  <label class="col-sm-2 control-label no-padding-right" for="wechatId">Wechat:</label>
   <div class="col-sm-3">
   <div class="clearfix">
   <input type="text" class="form-control limited" id="wechatId"  name="department" maxlength="1000" {{? it.readonly}}readonly="readonly"{{?}} value="{{=it.wechatId || ''}}"/>
@@ -233,7 +233,7 @@
   <input type="text" class="form-control limited" id="fatherCellphone"  name="fatherCellphone" maxlength="1000" {{? it.readonly}}readonly="readonly"{{?}} value="{{=it.fatherCellphone || ''}}"/>
   </div>
   </div>
-  <label class="col-sm-2 control-label no-padding-right" for="fatherWechatId">Wechat Id:</label>
+  <label class="col-sm-2 control-label no-padding-right" for="fatherWechatId">Wechat:</label>
   <div class="col-sm-3">
   <div class="clearfix">
   <input type="text" class="form-control limited" id="fatherWechatId"  name="fatherWechatId" maxlength="1000" {{? it.readonly}}readonly="readonly"{{?}} value="{{=it.fatherWechatId || ''}}"/>
@@ -281,7 +281,7 @@
   <input type="text" class="form-control limited" id="motherCellphone"  name="motherCellphone" maxlength="1000" {{? it.readonly}}readonly="readonly"{{?}} value="{{=it.motherCellphone || ''}}"/>
   </div>
   </div>
-  <label class="col-sm-2 control-label no-padding-right" for="motherWechatId">Wechat Id:</label>
+  <label class="col-sm-2 control-label no-padding-right" for="motherWechatId">Wechat:</label>
   <div class="col-sm-3">
   <div class="clearfix">
   <input type="text" class="form-control limited" id="motherWechatId"  name="motherWechatId" maxlength="1000" {{? it.readonly}}readonly="readonly"{{?}} value="{{=it.motherWechatId || ''}}"/>
@@ -353,7 +353,7 @@
 </div>
 
 <div class="form-group">
-  <label class="col-sm-2 control-label no-padding-right" for="landlordWechatId">Wechat Id:</label>
+  <label class="col-sm-2 control-label no-padding-right" for="landlordWechatId">Wechat:</label>
   <div class="col-sm-3">
   <div class="clearfix">
   <input type="text" class="form-control limited" id="landlordWechatId"  name="landlordWechatId" maxlength="1000" {{? it.readonly}}readonly="readonly"{{?}} value="{{=it.landlordWechatId || ''}}"/>

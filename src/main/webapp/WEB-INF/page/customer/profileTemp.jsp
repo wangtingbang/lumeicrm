@@ -112,11 +112,11 @@
   <label class="col-sm-2 control-label no-padding-right">Gender:</label>
   <div class="col-sm-4">
       <label class="line-height-1" style="margin-right: 10px; margin-top: 5px;">
-        <input name="gender" value="1" type="radio" class="ace" {{? it.readonly && 1 != it.gender}}disabled="disabled"{{?}} {{? !it.gender|| 1 == it.gender}}checked="checked"{{?}}/>
+        <input name="gender" value="1" type="radio" class="ace" {{? it.readonly && 1 != it.gender}}disabled="disabled"{{?}} {{? !it.gender|| 1 == it.gender}}checked="checked"{{?}} {{? it.readonly}}readonly="readonly"{{?}}/>
         <span class="lbl"> F</span>
       </label>
       <label class="line-height-1" style="margin-right: 10px;">
-        <input name="gender" value="0" type="radio" class="ace" {{? it.readonly && 0 != it.gender}}disabled="disabled"{{?}} {{? 0 == it.gender}}checked="checked"{{?}}/>
+        <input name="gender" value="0" type="radio" class="ace" {{? it.readonly && 0 != it.gender}}disabled="disabled"{{?}} {{? 0 == it.gender}}checked="checked"{{?}} {{? it.readonly}}readonly="readonly"{{?}}/>
         <span class="lbl"> M</span>
       </label>
   </div>
@@ -127,14 +127,14 @@
     <label class="col-sm-2 control-label no-padding-right" for="name">Service:</label>
     <div class="col-sm-4">
     <label style="margin-right: 10px; margin-top: 5px;">
-    <input id="form-search-status-unconfirm" name="form-search-status-unconfirm" type="checkbox" class="ace" {{? it.readonly}}disabled="disabled"{{?}} {{? it.serviceInfo&&it.serviceInfo.s1}}checked="checked"{{?}}/>
+    <input id="form-search-status-unconfirm" name="form-search-status-unconfirm" type="checkbox" class="ace" {{? it.readonly}}readonly="readonly"{{?}} {{? it.readonly}}disabled="disabled"{{?}} {{? it.serviceInfo&&it.serviceInfo.s1}}checked="checked"{{?}}/>
     <span class="lbl">Car Selling</span>
     <span class="lbl">
     {{?it.serviceInfo&&it.serviceInfo.s1}}<a href="getCarSelling?customerId={{=it.id }}&customerName={{=it.name}}" target="_blank">view</a>{{?}}
     {{?!it.serviceInfo||(it.serviceInfo&&!it.serviceInfo.s1)}}<a href="javascript:addCarSelling('{{=it.id }}','{{=it.name }}');">add</a>{{?}}
     </span>
     <span class="lbl">&nbsp;&nbsp;&nbsp;&nbsp;</span>
-    <input id="form-search-status-confirm" name="form-search-status-confirm" type="checkbox" class="ace" {{? it.serviceInfo&&it.serviceInfo.s2}}checked="checked"{{?}}/>
+    <input id="form-search-status-confirm" name="form-search-status-confirm" type="checkbox" class="ace" {{? it.readonly}}readonly="readonly"{{?}} {{? it.serviceInfo&&it.serviceInfo.s2}}checked="checked"{{?}}/>
     <span class="lbl">Emergency Contact</span>
     <span class="lbl">
     {{?it.serviceInfo&&it.serviceInfo.s2}}<a href="getEmergencyContact?customerId={{=it.id }}&customerName={{=it.name}}" target="_blank">view </a>{{?}}
@@ -264,23 +264,23 @@
   <label class="col-sm-2 control-label no-padding-right">Car Selling Status:</label>
   <div class="col-sm-9">
     <label style="margin-right: 10px; margin-top: 5px;">
-    <input id="status1" name="carSellingStatus" type="radio" value="1" class="ace" {{? it.readonly && 1 != it.status}}disabled="disabled"{{?}} {{? !it.status||1 == it.status}}checked="checked"{{?}}/>
+    <input id="status1" name="carSellingStatus" type="radio" value="1" class="ace" {{? it.readonly}}readonly="readonly"{{?}} {{? it.readonly && 1 != it.status}}disabled="disabled"{{?}} {{? !it.status||1 == it.status}}checked="checked"{{?}}/>
     <span class="lbl">Appointmented&nbsp;&nbsp;</span>
     </label>
     <label style="margin-right: 10px; margin-top: 5px;">
-    <input id="status2" name="carSellingStatus" type="radio" value="2" class="ace" {{? 2 == it.status}}checked="checked"{{?}} />
+    <input id="status2" name="carSellingStatus" type="radio" value="2" class="ace" {{? it.readonly}}readonly="readonly"{{?}} {{? 2 == it.status}}checked="checked"{{?}} />
     <span class="lbl">Sold by Lumei&nbsp;&nbsp;</span>
     </label>
     <label style="margin-right: 10px; margin-top: 5px;">
-    <input id="status3" name="carSellingStatus" type="radio" value="3" class="ace" {{? 3 == it.status}}checked="checked"{{?}}/>
+    <input id="status3" name="carSellingStatus" type="radio" value="3" class="ace" {{? it.readonly}}readonly="readonly"{{?}} {{? 3 == it.status}}checked="checked"{{?}}/>
     <span class="lbl">Buy from Other&nbsp;&nbsp;</span>
     </label>
     <label style="margin-right: 10px; margin-top: 5px;">
-    <input id="status4" name="carSellingStatus" type="radio" value="4" class="ace" {{? 4 == it.status}}checked="checked"{{?}}/>
+    <input id="status4" name="carSellingStatus" type="radio" value="4" class="ace" {{? it.readonly}}readonly="readonly"{{?}} {{? 4 == it.status}}checked="checked"{{?}}/>
     <span class="lbl">No Response&nbsp;&nbsp;</span>
     </label>
     <label style="margin-right: 10px; margin-top: 5px;">
-    <input id="status5" name="carSellingStatus" type="radio" value="5" class="ace" {{? 5 == it.status}}checked="checked"{{?}} />
+    <input id="status5" name="carSellingStatus" type="radio" value="5" class="ace" {{? it.readonly}}readonly="readonly"{{?}} {{? 5 == it.status}}checked="checked"{{?}} />
     <span class="lbl">Still in the Market&nbsp;&nbsp;</span>
     </label>
   </div>
@@ -290,15 +290,15 @@
     <label class="col-sm-2 control-label no-padding-right">Finance Status:</label>
     <div class="col-sm-9">
     <label style="margin-right: 10px; margin-top: 5px;">
-    <input id="financeStatus1" name="financeStatus" type="radio" value="1" class="ace" {{? it.readonly && 1 != it.financeStatus}}disabled="disabled"{{?}} {{? !it.financeStatus||1 == it.financeStatus}}checked="checked"{{?}}/>
+    <input id="financeStatus1" name="financeStatus" type="radio" value="1" class="ace" {{? it.readonly}}readonly="readonly"{{?}} {{? it.readonly && 1 != it.financeStatus}}disabled="disabled"{{?}} {{? !it.financeStatus||1 == it.financeStatus}}checked="checked"{{?}}/>
     <span class="lbl">Pending&nbsp;&nbsp;</span>
     </label>
     <label style="margin-right: 10px; margin-top: 5px;">
-    <input id="financeStatus2" name="financeStatus" type="radio" value="2" class="ace" {{? 2 == it.financeStatus}}checked="checked"{{?}} />
+    <input id="financeStatus2" name="financeStatus" type="radio" value="2" class="ace" {{? it.readonly}}readonly="readonly"{{?}} {{? 2 == it.financeStatus}}checked="checked"{{?}} />
     <span class="lbl">Approved&nbsp;&nbsp;</span>
     </label>
     <label style="margin-right: 10px; margin-top: 5px;">
-    <input id="financeStatus3" name="financeStatus" type="radio" value="3" class="ace" {{? 3 == it.financeStatus}}checked="checked"{{?}}/>
+    <input id="financeStatus3" name="financeStatus" type="radio" value="3" class="ace" {{? it.readonly}}readonly="readonly"{{?}} {{? 3 == it.financeStatus}}checked="checked"{{?}}/>
     <span class="lbl">Unqualified&nbsp;&nbsp;</span>
     </label>
     </div>
@@ -310,15 +310,15 @@
     <label class="col-sm-2 control-label no-padding-right">Lease Status:</label>
     <div class="col-sm-9">
     <label style="margin-right: 10px; margin-top: 5px;">
-    <input id="leaseStatus1" name="leaseStatus" type="radio" value="1" class="ace" {{? it.readonly && 1 != it.leaseStatus}}disabled="disabled"{{?}} {{? !it.leaseStatus||1 == it.leaseStatus}}checked="checked"{{?}}/>
+    <input id="leaseStatus1" name="leaseStatus" type="radio" value="1" class="ace" {{? it.readonly}}readonly="readonly"{{?}} {{? it.readonly && 1 != it.leaseStatus}}disabled="disabled"{{?}} {{? !it.leaseStatus||1 == it.leaseStatus}}checked="checked"{{?}}/>
     <span class="lbl">Pending&nbsp;&nbsp;</span>
     </label>
     <label style="margin-right: 10px; margin-top: 5px;">
-    <input id="leaseStatus2" name="leaseStatus" type="radio" value="2" class="ace" {{? 2 == it.leaseStatus}}checked="checked"{{?}} />
+    <input id="leaseStatus2" name="leaseStatus" type="radio" value="2" class="ace" {{? it.readonly}}readonly="readonly"{{?}} {{? 2 == it.leaseStatus}}checked="checked"{{?}} />
     <span class="lbl">Approved&nbsp;&nbsp;</span>
     </label>
     <label style="margin-right: 10px; margin-top: 5px;">
-    <input id="leaseStatus3" name="leaseStatus" type="radio" value="3" class="ace" {{? 3 == it.leaseStatus}}checked="checked"{{?}}/>
+    <input id="leaseStatus3" name="leaseStatus" type="radio" value="3" class="ace" {{? it.readonly}}readonly="readonly"{{?}} {{? 3 == it.leaseStatus}}checked="checked"{{?}}/>
     <span class="lbl">Unqualified&nbsp;&nbsp;</span>
     </label>
     </div>
@@ -413,7 +413,7 @@
 	</div>
 	<div class="col-sm-4 form-group center">
 		<div class="col-sm-6 form-group center">
-			<a class="btn btn-info btn-sm" id="save_btn" onclick="javascript:saveProfile();">
+			<a class="btn btn-info btn-sm" id="save_btn" {{? !it.readonly}}onclick="javascript:saveProfile();"{{?}}>
 				 <i class="ace-icon fa fa-check bigger-110"></i> Save
 			</a>
 		</div>

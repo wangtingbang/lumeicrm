@@ -37,7 +37,7 @@ function searchSubmit(){
 				$page = $('#notesdiv').igrid({
 					url : contextPath + '/customer/notes/listByPage',
 					paginationBarTemp:"pagination_bar_temp2",
-					param : {},
+					param : {customerId:param['customerId'], serviceType:1, serviceId:data.id},
 					temp : "notes_temp"
 				});
 			},
