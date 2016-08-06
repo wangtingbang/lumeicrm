@@ -3,12 +3,16 @@ function addNote(noteId, noteCrtUId, noteCrtUName, noteCrtTm, noteCont){
 
 	var customerId = $("#customerId").val();
 	if(!customerId||customerId===''||customerId==='undefined'){
-		$.ialert("Please save profile before add notes");
+		$.ialert("Please save before add notes");
 		return;
 	}
 	var userId = $("#userId").val();
 	var serviceType = $("#noteservicetype-select").val();
 	var serviceId = $("#id").val();
+	if(!serviceId||serviceId===''||serviceId==='undefined'){
+		$.ialert("Please save before add notes");
+		return;
+	}
 	var content = $("#content").val();
 
 	var notesfn = doT.template($('#add-notes-temp').text());
@@ -51,22 +55,16 @@ function addNote2(msgDom){
 		contextPath+'/customer/notes/save',
 		data,
 		function (result) {
-			msgDom.imsg({
-				type:'success',
-				title:"Success !",
-				text:result.msg
-			});
+			$.ialert("Success!");
+			searchSubmit();
 		}, function(error){
-			msgDom.imsg({
-				title:"Fail!",
-				text:error
-			});
+			$.ialert(errmsg,"Fail");
 		}
 	);
 }
 
 function deleteNotes(id){
-	$.iconfirm("Confirm to delete this note?",function(){
+	$.iconfirm("Are you sure to delete this note?",function(){
 		$.ipost(
 			contextPath+'/customer/notes/delete',
 			{id:id},
