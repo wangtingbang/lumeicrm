@@ -47,28 +47,25 @@
 <div id="emergency-contact-content"></div>
 
 <script id="notes_temp" type="text/x-dot-template">
-  <div class="itemdiv commentdiv">
-
   {{~it.data:p:index}}
+<div class="itemdiv commentdiv">
   <div class="body">
-  <div class="name blue" >
-  {{=p.createUserName||''}}
+  	<div class="name blue" >
+  	{{=p.createUserName||''}}
+  	</div>
+  	<div class="time">
+  	<i class="ace-icon fa fa-clock-o"></i>
+  	<span class="blue">{{=new Date(p.createTime).toChString(true) ||''}}</span>
+  	</div>
+  	<div class="text" style="display:block;word-break:break-all;word-wrap: break-word;">
+  	<i class="ace-icon fa fa-quote-left"></i>
+  	{{=p.content}}
+  	<i class="ace-icon fa fa-quote-right" style="color:#DCE3ED;margin-left: 4px"></i>
+  	</div>
   </div>
-  <div class="time">
-  <i class="ace-icon fa fa-clock-o"></i>
-  <span class="blue">{{=new Date(p.createTime).toChString(false) ||''}}</span>
-  </div>
-  <div class="text">
-  <i class="ace-icon fa fa-quote-left"></i>
-  {{=p.content}}
-  </div>
-
   <div class="tools">
   <div class="action-buttons bigger-125">
-  <a onclick="javascript:addNote('{{=p.id}}','{{=p.createUserId}}','{{=p.createUserName}}','{{=p.createTime}}','{{=p.content}}')">
-  <i class="ace-icon fa fa-pencil blue"></i>
-  </a>
-  <a onclick="javascript:deleteNotes('{{=p.id}}');">
+  <a href="javascript:deleteNotes('{{=p.id}}');">
   <i class="ace-icon fa fa-trash-o red"></i>
   </a>
   </div>
@@ -85,12 +82,13 @@
 <form class="form-horizontal" id="submit-form1">
 <input type="hidden" name="userId" id="userId" value="{{=it.userId}}"/>
 <input type="hidden" name="id" id="id" value="{{=it.id}}"/>
-<div class="form-group"  style="margin-left:8.3%">
-<label class="col-sm-10"><h5 class="header ligth blue" style="margin-top:0px,margin-bottom:0px">Basic&nbsp;&nbsp;&nbsp;&nbsp;
-  {{?it&&it.id}}<a onclick="javascript:useService('{{=it.id}}');">+ Use Service</a>{{?}}</h5></label>
-</div>
+
 <div class="col-sm-6">
-  <div class="form-group">
+	<div class="form-group" style="margin-left:8.3%">
+	<label class="col-sm-12"><h5 class="header ligth blue" style="margin-top:0px;margin-bottom:0px">Basic</h5></label>
+	</div>
+
+<div class="form-group">
   <label class="col-sm-4 control-label no-padding-right">Total:</label>
   <div class="col-sm-8">
   <div class="clearfix">
@@ -117,7 +115,7 @@
   </div>
   </div>
 
-<div class="form-group">
+  <div class="form-group">
 	<label class="col-sm-4 control-label no-padding-right" for="salesName">Sales Name:</label>
 	<div class="col-sm-8">
 		<div class="clearfix">
@@ -142,7 +140,7 @@
 			<input type="text" name="chineseId" id="chineseId" class="form-control col-sm-12" value="{{=it.chineseId || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
 		</div>
 	</div>
-  </div>
+</div>
 
   <div class="form-group">
 	<label class="col-sm-4 control-label no-padding-right" for="passport">Passport:</label>

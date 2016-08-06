@@ -55,7 +55,8 @@ function searchSubmit(){
 					url : contextPath + '/customer/notes/listByPage',
 					paginationBarTemp:"pagination_bar_temp2",
 					param : {customerId:param['customerId'], serviceType:2, serviceId:data.id},
-					temp : "notes_temp"
+					temp : "notes_temp",
+					rowlist: [5]
 				});
 
 				$page = $('#transaction-content').igrid({

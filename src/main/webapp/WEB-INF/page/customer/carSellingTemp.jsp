@@ -47,33 +47,30 @@
 <div id="car-selling-content"></div>
 
 <script id="notes_temp" type="text/x-dot-template">
-<div class="itemdiv commentdiv">
-
 	{{~it.data:p:index}}
-	<div class="body">
+<div class="itemdiv commentdiv">
+<div class="body">
 	<div class="name blue" >
 	{{=p.createUserName||''}}
 	</div>
 	<div class="time">
-	<i class="ace-icon fa fa-clock-o"></i>
-	<span class="blue">{{=new Date(p.createTime).toChString(false) ||''}}</span>
+	<i class="ace-icon fa fa-clock-o"></i>&nbsp;
+	<span class="blue">{{=new Date(p.createTime).toChString(true) ||''}}</span>
 	</div>
-	<div class="text">
+	<div class="text" style="display:block;word-break:break-all;word-wrap: break-word;">
 	<i class="ace-icon fa fa-quote-left"></i>
 	{{=p.content}}
+	<i class="ace-icon fa fa-quote-right" style="color:#DCE3ED;margin-left: 4px"></i>
 	</div>
-
+</div>
 	<div class="tools">
 	<div class="action-buttons bigger-125">
-	<a onclick="javascript:addNote('{{=p.id}}','{{=p.createUserId}}','{{=p.createUserName}}','{{=p.createTime}}','{{=p.content}}')">
-	<i class="ace-icon fa fa-pencil blue"></i>
-	</a>
-	<a onclick="javascript:deleteNotes('{{=p.id}}');">
+	<a href="javascript:deleteNotes('{{=p.id}}');">
 	<i class="ace-icon fa fa-trash-o red"></i>
 	</a>
 	</div>
 	</div>
-	</div>
+</div>
 	{{~}}
 	{{? !it||!it.data||!it.data.length}}
 	<div class="body"><div class="text">No notes</div></div>

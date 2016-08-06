@@ -57,6 +57,7 @@ function addNote2(msgDom){
 		function (result) {
 			$.ialert("Success!");
 			searchSubmit();
+			$.imodalClose();
 		}, function(error){
 			$.ialert(errmsg,"Fail");
 		}

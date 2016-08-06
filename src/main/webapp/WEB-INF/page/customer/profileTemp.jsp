@@ -41,31 +41,32 @@
 </div>
 
     <script id="notes_temp" type="text/x-dot-template">
-    <div class="itemdiv commentdiv">
-
-    {{~it.data:p:index}}
-    <div class="body">
-    <div class="name blue" >
-    {{=p.createUserName||''}}
+	{{~it.data:p:index}}
+<div class="itemdiv commentdiv">
+<div class="body">
+   	<div class="name blue" >
+    	{{=p.createUserName||''}}
     </div>
     <div class="time">
-    <i class="ace-icon fa fa-clock-o"></i>
-    <span class="blue">{{=new Date(p.createTime).toChString(false) ||''}}</span>
+		{{=datadic['serviceType'][p.noteServiceType]}}
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    	<i class="ace-icon fa fa-clock-o"></i>
+    	<span class="blue">{{=new Date(p.createTime).toChString(true) ||''}}</span>
     </div>
-    <div class="text">
-    <i class="ace-icon fa fa-quote-left"></i>
-    {{=p.content}}
+    <div class="text" style="display:block;word-break:break-all;word-wrap: break-word;">
+    	<i class="ace-icon fa fa-quote-left"></i>
+    	{{=p.content}}
+		<i class="ace-icon fa fa-quote-right" style="color:#DCE3ED;margin-left: 4px"></i>
     </div>
-
+</div>
     <div class="tools">
-    <div class="action-buttons bigger-125">
-
-    <a onclick="javascript:deleteNotes('{{=p.id}}');">
-    <i class="ace-icon fa fa-trash-o red"></i>
-    </a>
-    </div>
-    </div>
-    </div>
+    	<div class="action-buttons bigger-125">
+    	<a href="javascript:deleteNotes('{{=p.id}}');">
+    	<i class="ace-icon fa fa-trash-o red"></i>
+    	</a>
+    	</div>
+	</div>
+</div>
     {{~}}
     {{? !it||!it.data||!it.data.length}}
     <div class="body"><div class="text">No notes</div></div>
