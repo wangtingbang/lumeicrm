@@ -1,6 +1,6 @@
 package com.lumei.crm.customer.service.impl;
 
-import com.lumei.crm.customer.biz.CarBuyingBusiness;
+import com.lumei.crm.customer.biz.CarSellingBusiness;
 import com.lumei.crm.customer.service.ICarBuyingService;
 
 import org.slf4j.Logger;
@@ -15,7 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class CarBuyingServiceImpl implements ICarBuyingService {
 
   @Autowired
-  private CarBuyingBusiness carBuyingBusiness;
+  private CarSellingBusiness carBuyingBusiness;
 
   private static Logger logger = LoggerFactory.getLogger(CarBuyingServiceImpl.class);
 

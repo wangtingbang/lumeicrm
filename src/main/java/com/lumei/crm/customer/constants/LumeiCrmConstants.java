@@ -2,9 +2,9 @@ package com.lumei.crm.customer.constants;
 
 public class LumeiCrmConstants {
   public static enum SERVICE_TYPE{
-    CAR_BUYING((byte)1,"Car Buying"), //
+    CAR_SELLING((byte)1,"Car Selling"), //
     EMERGENCY_CONTACT((byte)2,"Emergency Contact"), //
-    CAR_SELLING((byte)3,"Car Selling"), //
+    CAR_BUYING((byte)3,"Car Buying"), //
     CAR_RENTAL((byte)4,"Car Rental"),//
     CELLPHONE((byte)5,"Cellphone"),
     AIRPORT_PICKUP((byte)6,"Airport Pickup"),//

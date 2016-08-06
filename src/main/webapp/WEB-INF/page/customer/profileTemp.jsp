@@ -52,11 +52,11 @@
 <input type="hidden" name="userId" id="userId" value="{{=it.userId}}"/>
 
 <div class="form-group"  style="margin-left:8.3%">
-<label class="col-sm-11"><h5 class="header ligth blue" style="margin-top:0px,margin-bottom:0px">Basic Information</h5></label>
+<label class="col-sm-11"><h5 class="header ligth blue" style="margin-top:0px,margin-bottom:0px">Basic</h5></label>
 </div>
 
 <div class="form-group">
-  <label class="col-sm-2 control-label no-padding-right" for="name">Name:</label>
+  <label class="col-sm-2 control-label no-padding-right" for="name">Customer Name:</label>
   <div class="col-sm-4">
     <div class="clearfix">
       <input type="text" name="name" id="name" class="form-control col-sm-1 " value="{{=it.name|| '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
@@ -168,7 +168,7 @@
 </div>
 
 <div class="form-group"  style="margin-left:8.3%">
-<label class="col-sm-11"><h5 class="header ligth blue" style="margin-top:0px,margin-bottom:0px">Servces</h5></label>
+<label class="col-sm-11"><h5 class="header ligth blue" style="margin-top:0px;margin-bottom:0px">Car Buying Info</h5></label>
 </div>
 
 <div class="form-group">
@@ -208,8 +208,8 @@
       <input id="form-search-status-unconfirm" name="form-search-status-unconfirm" type="checkbox" class="ace" {{? it.readonly}}disabled="disabled"{{?}} {{? it.serviceInfo&&it.serviceInfo.s1}}checked="checked"{{?}}/>
       <span class="lbl">Car Buying</span>
         <span class="lbl">
-        {{?it.serviceInfo&&it.serviceInfo.s1}}<a href="getCarBuying?customerId={{=it.id }}&customerName={{=it.name}}" target="_blank">view</a>{{?}}
-        {{?!it.serviceInfo||(it.serviceInfo&&!it.serviceInfo.s1)}}<a href="javascript:addCarBuying('{{=it.id }}','{{=it.name }}');">add</a>{{?}}
+        {{?it.serviceInfo&&it.serviceInfo.s1}}<a href="getCarSelling?customerId={{=it.id }}&customerName={{=it.name}}" target="_blank">view</a>{{?}}
+        {{?!it.serviceInfo||(it.serviceInfo&&!it.serviceInfo.s1)}}<a href="javascript:addCarSelling('{{=it.id }}','{{=it.name }}');">add</a>{{?}}
         </span>
       </label>
       <label style="margin-right: 10px; margin-top: 5px;">

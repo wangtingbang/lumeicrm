@@ -26,17 +26,17 @@ import com.lumei.crm.commons.mybatis.support.Example;
 import com.lumei.crm.commons.mybatis.support.Pagination;
 import com.lumei.crm.commons.util.BeanUtils;
 import com.lumei.crm.commons.util.DateTimeUtil;
-import com.lumei.crm.customer.biz.CarBuyingBusiness;
+import com.lumei.crm.customer.biz.CarSellingBusiness;
 import com.lumei.crm.customer.biz.EmergencyContactBusiness;
 import com.lumei.crm.customer.biz.NotesBusiness;
 import com.lumei.crm.customer.biz.ProfileBusiness;
 import com.lumei.crm.customer.constants.LumeiCrmConstants;
-import com.lumei.crm.customer.dto.CarBuying;
+import com.lumei.crm.customer.dto.CarSelling;
 import com.lumei.crm.customer.dto.EmergencyContact;
 import com.lumei.crm.customer.dto.Notes;
 import com.lumei.crm.customer.dto.Profile;
 import com.lumei.crm.customer.dto.ServiceInfo;
-import com.lumei.crm.customer.entity.TCarBuying;
+import com.lumei.crm.customer.entity.TCarSelling;
 import com.lumei.crm.customer.entity.TEmergencyContact;
 import com.lumei.crm.customer.entity.TNotes;
 import com.lumei.crm.customer.entity.TProfile;
@@ -54,7 +54,7 @@ public class CustomerController {
   private ProfileBusiness profileBusiness;
 
   @Autowired
-  private CarBuyingBusiness carBuyingBusiness;
+  private CarSellingBusiness carSellingBusiness;
 
   @Autowired
   private EmergencyContactBusiness emergencyContactBusiness;
@@ -133,9 +133,9 @@ public class CustomerController {
       return new Profile();
     }
     
-    Example<TCarBuying> example0 = Example.newExample(TCarBuying.class);
+    Example<TCarSelling> example0 = Example.newExample(TCarSelling.class);
     example0.param("userId", customerId);
-    List<CarBuying> list0 = carBuyingBusiness.list(example0);
+    List<CarSelling> list0 = carSellingBusiness.list(example0);
 
     Example<TEmergencyContact> example1 = Example.newExample(TEmergencyContact.class);
     example1.param("userId", customerId);
@@ -181,73 +181,73 @@ public class CustomerController {
   }
 
 
-  @RequestMapping(value = "getCarBuying", method = RequestMethod.GET)
-  public ModelAndView getCustomerCarBuying(String customerId, String customerName) {
-    ModelAndView mav = new ModelAndView("customer/carBuyingTemp");
+  @RequestMapping(value = "getCarSelling", method = RequestMethod.GET)
+  public ModelAndView getCustomerCarSelling(String customerId, String customerName) {
+    ModelAndView mav = new ModelAndView("customer/carSellingTemp");
     SessionUtil.setAttributes("customerId", customerId);
     SessionUtil.setAttributes("customerName", customerName);
     return mav;
   }
 
 
-  @RequestMapping(value = "service/carbuying/get", method = RequestMethod.GET)
+  @RequestMapping(value = "service/carselling/get", method = RequestMethod.GET)
   @ResponseBody
-  public CarBuying getCustomerCarbuying(String customerId) {
+  public CarSelling getCustomerSellbuying(String customerId) {
 
     log.debug("param, customerId:{}", customerId);
-    Example<TCarBuying> example = Example.newExample(TCarBuying.class);
+    Example<TCarSelling> example = Example.newExample(TCarSelling.class);
     example.param("userId", customerId);
-    List<CarBuying> list = carBuyingBusiness.list(example);
+    List<CarSelling> list = carSellingBusiness.list(example);
     
     if(list==null||list.size()==0){
-      return new CarBuying();
+      return new CarSelling();
     }
-    CarBuying carBuying = list.get(0);
-    if(carBuying==null){
-      return new CarBuying();
+    CarSelling carSelling = list.get(0);
+    if(carSelling==null){
+      return new CarSelling();
     }
     //*
     Example<TNotes> example1 = Example.newExample(TNotes.class);
     example1.param("userId", customerId);
-    example1.param("noteServiceType", LumeiCrmConstants.SERVICE_TYPE.CAR_BUYING.getValue());//TODO
+    example1.param("noteServiceType", LumeiCrmConstants.SERVICE_TYPE.CAR_SELLING.getValue());//TODO
     example1.orderBy("updateTime").desc();
     List<Notes> notes = notesBusiness.list(example1);
     //*/
     if(notes!=null&&notes.size()>0){
-      carBuying.setNotes(notes.get(0).getContent());
+      carSelling.setNotes(notes.get(0).getContent());
     }
-    return carBuying;
+    return carSelling;
   }
 
-  @RequestMapping(value = "service/carbuying/save", method = RequestMethod.POST)
+  @RequestMapping(value = "service/carselling/save", method = RequestMethod.POST)
   @ResponseBody
-  public String saveCarBuying(CarBuying carBuying) {
+  public String saveCarSelling(CarSelling carSelling) {
 
     int result = 0;
-    if(StringUtils.isBlank(carBuying.getUserId())){
+    if(StringUtils.isBlank(carSelling.getUserId())){
       return "fail";
     }
-    if(carBuying.getCreateTime()==null){
+    if(carSelling.getCreateTime()==null){
       Date now = DateTimeUtil.now();
-      carBuying.setCreateTime(now);
-      carBuying.setUpdateTime(now);
+      carSelling.setCreateTime(now);
+      carSelling.setUpdateTime(now);
     }
-    if(StringUtils.isBlank(carBuying.getCreateUserId())){
-      carBuying.setCreateUserId(SessionUtil.getCurrentUserId());
+    if(StringUtils.isBlank(carSelling.getCreateUserId())){
+      carSelling.setCreateUserId(SessionUtil.getCurrentUserId());
     }
-    if (StringUtils.isBlank(carBuying.getId())) {
-      result = carBuyingBusiness.create(carBuying);
+    if (StringUtils.isBlank(carSelling.getId())) {
+      result = carSellingBusiness.create(carSelling);
     } else {
-      carBuying.setUpdateUserId(SessionUtil.getCurrentUserId());
-      result = carBuyingBusiness.update(carBuying);
+      carSelling.setUpdateUserId(SessionUtil.getCurrentUserId());
+      result = carSellingBusiness.update(carSelling);
     }
 
-    String notes = carBuying.getNotes();
+    String notes = carSelling.getNotes();
     
-    String customerId = carBuying.getUserId();
+    String customerId = carSelling.getUserId();
     Example<TNotes> example1 = Example.newExample(TNotes.class);
     example1.param("userId", customerId);
-    example1.param("noteServiceType", LumeiCrmConstants.SERVICE_TYPE.CAR_BUYING.getValue());//TODO
+    example1.param("noteServiceType", LumeiCrmConstants.SERVICE_TYPE.CAR_SELLING.getValue());//TODO
     example1.orderBy("updateTime").desc();
     List<Notes> notesList = notesBusiness.list(example1);
     Notes newNotes;
@@ -260,7 +260,7 @@ public class CustomerController {
       newNotes.setUpdateTime(now);
       newNotes.setUpdateUserId(SessionUtil.getCurrentUserId());
       newNotes.setContent(notes);
-      newNotes.setNoteServiceType(LumeiCrmConstants.SERVICE_TYPE.CAR_BUYING.getValue());
+      newNotes.setNoteServiceType(LumeiCrmConstants.SERVICE_TYPE.CAR_SELLING.getValue());
       notesBusiness.create(newNotes);
     }else{
       newNotes = notesList.get(0);

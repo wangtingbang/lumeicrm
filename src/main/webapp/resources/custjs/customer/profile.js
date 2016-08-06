@@ -155,12 +155,12 @@ function deleteNotes(id){
 
 }
 
-function addCarBuying(customerId, customerName) {
+function addCarSelling(customerId, customerName) {
 	if(!customerId||customerId===''||customerId==='undefined'){
 		$.ialert("Please save profile before add car buying service");
 		return;
 	}
-	window.open(contextPath + '/customer/getCarBuying?customerId='+customerId+"&customerName="+customerName);
+	window.open(contextPath + '/customer/getCarSelling?customerId='+customerId+"&customerName="+customerName);
 }
 
 function addEmergencyContact(customerId, customerName) {
