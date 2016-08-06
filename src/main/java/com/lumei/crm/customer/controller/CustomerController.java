@@ -8,8 +8,7 @@ import com.lumei.crm.auth.entity.TOpAuthUser;
 import com.lumei.crm.commons.bean.BusinessException;
 import com.lumei.crm.commons.mybatis.support.Example;
 import com.lumei.crm.commons.mybatis.support.Pagination;
-import com.lumei.crm.commons.util.BeanUtils;
-import com.lumei.crm.commons.util.DateTimeUtil;
+import com.lumei.crm.commons.util.*;
 import com.lumei.crm.customer.biz.*;
 import com.lumei.crm.customer.constants.LumeiCrmConstants;
 import com.lumei.crm.customer.dto.*;
@@ -22,6 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.sun.corba.se.impl.naming.cosnaming.TransientNameServer;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -348,19 +348,45 @@ public class CustomerController {
     if (StringUtils.isBlank(carSelling.getUserId())) {
       return "fail";
     }
+    Date now = DateTimeUtil.now();
     if (carSelling.getCreateTime() == null) {
-      Date now = DateTimeUtil.now();
       carSelling.setCreateTime(now);
       carSelling.setUpdateTime(now);
     }
     if (StringUtils.isBlank(carSelling.getCreateUserId())) {
       carSelling.setCreateUserId(SessionUtil.getCurrentUserId());
     }
+
+    String id = null;
+
     if (StringUtils.isBlank(carSelling.getId())) {
+      id = KeyGenerator.uuid();
+      carSelling.setId(id);
       result = carSellingBusiness.create(carSelling);
+
+      Transaction transaction = new Transaction();
+      transaction.setServiceId(id);
+      transaction.setUserId(carSelling.getUserId());
+      transaction.setServiceType(LumeiCrmConstants.SERVICE_TYPE.CAR_SELLING.getValue());
+      transaction.setCreateTime(now);
+      transaction.setCreateUserId(SessionUtil.getCurrentUserId());
+      transaction.setUpdateTime(now);
+      transaction.setUpdateUserId(SessionUtil.getCurrentUserId());
+      transactionBusiness.create(transaction);
+
     } else {
       carSelling.setUpdateUserId(SessionUtil.getCurrentUserId());
+      id = carSelling.getId();
       result = carSellingBusiness.update(carSelling);
+
+      Example<TTransaction> example0 = Example.newExample(TTransaction.class);
+      example0.param("serviceId", id);
+      List<Transaction> transactions = transactionBusiness.list(example0);
+      Transaction transaction = transactions.get(0);
+      transaction.setUpdateTime(now);
+      transaction.setUpdateUserId(SessionUtil.getCurrentUserId());
+
+      transactionBusiness.update(transaction);
     }
 
     String notes = carSelling.getNotes();
@@ -372,7 +398,6 @@ public class CustomerController {
     example1.orderBy("updateTime").desc();
     List<Notes> notesList = notesBusiness.list(example1);
     Notes newNotes;
-    Date now = DateTimeUtil.now();
     if (notesList == null || notesList.size() < 1) {
       newNotes = new Notes();
       newNotes.setUserId(customerId);
@@ -447,8 +472,8 @@ public class CustomerController {
     if (StringUtils.isBlank(emergencyContact.getUserId())) {
       return "fail";
     }
+    Date now = DateTimeUtil.now();
     if (emergencyContact.getCreateTime() == null) {
-      Date now = DateTimeUtil.now();
       emergencyContact.setCreateTime(now);
       emergencyContact.setUpdateTime(now);
     }
@@ -456,11 +481,34 @@ public class CustomerController {
       emergencyContact.setCreateUserId(SessionUtil.getCurrentUserId());
     }
     String customerId = emergencyContact.getUserId();
+    String id;
     if (StringUtils.isBlank(emergencyContact.getId())) {
+      id = KeyGenerator.uuid();
+      emergencyContact.setId(id);
       result = emergencyContactBusiness.create(emergencyContact);
+
+      Transaction transaction = new Transaction();
+      transaction.setServiceId(id);
+      transaction.setUserId(emergencyContact.getUserId());
+      transaction.setServiceType(LumeiCrmConstants.SERVICE_TYPE.EMERGENCY_CONTACT.getValue());
+      transaction.setCreateTime(now);
+      transaction.setCreateUserId(SessionUtil.getCurrentUserId());
+      transaction.setUpdateTime(now);
+      transaction.setUpdateUserId(SessionUtil.getCurrentUserId());
+      transactionBusiness.create(transaction);
     } else {
+      id = emergencyContact.getId();
       emergencyContact.setUpdateUserId(SessionUtil.getCurrentUserId());
       result = emergencyContactBusiness.update(emergencyContact);
+
+      Example<TTransaction> example0 = Example.newExample(TTransaction.class);
+      example0.param("serviceId", id);
+      List<Transaction> transactions = transactionBusiness.list(example0);
+      Transaction transaction = transactions.get(0);
+      transaction.setUpdateTime(now);
+      transaction.setUpdateUserId(SessionUtil.getCurrentUserId());
+
+      transactionBusiness.update(transaction);
     }
 
     String notes = emergencyContact.getNotes();
@@ -472,7 +520,6 @@ public class CustomerController {
     example1.orderBy("updateTime").desc();
     List<Notes> notesList = notesBusiness.list(example1);
     Notes newNotes;
-    Date now = DateTimeUtil.now();
     if (notesList == null || notesList.size() < 1) {
       newNotes = new Notes();
       newNotes.setUserId(customerId);
