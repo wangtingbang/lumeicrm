@@ -15,6 +15,13 @@ import com.lumei.crm.customer.constants.LumeiCrmConstants;
 import com.lumei.crm.customer.dto.*;
 import com.lumei.crm.customer.entity.*;
 import com.lumei.crm.util.SessionUtil;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +33,32 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.*;
+import com.lumei.crm.auth.biz.OpAuthUserBusiness;
+import com.lumei.crm.auth.dto.OpAuthUser;
+import com.lumei.crm.auth.entity.TOpAuthUser;
+import com.lumei.crm.commons.bean.BusinessException;
+import com.lumei.crm.commons.mybatis.support.Example;
+import com.lumei.crm.commons.mybatis.support.Pagination;
+import com.lumei.crm.commons.util.BeanUtils;
+import com.lumei.crm.commons.util.DateTimeUtil;
+import com.lumei.crm.customer.biz.CarSellingBusiness;
+import com.lumei.crm.customer.biz.EmergencyContactBusiness;
+import com.lumei.crm.customer.biz.NotesBusiness;
+import com.lumei.crm.customer.biz.ProfileBusiness;
+import com.lumei.crm.customer.biz.TransactionBusiness;
+import com.lumei.crm.customer.constants.LumeiCrmConstants;
+import com.lumei.crm.customer.dto.CarSelling;
+import com.lumei.crm.customer.dto.EmergencyContact;
+import com.lumei.crm.customer.dto.Notes;
+import com.lumei.crm.customer.dto.Profile;
+import com.lumei.crm.customer.dto.ServiceInfo;
+import com.lumei.crm.customer.dto.Transaction;
+import com.lumei.crm.customer.entity.TCarSelling;
+import com.lumei.crm.customer.entity.TEmergencyContact;
+import com.lumei.crm.customer.entity.TNotes;
+import com.lumei.crm.customer.entity.TProfile;
+import com.lumei.crm.customer.entity.TTransaction;
+import com.lumei.crm.util.SessionUtil;
 
 /**
  * Created by wangtingbang on 15/7/30.
@@ -66,24 +98,18 @@ public class CustomerController {
     String customerName,  //
     String customerPhone, //
     String customerEmail,  //
-    @RequestParam(value = "statusList[]") Byte[] statusList, //
-    //    @RequestParam(value = "ratingList[]") Byte[] ratingList, //
     String wechatId, //
+    @RequestParam(value = "rating[]") Byte[] ratingArray, //
     Date potentialBuyingDateStart, //
     Date potentialBuyingDateEnd, //
     int page, int limit) {
 
     log.debug("param, page:{}, limit:{}", page, limit);
-    Example<TProfile> example = Example.newExample(TProfile.class);
-    List<Byte> status_s = Lists.newArrayList(); //car_selling_status
-    //    List<Byte> rating_s = Lists.newArrayList();
-    for (Byte status : statusList) {
-      status_s.add(status);
+    if(ratingArray == null || ratingArray.length == 0){
+    	return Pagination.newInstance(page, limit, 0);
     }
-    //    for (Byte status : ratingList) {
-    //      rating_s.add(status);
-    //    }
-
+    Example<TProfile> example = Example.newExample(TProfile.class);
+    
     if (!StringUtils.isBlank(customerName)) {
       example.paramLikeTo("name", customerName);
     }
@@ -102,10 +128,10 @@ public class CustomerController {
     if (potentialBuyingDateEnd != null) {
       example.paramLessThanOrEqualTo("potentialBuyingDate", potentialBuyingDateEnd);
     }
-//    if(SessionUtil.getCurrentUser().getRoles().contains(SysRole.SALES.getKey())){
-//      example.param("createUserId", SessionUtil.getCurrentUserId());
-//    }
-    example.paramIn("carSellingStatus", status_s);
+    //    if(SessionUtil.getCurrentUser().getRoles().contains(SysRole.SALES.getKey())){
+    //      example.param("createUserId", SessionUtil.getCurrentUserId());
+    //    }
+    example.paramIn("rating", Arrays.asList(ratingArray));
     //    example.paramIn("rating", rating_s);
     Pagination<Profile> profilePagination = profileBusiness.listByPage(example, page, limit);
 

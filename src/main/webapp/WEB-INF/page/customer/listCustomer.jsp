@@ -16,8 +16,7 @@
         <i class="ace-icon fa fa-home home-icon"></i>
         <a href="<%=request.getContextPath() %>/">Home</a>
         <i class="ace-icon fa fa-angle-double-right"></i>
-        <c:if test="${authType == 'op'}">Customers List</c:if>
-        <c:if test="${authType == 'ap'}">Customers View</c:if>
+        Customers
         </small>
         </h1>
         </div>
@@ -52,47 +51,39 @@
         <input id="wechatId" class="form-control" type="text" name="wechatId"/>
         </div>
         </div>
-        <div class="col-sm-8 form-group">
-        <label class="col-sm-3 control-label no-padding-left">Potential Buying Date</label>
-        <div class="col-sm-4">
+        
+        <div class="col-sm-4 form-group">
+        <label class="col-sm-5 control-label no-padding-left">Potential Buying Date</label>
+        <div class="col-sm-7">
         <input id="form-field-5-1" class="date-timepicker form-control col-sm-12 " type="text"
         name="potentialBuyingDateStart" />
         </div>
-        <label class="col-sm-1 control-label no-padding-center">~</label>
-        <div class="col-sm-4">
+        </div>
+        <div class="col-sm-4 form-group">
+        <label class="col-sm-2 control-label no-padding-center">~</label>
+        <div class="col-sm-10">
         <input id="form-field-5-2" class="date-timepicker form-control col-sm-12 " type="text"
         name="potentialBuyingDateEnd"/>
         </div>
         </div>
 
-
         <div class="col-sm-8 form-group">
-        <label class="col-sm-1 control-label no-padding-right">Status</label>
+        <label class="col-sm-1 control-label no-padding-right">Rating</label>
         <div class="col-sm-11">
         <label style="margin-right: 10px; margin-top: 5px;">
-        <input id="form-search-status-appointmented" name="form-search-status-appointmented" type="checkbox"
+        <input id="form-search-status-appointmented" name="ratingArray" type="checkbox" value="1"
         checked="checked" class="ace" />
-        <span class="lbl">Appointmented&nbsp;&nbsp;</span>
+        <span class="lbl">A&nbsp;&nbsp;</span>
         </label>
         <label style="margin-right: 10px; margin-top: 5px;">
-        <input id="form-search-status-soldbylumei" name="form-search-status-soldbylumei" type="checkbox"
+        <input id="form-search-status-soldbylumei" name="ratingArray" type="checkbox" value="2"
         checked="checked" class="ace" />
-        <span class="lbl">Sold by Lumei&nbsp;&nbsp;</span>
+        <span class="lbl">B&nbsp;&nbsp;</span>
         </label>
         <label style="margin-right: 10px; margin-top: 5px;">
-        <input id="form-search-status-buyfromother" name="form-search-status-buyfromother" type="checkbox"
+        <input id="form-search-status-buyfromother" name="ratingArray" type="checkbox" value="3"
         checked="checked" class="ace" />
-        <span class="lbl">Buy from Other&nbsp;&nbsp;</span>
-        </label>
-        <label style="margin-right: 10px; margin-top: 5px;">
-        <input id="form-search-status-noresponse" name="form-search-status-noresponse" type="checkbox" checked="checked"
-        class="ace" />
-        <span class="lbl">No Response&nbsp;&nbsp;</span>
-        </label>
-        <label style="margin-right: 10px; margin-top: 5px;">
-        <input id="form-search-status-stillinthemarket" name="form-search-status-stillinthemarket" type="checkbox"
-        checked="checked" class="ace" />
-        <span class="lbl">Still in the Market&nbsp;&nbsp;</span>
+        <span class="lbl">C&nbsp;&nbsp;</span>
         </label>
         </div>
         </div>
@@ -126,10 +117,10 @@
         <thead>
         <tr>
         <th>Name</th>
+        <th>Wechat</th>
         <th>Phone</th>
         <th>Email</th>
-        <th>Status</th>
-        <th>Customer Rating</th>
+        <th>Rating</th>
         <th>Sales</th>
         <th>Potential Buying Date</th>
         <th>Operation</th>
@@ -139,13 +130,13 @@
         {{~it.data :p:index}}
         <tr>
         <td>{{=p.name||''}}</td>
+        <td>{{=p.wechatId||''}}</td>
         <td>{{=p.phone||''}}</td>
         <td>{{=p.email||''}}</td>
-        <td>{{=datadic['customerStatus'][p.carSellingStatus]||''}}</td>
         <td>{{=datadic['customerRating'][p.rating]||''}}</td>
         <td>{{=p.sales||''}}</td>
         <td>{{=new Date(p.potentialBuyingDate).toChString(false)||''}}</td>
-        <td><a href="javascript:viewProfile('{{=p.id }}','{{=p.name }}');">View Profile</a></td>
+        <td><a href="javascript:viewProfile('{{=p.id }}','{{=p.name }}');">Profile</a></td>
         </tr>
         {{~}}
         {{? !it.data.length}}
