@@ -1,21 +1,36 @@
 var datadic = {
-		serviceType:{
-			"1":"Car Buying",
-			"2":"Emergency Contact",
-			"3":"Car Selling",
-			"4":"Car Rental",
-			"5":"Cellphone",
-			"6":"Airport Pickup",
-			"7":"Temporary House",
-			"8":"AIM"
-		},
-		customerStatus:{
-			"1":"Appointmented",
-			"2":"Sold by Lumei",
-			"3":"Buy from Other",
-			"4":"Noresponse",
-			"5":"Still in the Market"
-		}
+	serviceType:{
+		"1":"Car Buying",
+		"2":"Emergency Contact",
+		"3":"Car Selling",
+		"4":"Car Rental",
+		"5":"Cellphone",
+		"6":"Airport Pickup",
+		"7":"Temporary House",
+		"8":"AIM"
+	},
+	customerStatus:{
+		"1":"Appointmented",
+		"2":"Sold by Lumei",
+		"3":"Buy from Other",
+		"4":"Noresponse",
+		"5":"Still in the Market"
+	},
+	customerRating:{
+		"1":"A",
+		"2":"B",
+		"3":"C"
+	},
+	financeStatus:{
+		"1":"Pending",
+		"2":"Approved",
+		"3":"Unqualified"
+	},
+	leaseStatus:{
+		"1":"Pending",
+		"2":"Approved",
+		"3":"Unqualified"
+	}
 }
 
 function datadicArray(obj){

@@ -1,6 +1,6 @@
 $(function () {
 	$('.date-timepicker').datetimepicker({
-		language:'zh-CN',
+		language: 'en',
 		format:'YYYY-MM-DD HH:mm:ss'
 	}).next().on(ace.click_event, function(){
 		$(this).prev().focus();
@@ -25,9 +25,7 @@ function saveProfile(){
 			param[v.name]=v.value;
 		}
 	});
-//	$.ialert(param);
-
-	var data = $('#submit-form1').serializeArray();
+	
 	$.ipost(
 	contextPath + '/customer/profile/save',
 	param,
@@ -58,12 +56,24 @@ function searchSubmit(){
 				var pagefn = doT.template($('#step_temp_1').text());
 				var htmlpage = pagefn(data);
 				$("#profile-content").html(htmlpage);
-
+				$('.date-timepicker').datetimepicker({
+					language: 'en',
+					format:'YYYY-MM-DD HH:mm:ss'
+				}).next().on(ace.click_event, function(){
+					$(this).prev().focus();
+				});
+				/*
 				$page = $('#notes-content').igrid({
 					//url : contextPath + '/consume/'+authType + '/postsalepay/listConsume',
 					url : contextPath + '/customer/notes/listByPage',
 					param : param,
 					temp : "note_grid_temp"
+				});//*/
+				$page = $('#transaction-content').igrid({
+					//url : contextPath + '/consume/'+authType + '/postsalepay/listConsume',
+					url : contextPath + '/customer/transaction/listByPage',
+					param : param,
+					temp : "transaction_grid_temp"
 				});
 
 			},

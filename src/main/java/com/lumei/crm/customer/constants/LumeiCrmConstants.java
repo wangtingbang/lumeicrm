@@ -47,4 +47,64 @@ public class LumeiCrmConstants {
       return desc;
     }
   }
+
+  public static enum CUSTOMER_RATING{
+    A("A","A"),//
+    B("B","B"),//
+    C("C","C");
+
+    private String value;
+    private String desc;
+
+    private CUSTOMER_RATING(String value, String desc){
+      this.value = value;
+      this.desc = desc;
+    }
+    public String getValue() {
+      return value;
+    }
+    public String getDesc() {
+      return desc;
+    }
+  }
+
+  public static enum FINANCE_STATUS {
+    PENDING((byte)1,"Pending"),
+    APPROVED((byte)2,"Approved"),
+    UNQUALIFIED((byte)3,"Unqualified");
+
+    private Byte value;
+    private String desc;
+
+    private FINANCE_STATUS(Byte value, String desc){
+      this.value = value;
+      this.desc = desc;
+    }
+    public Byte getValue() {
+      return value;
+    }
+    public String getDesc() {
+      return desc;
+    }
+  }
+
+  public static enum LEASE_STATUS {
+    PENDING((byte)1,"Pending"),
+    APPROVED((byte)2,"Approved"),
+    UNQUALIFIED((byte)3,"Unqualified");
+
+    private Byte value;
+    private String desc;
+
+    private LEASE_STATUS(Byte value, String desc){
+      this.value = value;
+      this.desc = desc;
+    }
+    public Byte getValue() {
+      return value;
+    }
+    public String getDesc() {
+      return desc;
+    }
+  }
 }

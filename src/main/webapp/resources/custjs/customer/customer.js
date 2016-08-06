@@ -1,13 +1,14 @@
 $(function () {
 	$('.date-timepicker').datetimepicker({
-		language:'zh-CN',
+		language: 'en',
 		format:'YYYY-MM-DD HH:mm:ss'
 	}).next().on(ace.click_event, function(){
 		$(this).prev().focus();
 	});
 
 	function createSubmit(){
-		location.href = contextPath + '/customer/getProfile?customerId=';
+		// location.href = contextPath + '/customer/getProfile?customerId=';
+		window.open(contextPath + '/customer/getProfile?customerId=&customerName=');
 	}
 	$('#create_btn').click(function() {
 		createSubmit();
@@ -68,10 +69,35 @@ function searchSubmit() {
 	}
 
 
-	param = $.extend(param, {statusList:statusArray});
+
+	var ratingA = $("#form-search-rating-a").prop("checked");
+	var ratingB = $("#form-search-rating-b").prop("checked");
+	var ratingC = $("#form-search-rating-c").prop("checked");
+
+	var ratingArray = new Array();
+	var idx = 0;
+	if(ratingA){
+		ratingArray[idx] = 1;
+		idx++;
+	}
+	if(ratingB){
+		ratingArray[idx] = 2;
+		idx++;
+	}
+	if(ratingC){
+		ratingArray[idx] = 3;
+		idx++;
+	}
+
+	if(!(ratingA||ratingB||ratingC)){
+		ratingArray[0] = 1;
+		ratingArray[1] = 2;
+		ratingArray[2] = 3;
+	}
+
+	param = $.extend(param, {statusList:statusArray, ratingList:ratingArray});
 
 	$page = $('#page').igrid({
-		//url : contextPath + '/consume/'+authType + '/postsalepay/listConsume',
 		url : contextPath + '/customer/list',
 		param : param,
 		temp : "grid_temp"
@@ -80,5 +106,6 @@ function searchSubmit() {
 
 
 function viewProfile(customerId, customerName) {
-	location.href = contextPath + '/customer/getProfile?customerId='+customerId+'&customerName='+customerName;
+	// location.href = contextPath + '/customer/getProfile?customerId='+customerId+'&customerName='+customerName;
+	window.open(contextPath + '/customer/getProfile?customerId='+customerId+'&customerName='+customerName);
 }

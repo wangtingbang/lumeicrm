@@ -1,6 +1,6 @@
 $(function () {
 	$('.date-timepicker').datetimepicker({
-		language:'zh-CN',
+		language: 'en',
 		format:'YYYY-MM-DD HH:mm:ss'
 	}).next().on(ace.click_event, function(){
 		$(this).prev().focus();
@@ -48,14 +48,12 @@ function searchSubmit(){
 }
 
 function saveCarSelling(){
-	$.ialert("save profile...");
 	var param = {};
 	$($('#submit-form1').serializeArray()).each(function(k, v){
 		if(!(v.value === '' || v.value == null || v.value === 'undefined')){
 			param[v.name]=v.value;
 		}
 	});
-//	$.ialert(param);
 
 	var customerId = $("#customerId").val();
 

@@ -28,6 +28,7 @@ public class Profile extends BaseModel<String> implements Serializable {
   //@Length(min = 1, max = 0, message = "SALES_ID长度为0")
   private String salesId;
 
+  private String sales;
   /**
    * @field name
    */
@@ -479,5 +480,13 @@ public class Profile extends BaseModel<String> implements Serializable {
 
   public void setServiceInfo(ServiceInfo serviceInfo) {
     this.serviceInfo = serviceInfo;
+  }
+
+  public String getSales() {
+    return sales;
+  }
+
+  public void setSales(String sales) {
+    this.sales = sales;
   }
 }
