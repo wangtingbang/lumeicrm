@@ -75,7 +75,7 @@
 <script id="step_temp_1" type="text/x-dot-template">
 <form class="form-horizontal" id="submit-form1">
 <input type="hidden" name="id" id="id" value="{{=it.id}}"/>
-<input type="hidden" name="userId" id="userId" value="{{=it.userId}}"/>
+<input type="hidden" name="salesId" id="salesId" value="{{=it.salesId||'<%=SessionUtil.getCurrentUserId() %>'||''}}"/>
 
 <div class="col-sm-6">
 	<div class="form-group"  style="margin-left:16.6%">
@@ -170,7 +170,7 @@
     <label class="col-sm-4 control-label no-padding-right">Sales:</label>
     <div class="col-sm-8">
 		<div class="clearfix">
-    		<input type="text" name="sales" id="sales" class="form-control col-sm-1 " value="{{=it.sales||'<%=SessionUtil.getCurrentUserName() %>'||''}}" readonly="readonly"/>
+    		<input type="text" name="sales" id="sales" class="form-control col-sm-1 " value="{{=it.sales||'<%=SessionUtil.getCurrentUserNickName() %>'||''}}" readonly="readonly"/>
     	</div>
     </div>
 	</div>
@@ -346,14 +346,14 @@
     <div class="col-sm-4">
     	<div class="clearfix">
     	<input type="hidden" name="createUserId" id="createUserId" value="{{=it.createUserId||'<%=SessionUtil.getCurrentUserId() %>'||''}}" readonly="readonly"/>
-    	<input type="text" name="createUserName" id="createUserName" class="form-control col-sm-1 " value="{{=it.createUserName||'<%=SessionUtil.getCurrentUserName() %>'||''}}" readonly="readonly"/>
+    	<input type="text" name="createUserName" id="createUserName" class="form-control col-sm-1 " value="{{=it.createUserName||'<%=SessionUtil.getCurrentUserNickName() %>'||''}}" readonly="readonly"/>
     	</div>
     </div>
     <label class="col-sm-1 control-label no-padding-right" for="name">Updated By:</label>
     <div class="col-sm-4">
     	<div class="clearfix">
     	<input type="hidden" name="updateUserId" id="updateUserId" value="{{=it.updateUserId||'<%=SessionUtil.getCurrentUserId() %>'||''}}" readonly="readonly"/>
-    	<input type="text" name="updateUserName" id="updateUserName" class="form-control col-sm-1 " value="{{=it.updateUserName||'<%=SessionUtil.getCurrentUserName() %>'||''}}" readonly="readonly"/>
+    	<input type="text" name="updateUserName" id="updateUserName" class="form-control col-sm-1 " value="{{=it.updateUserName||'<%=SessionUtil.getCurrentUserNickName() %>'||''}}" readonly="readonly"/>
     	</div>
     </div>
     </div>

@@ -86,7 +86,7 @@
 	<label class="col-sm-4 control-label no-padding-right" for="salesName">Sales Name:</label>
 	<div class="col-sm-8">
 		<div class="clearfix">
-			<input type="text" name="salesName" id="salesName" class="form-control col-sm-12" value="{{=it.salesName||'<%=SessionUtil.getCurrentUserName() %>'||''}}" readonly="readonly"/>
+			<input type="text" name="salesName" id="salesName" class="form-control col-sm-12" value="{{=it.salesName||'<%=SessionUtil.getCurrentUserNickName() %>'||''}}" readonly="readonly"/>
 		</div>
 	</div>
   </div>

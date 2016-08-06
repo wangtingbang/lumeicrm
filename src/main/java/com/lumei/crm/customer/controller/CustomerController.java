@@ -102,7 +102,8 @@ public class CustomerController {
     @RequestParam(value = "rating[]") Byte[] ratingArray, //
     Date potentialBuyingDateStart, //
     Date potentialBuyingDateEnd, //
-    int page, int limit) {
+    int page, int limit,//
+    String orderColumn, boolean orderDesc) {
 
     log.debug("param, page:{}, limit:{}", page, limit);
     if(ratingArray == null || ratingArray.length == 0){
@@ -133,6 +134,14 @@ public class CustomerController {
     //    }
     example.paramIn("rating", Arrays.asList(ratingArray));
     //    example.paramIn("rating", rating_s);
+    if(StringUtils.isNoneBlank(orderColumn)){
+    	example.orderBy(orderColumn);
+    	if(orderDesc){
+    		example.desc();
+    	}
+    }else{
+    	example.orderBy("createTime").desc();
+    }
     Pagination<Profile> profilePagination = profileBusiness.listByPage(example, page, limit);
 
     if (profilePagination == null) {

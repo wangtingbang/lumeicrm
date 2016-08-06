@@ -3,7 +3,7 @@
                  pageEncoding="UTF-8" %>
         <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
         <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-
+		<link rel="stylesheet" href="<%=request.getContextPath() %>/resources/custcss/common.css" />
         <!-- <script src="<%=request.getContextPath()%>/resources/custjs/customer/customer.js"></script> -->
         <script src="<%=request.getContextPath()%>/resources/custjs/customer/customer.js"></script>
 
@@ -120,9 +120,9 @@
         <th>Wechat</th>
         <th>Phone</th>
         <th>Email</th>
-        <th>Rating</th>
-        <th>Sales</th>
-        <th>Potential Buying Date</th>
+        <th class="sorting" data="rating">Rating</th>
+        <th class="sorting" data="salesId">Sales</th>
+        <th class="sorting" data="potentialBuyingDate">Potential Buying Date</th>
         <th>Operation</th>
         </tr>
         </thead>
