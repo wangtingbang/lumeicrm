@@ -691,7 +691,7 @@
 			</a>
 		</div>
 		<div class="col-sm-6 form-group center">
-			<a class="btn btn-sm btn-default" type="reset" id="delete_btn">
+			<a class="btn btn-sm btn-default" type="reset" id="delete_btn" onclick="javascript:deleteEmergencyContact('{{=it.id}}');">
 				<i class="ace-icon fa fa-times bigger-110"></i> Delete
 			</a>
 		</div>

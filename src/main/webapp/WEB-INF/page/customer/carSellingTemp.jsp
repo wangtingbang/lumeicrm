@@ -420,7 +420,7 @@
 			</a>
 		</div>
 		<div class="col-sm-6 form-group center">
-			<a class="btn btn-sm btn-default" type="reset" id="delete_btn"  {{? it.readonly}}onclick="javascript:saveCarSelling();"{{?}}>
+			<a class="btn btn-sm btn-default" type="reset" id="delete_btn"  {{? it.readonly}}onclick="javascript:deleteCarSelling('{{=it.id}}');"{{?}}>
 				<i class="ace-icon fa fa-times bigger-110"></i> Delete
 			</a>
 		</div>

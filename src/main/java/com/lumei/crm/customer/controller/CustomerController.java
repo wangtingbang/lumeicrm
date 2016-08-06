@@ -721,4 +721,20 @@ public class CustomerController {
     }
     return userMap;
   }
+
+  @RequestMapping(value = "profile/delete", method = RequestMethod.POST)
+  @ResponseBody
+  private String deleteProfile(String id){
+    return profileBusiness.delete(id, Profile.class)==1?"success":"fail";
+  }
+  @RequestMapping(value = "service/carselling/delete", method = RequestMethod.POST)
+  @ResponseBody
+  private String deleteCarSelling(String id){
+    return carSellingBusiness.delete(id, CarSelling.class)==1?"success":"fail";
+  }
+  @RequestMapping(value = "service/emergencycontact/delete", method = RequestMethod.POST)
+  @ResponseBody
+  private String deleteEmergencyContact(String id){
+    return emergencyContactBusiness.delete(id, EmergencyContact.class)==1?"success":"fail";
+  }
 }

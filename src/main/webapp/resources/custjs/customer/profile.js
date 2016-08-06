@@ -132,7 +132,6 @@ function addTransaction2(msgDom) {
 
 	var customerId = $("#customerId").val();
 	var customerName = $("#customerName").val();
-	var a = $("#tran-servicetype-select").val();
 	if ($("#tran-servicetype-select").val() == 1) {
 		location.href = contextPath + '/customer/getCarSelling?customerId='+customerId+"&customerName="+customerName;
 	}else if ($("#tran-servicetype-select").val() ==2) {
@@ -176,9 +175,34 @@ function addEmergencyContact(customerId, customerName) {
 	window.open(contextPath + '/customer/getEmergencyContact?customerId='+customerId+"&customerName="+customerName);
 }
 
-function viewTran(p) {
-	var a = p;
-	$.ialert(a);
+function viewTran(serviceType, customerId, customerName) {
+	if(!customerId||customerId==null||customerId===''||customerId==='undefined'){
+		customerId = $("#customerId").val();
+		customerName = $("#customerName").val();
+	}
+	if (serviceType == 1) {
+		location.href = contextPath + '/customer/getCarSelling?customerId='+customerId+"&customerName="+customerName;
+	}else if (serviceType ==2) {
+		location.href = contextPath + '/customer/getEmergencyContact?customerId='+customerId+"&customerName="+customerName
+	}else{
+		location.href = "#";
+	}
+
 }
 
 
+function deleteProfile(id){
+	$.iconfirm("Are you sure to delete?",function(){
+		$.ipost(
+			contextPath+'/customer/profile/delete',
+			{id:id},
+			function(){
+				$.ialert("Success!");
+				searchSubmit();
+			},
+			function(errmsg){
+				$.ialert(errmsg,"Fail");
+			});
+	});
+
+}

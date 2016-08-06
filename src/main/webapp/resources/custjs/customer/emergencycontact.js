@@ -110,3 +110,18 @@ function useService(id) {
 			});
 	});
 }
+
+function deleteEmergencyContact(id){
+	$.iconfirm("Are you sure to delete?",function(){
+		$.ipost(
+			contextPath+'/customer/service/emergencycontact/delete',
+			{id:id},
+			function(){
+				$.ialert("Success!");
+				searchSubmit();
+			},
+			function(errmsg){
+				$.ialert(errmsg,"Fail");
+			});
+	});
+}

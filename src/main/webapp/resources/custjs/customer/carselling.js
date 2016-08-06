@@ -71,3 +71,18 @@ function saveCarSelling(){
 	}
 	);
 }
+
+function deleteCarSelling(id){
+	$.iconfirm("Are you sure to delete?",function(){
+		$.ipost(
+			contextPath+'/customer/service/carselling/delete',
+			{id:id},
+			function(){
+				$.ialert("Success!");
+				searchSubmit();
+			},
+			function(errmsg){
+				$.ialert(errmsg,"Fail");
+			});
+	});
+}

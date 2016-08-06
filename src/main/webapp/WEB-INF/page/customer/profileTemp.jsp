@@ -28,6 +28,7 @@
 			<label class="col-sm-1 control-label no-padding-right" for="form-field-1">customerId</label>
 			<div class="col-sm-9">
 				<input id="customerId" name="customerId"  class="form-control" value="<%=SessionUtil.getAttributes("customerId") %>" readonly="readonly"/>
+                <input id="customerName" name="customerName"  class="form-control" value="<%=SessionUtil.getAttributes("customerName") %>" readonly="readonly"/>
 				<input id="currentUserId" name="currentUserId"  class="form-control" value="<%=SessionUtil.getCurrentUserId() %>" readonly="readonly"/>
 				<input id="currentUserName" name="currentUserName"  class="form-control" value="<%=SessionUtil.getCurrentUserName() %>" readonly="readonly"/>
 			</div>
@@ -378,7 +379,7 @@
 			</a>
 		</div>
 		<div class="col-sm-6 form-group center">
-			<a class="btn btn-sm btn-default" type="reset" id="create_btn">
+			<a class="btn btn-sm btn-default" type="reset" id="create_btn"  {{? !it.readonly}}onclick="javascript:deleteProfile('{{=it.id}}');"{{?}}>
 				<i class="ace-icon fa fa-times bigger-110"></i> Delete
 			</a>
 		</div>
@@ -452,7 +453,7 @@
     <tr>
     <td>{{=datadic['serviceType'][p.serviceType]}}</td>
     <td>{{=new Date(p.createTime).toChString(false) ||''}}</td>
-    <td><a onclick="javascript:viewTran('{{=p.serviceId}}','{{=p.serviceType}}');">Detail</a></td>
+    <td><a onclick="javascript:viewTran('{{=p.serviceType}}','{{=it.id}}','{{=it.name }}');">Detail</a></td>
     </tr>
     {{~}}
     {{? !it||!it.data||!it.data.length}}
