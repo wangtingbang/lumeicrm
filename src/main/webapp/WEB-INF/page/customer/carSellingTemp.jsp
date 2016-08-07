@@ -55,6 +55,7 @@
 	<i class="ace-icon fa fa-quote-right" style="color:#DCE3ED;margin-left: 4px"></i>
 	</div>
 </div>
+	{{? !p.readonly}}
 	<div class="tools">
 	<div class="action-buttons bigger-125">
 	<a href="javascript:deleteNotes('{{=p.id}}');">
@@ -62,6 +63,7 @@
 	</a>
 	</div>
 	</div>
+	{{?}}
 </div>
 	{{~}}
 	{{? !it||!it.data||!it.data.length}}

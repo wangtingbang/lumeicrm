@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <menu-conf>
 	<menu id="cusotmerList" pid="" name="Customers" url="customer/list"
-		icon="fa-desktop" order="100">
+		icon="fa-users" order="100">
 		<roles>
 			<role name="ADMIN" />
 			<role name="SALES" />

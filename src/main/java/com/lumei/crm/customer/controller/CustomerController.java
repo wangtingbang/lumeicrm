@@ -512,6 +512,7 @@ public class CustomerController {
       pg.setTotalPage(0);
       return pg;
     }
+    boolean readonly = false;
 
     example.param("serviceId", serviceId);
     example.orderBy("createTime").desc();
@@ -534,6 +535,11 @@ public class CustomerController {
         OpAuthUser crtUser = userMap.get(crtUId);
         OpAuthUser updUser = userMap.get(updUId);
 
+        if(SessionUtil.getCurrentUser().getRoles().contains(SysRole.SALES.getKey())){
+          if(!SessionUtil.getCurrentUserId().equals((tmp.getCreateUserId()))){
+            tmp.setReadonly(true);
+          }
+        }
         String crtUName = crtUser == null ? "" : crtUser.getNickName();
         String updUName = updUser == null ? "" : updUser.getNickName();
         tmp.setCreateUserName(crtUName);
