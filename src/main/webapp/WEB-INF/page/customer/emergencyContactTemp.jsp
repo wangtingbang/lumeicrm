@@ -82,6 +82,7 @@
 <form class="form-horizontal" id="submit-form1">
 <input type="hidden" name="userId" id="userId" value="{{=it.userId}}"/>
 <input type="hidden" name="id" id="id" value="{{=it.id}}"/>
+<input type="hidden" name="serviceId" id="serviceId-this" value="{{=it.id}}"/>
 
 <div class="col-sm-6">
 	<div class="form-group" style="margin-left:8.3%">

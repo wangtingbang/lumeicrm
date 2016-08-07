@@ -179,15 +179,17 @@ function addEmergencyContact(customerId, customerName) {
 	window.open(contextPath + '/customer/getEmergencyContact?customerId='+customerId+"&customerName="+customerName);
 }
 
-function viewTran(serviceType, customerId, customerName) {
-	if(!customerId||customerId==null||customerId===''||customerId==='undefined'){
+function viewTran(serviceType, serviceId) {
+	// if(!customerId||customerId==null||customerId===''||customerId==='undefined'){
 		customerId = $("#customerId").val();
-		customerName = $("#customerName").val();
-	}
+		customerName = $("#customer-name-head").val();
+	// }
 	if (serviceType == 1) {
 		location.href = contextPath + '/customer/getCarSelling?customerId='+customerId+"&customerName="+customerName;
+		$("#serviceId").attr("value", serviceId);
 	}else if (serviceType ==2) {
 		location.href = contextPath + '/customer/getEmergencyContact?customerId='+customerId+"&customerName="+customerName
+		$("#serviceId").attr("value", serviceId);
 	}else{
 		location.href = "#";
 	}

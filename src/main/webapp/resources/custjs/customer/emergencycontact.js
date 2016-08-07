@@ -31,13 +31,14 @@ function searchSubmit(){
 
 				}
 				var a = !param['customerId'];
-				if(!param['customerId']){
+				if(!param['customerId']&&!$("#serviceId-this")&&!$("#serviceId-this").val()){
 					data['total']="6";
 					data['used']="0";
-					
+
+					/*
 					var expirationDate = new Date();
 					expirationDate.setFullYear(expirationDate.getFullYear() + 1);
-					data['expirationDate'] = expirationDate;
+					data['expirationDate'] = expirationDate;//*/
 				}
 				var pagefn = doT.template($('#step_temp_1').text());
 				var htmlpage = pagefn(data);
@@ -61,7 +62,7 @@ function searchSubmit(){
 
 				$page = $('#event-content').igrid({
 					url : contextPath + '/customer/service/emergencycontact/useList',
-					param : $.extend({},param,{serviceId:$("#id").val()}),
+					param : $.extend({},param,{serviceId:$("#serviceId-this").val()}),
 					temp : "event_grid_temp"
 				});
 			},

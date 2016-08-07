@@ -28,7 +28,7 @@
 			<label class="col-sm-1 control-label no-padding-right" for="form-field-1">customerId</label>
 			<div class="col-sm-9">
 				<input id="customerId" name="customerId"  class="form-control" value="<%=SessionUtil.getAttributes("customerId") %>" readonly="readonly"/>
-                <input id="customerName" name="customerName"  class="form-control" value="<%=SessionUtil.getAttributes("customerName") %>" readonly="readonly"/>
+                <input id="customer-name-head" name="customerName"  class="form-control" value="<%=SessionUtil.getAttributes("customerName") %>" readonly="readonly"/>
 				<input id="currentUserId" name="currentUserId"  class="form-control" value="<%=SessionUtil.getCurrentUserId() %>" readonly="readonly"/>
 				<input id="currentUserName" name="currentUserName"  class="form-control" value="<%=SessionUtil.getCurrentUserName() %>" readonly="readonly"/>
 			</div>
@@ -453,7 +453,7 @@
     <tr>
     <td>{{=datadic['serviceType'][p.serviceType]}}</td>
     <td>{{=new Date(p.createTime).toChString(false) ||''}}</td>
-    <td><a href="javascript:viewTran('{{=p.serviceType}}','{{=it.id}}','{{=it.name }}');">Detail</a></td>
+    <td><a href="javascript:viewTran('{{=p.serviceType}}','{{=p.id}}');">Detail</a></td>
     </tr>
     {{~}}
     {{? !it||!it.data||!it.data.length}}
@@ -466,7 +466,7 @@
 <script id="add-notes-temp" type="text/x-dot-template">
 <form class="form-horizontal" id="add-notes-form">
 <div class="form-group">
-<input type="hidden" id="userId" name="userId" value="{{=it.customerId||''}}" class="col-xs-12 col-sm-12" value=""/>
+<input type="hidden" id="userId" name="userId" value="{{=it.customerId||''}}" class="col-xs-12 col-sm-12"/>
 <input type="hidden" id="noteId" name="noteId" value="{{=it.noteId||''}}" class="col-xs-12 col-sm-12" />
 <input type="hidden" id="serviceId" name="serviceId" value="{{=it.customerId||''}}" class="col-xs-12 col-sm-12" />
 <input type="hidden" id="createUserId" name="createUserId" value="{{=it.noteCrtUId||''}}" class="col-xs-12 col-sm-12" />
