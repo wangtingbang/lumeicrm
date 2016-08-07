@@ -25,7 +25,18 @@ public class EmergencyContact extends BaseModel<String> implements Serializable 
   public void setReadonly(boolean readonly) {
     this.readonly = readonly;
   }
-  /**
+  
+  private String salesName;
+  
+  public String getSalesName() {
+	return salesName;
+}
+
+public void setSalesName(String salesName) {
+	this.salesName = salesName;
+}
+
+/**
    * @field id
    */
   //@Length(min = 1, max = 0, message = "ID长度为0")

@@ -1,31 +1,14 @@
 
-function addNote(noteId, noteCrtUId, noteCrtUName, noteCrtTm, noteCont){
-
-	var customerId = $("#customerId").val();
-	if(!customerId||customerId===''||customerId==='undefined'){
-		$.ialert("Please save before add notes");
-		return;
-	}
-	var userId = $("#userId").val();
-	var serviceType = $("#noteservicetype-select").val();
+function addNote(){
 	var serviceId = $("#id").val();
 	if(!serviceId||serviceId===''||serviceId==='undefined'){
 		$.ialert("Please save before add notes");
 		return;
 	}
-	var content = $("#content").val();
-
 	var notesfn = doT.template($('#add-notes-temp').text());
 
-	var t =  new Date(noteCrtTm).toChString(true);
-	if(!noteCrtUId||noteCrtUId===''){
-		noteCrtUId = $("#currentUserId").val();
-	}
-	if(!noteCrtUName||noteCrtUName===''){
-		noteCrtUName = $("#currentUserName").val();
-	}
-	var note = {serviceId:serviceId, noteId:noteId, createUserId:noteCrtUId,createUserName:noteCrtUName,createTime:noteCrtTm, content:noteCont};
-	var data = $.extend({},{userId:customerId,datadic:{serviceType:datadicArray(datadic["serviceType"])}},note);
+	var customerId = $("#customerId").val();
+	var data = {serviceId:serviceId,customerId:customerId};
 
 	$.imodal({
 		title:"Notes",
@@ -41,16 +24,12 @@ function addNote(noteId, noteCrtUId, noteCrtUName, noteCrtTm, noteCont){
 }
 
 function addNote2(msgDom){
-
-	var customerId = $("#customerId").val();
-	var userId = $("#userId").val();
+	var param = {};
+	$($('#add-notes-form').serializeArray()).each(function(k, v){
+			param[v.name]=v.value;
+	});
 	var serviceType = $("#noteservicetype-select").val();
-	var serviceId = $("#serviceId").val();
-	var content = $("#content").val();
-	var noteId = $("#noteId").val();
-	var createTime = $("#createTime").val();
-	var createUserId = $("#createUserId").val();
-	var data = {id:noteId,userId:customerId, noteServiceType:serviceType,serviceId:serviceId,content:content,createTime:createTime, createUserId:createUserId};
+	var data = $.extend({},param,{noteServiceType:serviceType});
 	$.ipost(
 		contextPath+'/customer/notes/save',
 		data,

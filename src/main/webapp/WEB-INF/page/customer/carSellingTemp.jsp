@@ -32,16 +32,8 @@
 </div>
 
 <form id="search_form" class="form-horizontal" action="#" hidden="hidden" >
-	<div class="row">
-		<div class="col-sm-6 form-group">
-			<label class="col-sm-2 control-label no-padding-right">customerId</label>
-			<div class="col-sm-4">
-				<input id="customerId" name="customerId"  class="form-control" value="<%=SessionUtil.getAttributes("customerId") %>" readonly="readonly"/>
-				<input id="currentUserId" name="currentUserId"  class="form-control" value="<%=SessionUtil.getCurrentUserId() %>" readonly="readonly"/>
-				<input id="currentUserName" name="currentUserName"  class="form-control" value="<%=SessionUtil.getCurrentUserNickName() %>" readonly="readonly"/>
-			</div>
-		</div>
-	</div>
+<input id="serviceId" name="serviceId"  class="form-control" value="<%=SessionUtil.getAttributes("serviceId") %>" readonly="readonly"/>
+<input id="customerId" name="customerId"  class="form-control" value="<%=SessionUtil.getAttributes("customerId") %>" readonly="readonly"/>
 </form>
 
 <div id="car-selling-content"></div>
@@ -73,7 +65,13 @@
 </div>
 	{{~}}
 	{{? !it||!it.data||!it.data.length}}
-	<div class="body"><div class="text">No notes</div></div>
+<div class="itemdiv commentdiv">
+<div class="body">
+<div class="text">
+    &nbsp;No notes
+</div>
+</div>
+</div>
 	{{?}}
 </div>
 </script>
@@ -81,7 +79,9 @@
 <form class="form-horizontal" id="submit-form1">
 <input type="hidden" name="id" id="id" value="{{=it.id}}"/>
 <input type="hidden" name="userId" id="userId" value="{{=it.userId}}"/>
-
+<input type="hidden" name="salesId" id="salesId" value="{{=it.salesId||'<%=SessionUtil.getCurrentUserId() %>'||''}}"/>
+<input type="hidden" name="createUserId" id="createUserId" value="{{=it.createUserId||''}}" readonly="readonly"/>
+<input type="hidden" name="createTime" id="createTime" value="{{=new Date(it.createTime).toChString(true)||''}}" readonly="readonly"/>
 <div class="col-sm-6">
 	<div class="form-group" style="margin-left:8.3%">
 	<label class="col-sm-12"><h5 class="header ligth blue" style="margin-top:0px;margin-bottom:0px">Basic</h5></label>
@@ -136,7 +136,7 @@
 	<label class="col-sm-4 control-label no-padding-right">Is New:</label>
 	<div class="col-sm-8">
 			<label class="line-height-1" style="margin-right: 10px;">
-				<input name="isNew" value="1" type="radio" class="ace" {{? it.readonly && 1 != it.isNew}}disabled="disabled"{{?}} {{? 1 == it.isNew}}checked="checked"{{?}}  {{? it.readonly}}readonly="readonly"{{?}}/>
+				<input name="isNew" value="1" type="radio" class="ace" {{? it.readonly && 1 != it.isNew}}disabled="disabled"{{?}} {{? !it.isNew || 1 == it.isNew}}checked="checked"{{?}}  {{? it.readonly}}readonly="readonly"{{?}}/>
 				<span class="lbl">New</span>
 			</label>
 			<label class="line-height-1" style="margin-right: 10px;">
@@ -349,10 +349,8 @@
 		</label>
 	</div>
 	</div>
-	<label class="col-sm-1 control-label no-padding-right">Makes:</label>
-	<div class="col-sm-4">
+	<div class="col-sm-5">
 		<div class="clearfix">
-			<input type="text" name="tradeInMakes" id="tradeInMakes" class="form-control col-sm-12" value="{{=it.tradeInMakes || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
 		</div>
 	</div>
 </div>
@@ -408,13 +406,16 @@
 			<input type="text" name="tradeInColor" id="tradeInColor" class="form-control col-sm-12" value="{{=it.tradeInColor || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
 		</div>
 	</div>
-</div>
-
-<div class="form-group" style="margin-bottom:0px">
-<label class="col-sm-12"><h5 class="header ligth blue" style="margin-top:0px;margin-bottom:0px"></h5></label>
+	<label class="col-sm-1 control-label no-padding-right">Makes:</label>
+	<div class="col-sm-4">
+		<div class="clearfix">
+			<input type="text" name="tradeInMakes" id="tradeInMakes" class="form-control col-sm-12" value="{{=it.tradeInMakes || '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
+		</div>
+	</div>
 </div>
 
 <div class="col-sm-12 form-group">
+<hr class="no-margin-top"> </hr>
 	<div class="col-sm-4 form-group center">
 	</div>
 	<div class="col-sm-4 form-group center">
@@ -424,7 +425,7 @@
 			</a>
 		</div>
 		<div class="col-sm-6 form-group center">
-			<a class="btn btn-sm btn-default" type="reset" id="delete_btn"  {{? it.readonly}}onclick="javascript:deleteCarSelling('{{=it.id}}');"{{?}}>
+			<a class="btn btn-sm btn-default" type="reset" id="delete_btn"  {{? !it.readonly}}onclick="javascript:deleteCarSelling('{{=it.id}}');"{{?}}>
 				<i class="ace-icon fa fa-times bigger-110"></i> Delete
 			</a>
 		</div>
@@ -435,35 +436,33 @@
 </form>
 </script>
 
-
 <script id="add-notes-temp" type="text/x-dot-template">
 <form class="form-horizontal" id="add-notes-form">
 <div class="form-group">
-<input type="hidden" id="userId" name="userId" value="{{=it.customerId||''}}" class="col-xs-12 col-sm-12" value=""/>
-<input type="hidden" id="noteId" name="noteId" value="{{=it.noteId||''}}" class="col-xs-12 col-sm-12" />
-<input type="hidden" id="serviceId" name="serviceId" value="{{=it.serviceId||''}}" class="col-xs-12 col-sm-12" />
-<input type="hidden" id="createUserId" name="createUserId" value="{{=it.noteCrtUId||''}}" class="col-xs-12 col-sm-12" />
+<input type="hidden" name="userId" value="{{=it.customerId||''}}" class="col-xs-12 col-sm-12"/>
+<input type="hidden" name="serviceId" value="{{=it.serviceId||''}}" class="col-xs-12 col-sm-12" />
+<input type="hidden" name="createUserId" value="<%=SessionUtil.getCurrentUserId() %>" class="col-xs-12 col-sm-12" />
 <label class="col-sm-2 control-label no-padding-right" for="id">Created By:</label>
 <div class="col-sm-4">
-<input type="text" id="createdBy" name="createdBy" class="col-xs-12 col-sm-12" value="{{=it.createUserName||''}}" readonly="readonly"/>
+<input type="text" id="createdBy" name="createdBy" class="col-xs-12 col-sm-12" value="<%=SessionUtil.getCurrentUserNickName() %>" readonly="readonly"/>
 </div>
 <label class="col-sm-2 control-label no-padding-right" for="id">Create Time:</label>
 <div class="col-sm-4">
-<input type="text" id="createTime" name="createTime" class="col-xs-12 col-sm-12" value="{{=new Date(it.createTime).toChString(true) ||new Date().toChString(true)||''}}" readonly="readonly"/>
+<input type="text" name="createTime" class="col-xs-12 col-sm-12" value="{{=new Date().toChString(true)||''}}" readonly="readonly"/>
 </div>
 </div>
 <div class="form-group" style="width:600px">
 <label class="col-sm-2 control-label no-padding-right" for="id">Service:</label>
 <div class="col-sm-10">
-	<select class="input-large" id="noteservicetype-select" name="noteServiceType" {{? it.readonly }}disabled="disabled"{{?}} disabled="disabled">
+<select class="input-large" id="noteservicetype-select" name="noteServiceType" disabled="disabled">
 	<option value="1" selected="selected">Car Selling</option>
-	</select>
+</select>
 </div>
 </div>
 <div class="form-group">
 <label class="col-sm-2 control-label no-padding-right" for="id">Content:</label>
 <div class="col-sm-10">
-<textarea class="form-control limited" id="content"  name="content" maxlength="1000" {{? it.readonly}}readonly="readonly"{{?}}>{{=it.content || ''}}</textarea>
+<textarea class="form-control limited" name="content" maxlength="500" {{? it.readonly}}readonly="readonly"{{?}}></textarea>
 </div>
 </div>
 </form>

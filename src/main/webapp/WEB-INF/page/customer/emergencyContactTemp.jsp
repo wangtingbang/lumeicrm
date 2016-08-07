@@ -32,62 +32,62 @@
 </div>
 
 <form id="search_form" class="form-horizontal" action="#" hidden="hidden" >
-	<div class="row">
-		<div class="col-sm-6 form-group">
-			<label class="col-sm-2 control-label no-padding-right" for="form-field-1">customerId</label>
-			<div class="col-sm-9">
-				<input id="customerId" name="customerId"  class="form-control" value="<%=SessionUtil.getAttributes("customerId") %>" readonly="readonly"/>
-                <input id="currentUserId" name="currentUserId"  class="form-control" value="<%=SessionUtil.getCurrentUserId() %>" readonly="readonly"/>
-                <input id="currentUserName" name="currentUserName"  class="form-control" value="<%=SessionUtil.getCurrentUserNickName() %>" readonly="readonly"/>
-			</div>
-		</div>
-	</div>
+<input id="serviceId" name="serviceId"  class="form-control" value="<%=SessionUtil.getAttributes("serviceId") %>" readonly="readonly"/>
+<input id="customerId" name="customerId"  class="form-control" value="<%=SessionUtil.getAttributes("customerId") %>" readonly="readonly"/>
 </form>
 
 <div id="emergency-contact-content"></div>
 
 <script id="notes_temp" type="text/x-dot-template">
-  {{~it.data:p:index}}
+	{{~it.data:p:index}}
 <div class="itemdiv commentdiv">
-  <div class="body">
-  	<div class="name blue" >
-  	{{=p.createUserName||''}}
-  	</div>
-  	<div class="time">
-  	<i class="ace-icon fa fa-clock-o"></i>
-  	<span class="blue">{{=new Date(p.createTime).toChString(true) ||''}}</span>
-  	</div>
-  	<div class="text" style="display:block;word-break:break-all;word-wrap: break-word;">
-  	<i class="ace-icon fa fa-quote-left"></i>
-  	{{=p.content}}
-  	<i class="ace-icon fa fa-quote-right" style="color:#DCE3ED;margin-left: 4px"></i>
-  	</div>
-  </div>
-  <div class="tools">
-  <div class="action-buttons bigger-125">
-  <a href="javascript:deleteNotes('{{=p.id}}');">
-  <i class="ace-icon fa fa-trash-o red"></i>
-  </a>
-  </div>
-  </div>
-  </div>
-  {{~}}
-  {{? !it||!it.data||!it.data.length}}
-  <div class="body"><div class="text">No notes</div></div>
-  {{?}}
-  </div>
+<div class="body">
+	<div class="name blue" >
+	{{=p.createUserName||''}}
+	</div>
+	<div class="time">
+	<i class="ace-icon fa fa-clock-o"></i>&nbsp;
+	<span class="blue">{{=new Date(p.createTime).toChString(true) ||''}}</span>
+	</div>
+	<div class="text" style="display:block;word-break:break-all;word-wrap: break-word;">
+	<i class="ace-icon fa fa-quote-left"></i>
+	{{=p.content}}
+	<i class="ace-icon fa fa-quote-right" style="color:#DCE3ED;margin-left: 4px"></i>
+	</div>
+</div>
+	<div class="tools">
+	<div class="action-buttons bigger-125">
+	<a href="javascript:deleteNotes('{{=p.id}}');">
+	<i class="ace-icon fa fa-trash-o red"></i>
+	</a>
+	</div>
+	</div>
+</div>
+	{{~}}
+	{{? !it||!it.data||!it.data.length}}
+<div class="itemdiv commentdiv">
+<div class="body">
+<div class="text">
+    &nbsp;No notes
+</div>
+</div>
+</div>
+	{{?}}
+</div>
 </script>
 
 <script id="step_temp_1" type="text/x-dot-template">
 <form class="form-horizontal" id="submit-form1">
-<input type="hidden" name="userId" id="userId" value="{{=it.userId}}"/>
 <input type="hidden" name="id" id="id" value="{{=it.id}}"/>
-<input type="hidden" name="serviceId" id="serviceId-this" value="{{=it.id}}"/>
+<input type="hidden" name="userId" id="userId" value="{{=it.userId}}"/>
+<input type="hidden" name="salesId" id="salesId" value="{{=it.salesId||'<%=SessionUtil.getCurrentUserId() %>'||''}}"/>
+<input type="hidden" name="createUserId" id="createUserId" value="{{=it.createUserId||''}}" readonly="readonly"/>
+<input type="hidden" name="createTime" id="createTime" value="{{=new Date(it.createTime).toChString(true)||''}}" readonly="readonly"/>
 
 <div class="col-sm-6">
 	<div class="form-group" style="margin-left:8.3%">
 	<label class="col-sm-12"><h5 class="header ligth blue" style="margin-top:0px;margin-bottom:0px">Basic&nbsp;&nbsp;&nbsp;&nbsp;
-  <a href="javascript:useService('{{=it.id}}');">+ Use</a></h5></label>
+    <a href="javascript:useService('{{=it.id}}');"><i class="ace-icon fa fa-user"></i>&nbsp; Use Emergency Contact</i></a></h5></label>
 	</div>
 
 <div class="form-group">
@@ -103,7 +103,7 @@
   <label class="col-sm-4 control-label no-padding-right">Used:</label>
   <div class="col-sm-8">
   <div class="clearfix">
-  <input type="text" class="form-control limited" id="used"  name="used" maxlength="1000" readonly="readonly" {{?it.used||it.used==0}} value="{{=it.used || ''}}"{{?}}/>
+  <input type="text" class="form-control limited" id="used"  name="used" maxlength="1000" readonly="readonly" value="{{=it.used}}"/>
   </div>
   </div>
   </div>
@@ -674,31 +674,26 @@
   </div>
   </div>
 </div>
-
-  <div class="form-group"  style="margin-left:8.3%">
-  <label class="col-sm-10"><h5 class="header ligth blue" style="margin-top:0px;margin-bottom:0px">Event</h5></label>
-  </div>
-  <div class="form-group">
-  <div class="col-sm-10" id="event-content" style="margin-left:8.3%">
-  </div>
-  </div>
-
-
-<div class="form-group" style="margin-bottom:0px">
-<label class="col-sm-12"><h5 class="header ligth blue" style="margin-top:0px;margin-bottom:0px"></h5></label>
+<div class="form-group"  style="margin-left:8.3%">
+	<label class="col-sm-11"><h5 class="header ligth blue" style="margin-top:0px;margin-bottom:0px">Event</h5></label>
+</div>
+<div class="form-group">
+<div class="col-sm-10" id="event-content" style="margin-left:8.3%">
+</div>
 </div>
 
 <div class="col-sm-12 form-group">
+<hr class="no-margin-top"> </hr>
 	<div class="col-sm-4 form-group center">
 	</div>
 	<div class="col-sm-4 form-group center">
 		<div class="col-sm-6 form-group center">
-			<a class="btn btn-info btn-sm" id="save_btn" onclick="javascript:saveEmergencyContact();">
+			<a class="btn btn-info btn-sm" id="save_btn" {{? !it.readonly}}onclick="javascript:saveEmergencyContact();"{{?}}>
 				 <i class="ace-icon fa fa-check bigger-110"></i> Save
 			</a>
 		</div>
 		<div class="col-sm-6 form-group center">
-			<a class="btn btn-sm btn-default" type="reset" id="delete_btn" onclick="javascript:deleteEmergencyContact('{{=it.id}}');">
+			<a class="btn btn-sm btn-default" type="reset" id="delete_btn" {{? !it.readonly}}onclick="javascript:deleteEmergencyContact('{{=it.id}}');"{{?}}>
 				<i class="ace-icon fa fa-times bigger-110"></i> Delete
 			</a>
 		</div>
@@ -729,43 +724,54 @@
   </tr>
   {{~}}
   {{? !it||!it.data||!it.data.length}}
-  <tr ><td colspan="12">No notes</td></tr>
+  <tr ><td colspan="12">No events</td></tr>
   {{?}}
   </tbody>
   </table>
   </script>
 
-
-
   <script id="add-notes-temp" type="text/x-dot-template">
-  <form class="form-horizontal" id="add-notes-form">
-  <div class="form-group">
-  <input type="hidden" id="userId" name="userId" value="{{=it.customerId||''}}" class="col-xs-12 col-sm-12"/>
-  <input type="hidden" id="noteId" name="noteId" value="{{=it.noteId||''}}" class="col-xs-12 col-sm-12" />
-  <input type="hidden" id="serviceId" name="serviceId" value="{{=it.serviceId||''}}" class="col-xs-12 col-sm-12" />
-  <input type="hidden" id="createUserId" name="createUserId" value="{{=it.noteCrtUId||''}}" class="col-xs-12 col-sm-12" />
-  <label class="col-sm-2 control-label no-padding-right" for="id">Created By:</label>
-  <div class="col-sm-4">
-  <input type="text" id="createdBy" name="createdBy" class="col-xs-12 col-sm-12" value="{{=it.createUserName||''}}" readonly="readonly"/>
-  </div>
-  <label class="col-sm-2 control-label no-padding-right" for="id">Create Time:</label>
-  <div class="col-sm-4">
-  <input type="text" id="createTime" name="createTime" class="col-xs-12 col-sm-12" value="{{=new Date(it.createTime).toChString(true) ||new Date().toChString(true)||''}}" readonly="readonly"/>
-  </div>
-  </div>
-  <div class="form-group" style="width:600px">
-  <label class="col-sm-2 control-label no-padding-right" for="id">Service:</label>
-  <div class="col-sm-10">
-  <select class="input-large" id="noteservicetype-select" name="noteServiceType" {{? it.readonly }}disabled="disabled"{{?}} disabled="disabled">
+<form class="form-horizontal" id="add-notes-form">
+<div class="form-group">
+<input type="hidden" name="userId" value="{{=it.customerId||''}}" class="col-xs-12 col-sm-12"/>
+<input type="hidden" name="serviceId" value="{{=it.serviceId||''}}" class="col-xs-12 col-sm-12" />
+<input type="hidden" name="createUserId" value="<%=SessionUtil.getCurrentUserId() %>" class="col-xs-12 col-sm-12" />
+<label class="col-sm-2 control-label no-padding-right" for="id">Created By:</label>
+<div class="col-sm-4">
+<input type="text" id="createdBy" name="createdBy" class="col-xs-12 col-sm-12" value="<%=SessionUtil.getCurrentUserNickName() %>" readonly="readonly"/>
+</div>
+<label class="col-sm-2 control-label no-padding-right" for="id">Create Time:</label>
+<div class="col-sm-4">
+<input type="text" name="createTime" class="col-xs-12 col-sm-12" value="{{=new Date().toChString(true)||''}}" readonly="readonly"/>
+</div>
+</div>
+<div class="form-group" style="width:600px">
+<label class="col-sm-2 control-label no-padding-right" for="id">Service:</label>
+<div class="col-sm-10">
+<select class="input-large" id="noteservicetype-select" name="noteServiceType" disabled="disabled">
   <option value="2" selected="selected">Emergency Contact</option>
-  </select>
-  </div>
-  </div>
-  <div class="form-group">
-  <label class="col-sm-2 control-label no-padding-right" for="id">Content:</label>
-  <div class="col-sm-10">
-  <textarea class="form-control limited" id="content"  name="content" maxlength="1000" {{? it.readonly}}readonly="readonly"{{?}}>{{=it.content || ''}}</textarea>
-  </div>
-  </div>
-  </form>
-  </script>
+</select>
+</div>
+</div>
+<div class="form-group">
+<label class="col-sm-2 control-label no-padding-right" for="id">Content:</label>
+<div class="col-sm-10">
+<textarea class="form-control limited" name="content" maxlength="500" {{? it.readonly}}readonly="readonly"{{?}}></textarea>
+</div>
+</div>
+</form>
+</script>
+<script id="pagination_bar_temp3" type="text/x-dot-template">
+<div class="row">
+				<div class="col-xs-12">
+				<form class="form-horizontal">
+					<div class="form-group">
+					<div class="col-sm-12 control-label no-padding-top">
+					</div>
+					</div>
+					</form>
+				</div>
+		</div>
+</div>
+</div>
+</script>

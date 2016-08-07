@@ -88,9 +88,8 @@ function searchSubmit(){
 
 				listNotes();
 				$page = $('#transaction-content').igrid({
-					//url : contextPath + '/consume/'+authType + '/postsalepay/listConsume',
 					url : contextPath + '/customer/transaction/listByPage',
-					param : param,
+					param : {customerId:$("#id").val()},
 					temp : "transaction_grid_temp"
 				});
 
@@ -112,49 +111,42 @@ function listNotes(){
 	});
 }
 
-//*
 function addTransaction(customerId, customerName){
 
 	if(!customerId||customerId===''||customerId==='undefined'){
-		$.ialert("Please save profile before add notes");
+		$.ialert("Please save profile before create transaction");
 		return;
 	}
 
 	var notesfn = doT.template($('#add-tran-temp').text());
 
-	var data = $.extend({},{userId:customerId,customerName:customerName,customerId:customerId,datadic:{serviceType:datadicArray(datadic["serviceType"])}});
+	var data = $.extend({},{customerId:customerId,customerName:customerName});
 
 	$.imodal({
-		title:"Add Transaction",
+		title:"Create Transaction",
 		contents:notesfn(data),
 		buttons:[
 				{addClass: 'btn btn-sm btn-default', text: '<i class="ace-icon fa fa-times  bigger-110"></i>Cancel', attr:'data-dismiss="modal"'},
-				{addClass: 'btn btn-sm btn-primary', text: '<i class="ace-icon fa fa-check  bigger-110"></i>Add', onClick: function(msgDom) {
-					addTransaction2(msgDom);
+				{addClass: 'btn btn-sm btn-primary', text: '<i class="ace-icon fa fa-check  bigger-110"></i>Create', onClick: function(dom) {
+					addTransaction2(data);
 				}
 				}
 		]
 	});
 }
 
-function addTransaction2(msgDom) {
-
-	var customerId = $("#customerId").val();
-	var customerName = $("#customerName").val();
+function addTransaction2(data) {
+	var customerId = data.customerId;
+	var customerName = data.customerName;
 	if ($("#tran-servicetype-select").val() == 1) {
-		location.href = contextPath + '/customer/createCarSelling?customerId='+customerId+"&customerName="+customerName;
-//		var data = {customerId:customerId, customerName:customerName};
-//		var pagefn = doT.template($('#step_temp_1').text());
-//		var htmlpage = pagefn(data);
+		location.href = contextPath + '/customer/getCarSelling?customerId='+customerId+"&customerName="+customerName;
 	}else if ($("#tran-servicetype-select").val() ==2) {
 		location.href = contextPath + '/customer/getEmergencyContact?customerId='+customerId+"&customerName="+customerName
 	}
-
-
 }
 
 function deleteNotes(id){
-	$.iconfirm("Confirm to delete this note?",function(){
+	$.iconfirm("Do you want to delete it?",function(){
 		$.ipost(
 			contextPath+'/customer/notes/delete',
 			{id:id},
@@ -166,44 +158,20 @@ function deleteNotes(id){
 				$.ialert(errmsg,"Fail");
 			});
 	});
-
-}
-//*/
-function addCarSelling(customerId, customerName) {
-	if(!customerId||customerId===''||customerId==='undefined'){
-		$.ialert("Please save profile before add car buying service");
-		return;
-	}
-	window.open(contextPath + '/customer/getCarSelling?customerId='+customerId+"&customerName="+customerName);
-}
-
-function addEmergencyContact(customerId, customerName) {
-	if(!customerId||customerId===''||customerId==='undefined'){
-		$.ialert("Please save profile before add emergency contact service");
-		return;
-	}
-
-	//window.open.location.href = contextPath + '/customer/getProfile?customerId=';
-	window.open(contextPath + '/customer/getEmergencyContact?customerId='+customerId+"&customerName="+customerName);
 }
 
 function viewTran(serviceType, serviceId) {
-	// if(!customerId||customerId==null||customerId===''||customerId==='undefined'){
-		customerId = $("#customerId").val();
-		customerName = $("#customer-name-head").val();
-	// }
+	customerId = $("#customerId").val();
+	customerName = $("#customernamehidden").val();
 	if (serviceType == 1) {
-		location.href = contextPath + '/customer/getCarSelling?customerId='+customerId+"&customerName="+customerName;
-		$("#serviceId").attr("value", serviceId);
+		location.href = contextPath + '/customer/getCarSelling?customerId='+customerId+"&customerName="+customerName+"&serviceId="+serviceId;
 	}else if (serviceType ==2) {
-		location.href = contextPath + '/customer/getEmergencyContact?customerId='+customerId+"&customerName="+customerName
-		$("#serviceId").attr("value", serviceId);
+		location.href = contextPath + '/customer/getEmergencyContact?customerId='+customerId+"&customerName="+customerName+"&serviceId="+serviceId;
 	}else{
 		location.href = "#";
 	}
 
 }
-
 
 function deleteProfile(id){
 	$.iconfirm("Do you want to delete it?",function(){

@@ -1,7 +1,7 @@
 <%@page import="com.lumei.crm.util.SessionUtil"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-
+	
 <script src="<%=request.getContextPath()%>/resources/custjs/customer/profile.js"></script>
 <script src="<%=request.getContextPath()%>/resources/custjs/customer/notemgr.js"></script>
 
@@ -23,17 +23,7 @@
 </div>
 
 <form id="search_form" class="form-horizontal" action="#" hidden="hidden">
-	<div class="row">
-		<div class="col-sm-6 form-group">
-			<label class="col-sm-1 control-label no-padding-right" for="form-field-1">customerId</label>
-			<div class="col-sm-9">
 				<input id="customerId" name="customerId"  class="form-control" value="<%=SessionUtil.getAttributes("customerId") %>" readonly="readonly"/>
-                <input id="customer-name-head" name="customerName"  class="form-control" value="<%=SessionUtil.getAttributes("customerName") %>" readonly="readonly"/>
-				<input id="currentUserId" name="currentUserId"  class="form-control" value="<%=SessionUtil.getCurrentUserId() %>" readonly="readonly"/>
-				<input id="currentUserName" name="currentUserName"  class="form-control" value="<%=SessionUtil.getCurrentUserName() %>" readonly="readonly"/>
-			</div>
-		</div>
-	</div>
 </form>
 
 <div class="row">
@@ -69,7 +59,13 @@
 </div>
     {{~}}
     {{? !it||!it.data||!it.data.length}}
-    <div class="body"><div class="text">No notes</div></div>
+<div class="itemdiv commentdiv">
+<div class="body">
+<div class="text">
+    &nbsp;No notes
+</div>
+</div>
+</div>
     {{?}}
     </div>
     </script>
@@ -78,6 +74,7 @@
 <form class="form-horizontal" id="submit-form1">
 <input type="hidden" name="id" id="id" value="{{=it.id}}"/>
 <input type="hidden" name="salesId" id="salesId" value="{{=it.salesId||'<%=SessionUtil.getCurrentUserId() %>'||''}}"/>
+<input type="hidden" name="customernamehidden" id="customernamehidden" class="form-control col-sm-1 " value="{{=it.name|| '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
 
 <div class="col-sm-6">
 	<div class="form-group"  style="margin-left:16.6%">
@@ -348,6 +345,7 @@
     <div class="col-sm-4">
     	<div class="clearfix">
     	<input type="hidden" name="createUserId" id="createUserId" value="{{=it.createUserId||'<%=SessionUtil.getCurrentUserId() %>'||''}}" readonly="readonly"/>
+    	<input type="hidden" name="createTime" id="createTime" value="{{=new Date(it.createTime).toChString(true)||''}}" readonly="readonly"/>
     	<input type="text" name="createUserName" id="createUserName" class="form-control col-sm-1 " value="{{=it.createUserName||'<%=SessionUtil.getCurrentUserNickName() %>'||''}}" readonly="readonly"/>
     	</div>
     </div>
@@ -361,7 +359,7 @@
     </div>
 <div class="form-group"  style="margin-left:8.3%">
 	<label class="col-sm-11"><h5 class="header ligth blue" style="margin-top:0px;margin-bottom:0px">Transaction&nbsp;&nbsp;&nbsp;&nbsp;
-    <a href="javascript:addTransaction('{{=it.id}}','{{=it.name }}');">+ Add</a></h5></label>
+    <a href="javascript:addTransaction('{{=it.id}}','{{=it.name }}');"><i class="ace-icon fa fa-credit-card"></i>&nbsp; Create Transaction</i></a></h5></label>
 </div>
 <div class="form-group">
 <div class="col-sm-10" id="transaction-content" style="margin-left:8.3%">
@@ -391,51 +389,6 @@
 </form>
 </script>
 
-    <script id="note_grid_temp" type="text/x-dot-template">
-    <div class="form-group"  style="margin-left:8.3%">
-    <label class="col-sm-11"><h5 class="header ligth blue" style="margin-top:0px,margin-bottom:0px">Notes&nbsp;&nbsp;&nbsp;&nbsp;
-    <a href="#" onclick="javascript:addNote();">+ Add Note</a>
-    </h5></label>
-    </div>
-    <div class="form-group" style="margin-left:8.3%">
-    <div class="col-xs-11">
-    <table id="sample-table-1" class="table table-striped table-bordered table-hover">
-    <thead>
-    <div class="col-sm-2 form-group center">
-    </div>
-    <tr>
-    <th>Service Type </th>
-    <th>Created By</th>
-    <th>Create Time</th>
-    <th>Content</th>
-    <th>Operation</th>
-    </tr>
-    </thead>
-    <tbody>
-    {{~it.data:p:index}}
-    <div class="col-sm-2 form-group center">
-    </div>
-    <tr>
-    <td>{{=datadic['serviceType'][p.noteServiceType]}}</td>
-    <td>{{=p.createUserName||''}}</td>
-    <td>{{=new Date(p.createTime).toChString(true) ||''}}</td>
-    <td>{{=p.content||''}}</td>
-    <td>
-    <a onclick="javascript:addNote('{{=p.id}}','{{=p.createUserId}}','{{=p.createUserName}}','{{=p.createTime}}','{{=p.content}}')">Detail</a>
-    &nbsp;&nbsp;&nbsp;&nbsp;
-    <a onclick="javascript:deleteNotes('{{=p.id}}');">Delete</a>&nbsp;&nbsp;
-    </td>
-    </tr>
-    {{~}}
-    {{? !it||!it.data||!it.data.length}}
-    <tr ><td colspan="12">No notes</td></tr>
-    {{?}}
-    </tbody>
-    </table>
-    </div>
-    </div>
-    </form>
-    </script>
 
 <script id="transaction_grid_temp" type="text/x-dot-template">
     <table id="sample-table-2" class="table table-striped table-bordered table-hover">
@@ -453,11 +406,11 @@
     <tr>
     <td>{{=datadic['serviceType'][p.serviceType]}}</td>
     <td>{{=new Date(p.createTime).toChString(false) ||''}}</td>
-    <td><a href="javascript:viewTran('{{=p.serviceType}}','{{=p.id}}');">Detail</a></td>
+    <td><a href="javascript:viewTran('{{=p.serviceType}}','{{=p.serviceId}}');">Detail</a></td>
     </tr>
     {{~}}
     {{? !it||!it.data||!it.data.length}}
-    <tr ><td colspan="12">No notes</td></tr>
+    <tr ><td colspan="12">No Transaction</td></tr>
     {{?}}
     </tbody>
     </table>
@@ -466,17 +419,16 @@
 <script id="add-notes-temp" type="text/x-dot-template">
 <form class="form-horizontal" id="add-notes-form">
 <div class="form-group">
-<input type="hidden" id="userId" name="userId" value="{{=it.customerId||''}}" class="col-xs-12 col-sm-12"/>
-<input type="hidden" id="noteId" name="noteId" value="{{=it.noteId||''}}" class="col-xs-12 col-sm-12" />
-<input type="hidden" id="serviceId" name="serviceId" value="{{=it.customerId||''}}" class="col-xs-12 col-sm-12" />
-<input type="hidden" id="createUserId" name="createUserId" value="{{=it.noteCrtUId||''}}" class="col-xs-12 col-sm-12" />
+<input type="hidden" name="userId" value="{{=it.customerId||''}}" class="col-xs-12 col-sm-12"/>
+<input type="hidden" name="serviceId" value="{{=it.serviceId||''}}" class="col-xs-12 col-sm-12" />
+<input type="hidden" name="createUserId" value="<%=SessionUtil.getCurrentUserId() %>" class="col-xs-12 col-sm-12" />
 <label class="col-sm-2 control-label no-padding-right" for="id">Created By:</label>
 <div class="col-sm-4">
-<input type="text" id="createdBy" name="createdBy" class="col-xs-12 col-sm-12" value="{{=it.createUserName||''}}" readonly="readonly"/>
+<input type="text" id="createdBy" name="createdBy" class="col-xs-12 col-sm-12" value="<%=SessionUtil.getCurrentUserNickName() %>" readonly="readonly"/>
 </div>
 <label class="col-sm-2 control-label no-padding-right" for="id">Create Time:</label>
 <div class="col-sm-4">
-<input type="text" id="createTime" name="createTime" class="col-xs-12 col-sm-12" value="{{=new Date(it.createTime).toChString(true) ||new Date().toChString(true)||''}}" readonly="readonly"/>
+<input type="text" name="createTime" class="col-xs-12 col-sm-12" value="{{=new Date().toChString(true)||''}}" readonly="readonly"/>
 </div>
 </div>
 <div class="form-group" style="width:600px">
@@ -497,7 +449,7 @@
 <div class="form-group">
 <label class="col-sm-2 control-label no-padding-right" for="id">Content:</label>
 <div class="col-sm-10">
-<textarea class="form-control limited" id="content"  name="content" maxlength="1000" {{? it.readonly}}readonly="readonly"{{?}}>{{=it.content || ''}}</textarea>
+<textarea class="form-control limited" name="content" maxlength="500" {{? it.readonly}}readonly="readonly"{{?}}></textarea>
 </div>
 </div>
 </form>
@@ -506,10 +458,7 @@
 
 <script id="add-tran-temp" type="text/x-dot-template">
 <form class="form-horizontal" id="add-notes-form">
-<input type="hidden" id="customerId" name="customerId" value="{{=it.customerId||''}}" class="col-xs-12 col-sm-12"/>
-<input type="hidden" id="customerName" name="customerName" value="{{=it.customerName||''}}" class="col-xs-12 col-sm-12"/>
-
-    <div class="form-group" style="width:600px">
+<div class="form-group" style="width:600px">
 <label class="col-sm-2 control-label no-padding-right" for="id">Service:</label>
 <div class="col-sm-10">
 <select class="input-large" id="tran-servicetype-select" name="tranServiceType" {{? it.readonly }}disabled="disabled"{{?}}>

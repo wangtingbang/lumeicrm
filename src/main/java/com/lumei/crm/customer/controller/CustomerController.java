@@ -154,10 +154,9 @@ public class CustomerController {
 
 
   @RequestMapping(value = "getProfile", method = RequestMethod.GET)
-  public ModelAndView getProfile(String customerId, String customerName) {
+  public ModelAndView getProfile(String customerId) {
     ModelAndView mav = new ModelAndView("customer/profileTemp");
     SessionUtil.setAttributes("customerId", customerId);
-    SessionUtil.setAttributes("customerName", customerName);
     return mav;
   }
 
@@ -247,29 +246,26 @@ public class CustomerController {
   public String saveProfile(Profile param) {
 
     Profile profile = BeanUtils.map(param, Profile.class);
-    if (profile.getCreateTime() == null) {
-      Date now = DateTimeUtil.now();
-      profile.setCreateTime(now);
-      profile.setUpdateTime(now);
-    }
-    if (StringUtils.isBlank(profile.getCreateUserId())) {
-      profile.setCreateUserId(SessionUtil.getCurrentUserId());
-    }
-
-    int result = 0;
+    Date now = DateTimeUtil.now();
     if (StringUtils.isBlank(profile.getId())) {
-      result = profileBusiness.create(profile);
+    	profile.setCreateTime(now);
+        profile.setUpdateTime(now);
+        profile.setCreateUserId(SessionUtil.getCurrentUserId());
+        profile.setUpdateUserId(SessionUtil.getCurrentUserId());
+      profileBusiness.create(profile);
     } else {
-      profile.setUpdateUserId(SessionUtil.getCurrentUserId());
-      result = profileBusiness.update(profile);
+        profile.setUpdateTime(now);
+        profile.setUpdateUserId(SessionUtil.getCurrentUserId());
+      profileBusiness.update(profile);
     }
 
     return profile.getId();
   }
   
   @RequestMapping(value = "getCarSelling", method = RequestMethod.GET)
-  public ModelAndView getCustomerCarSelling(String customerId, String customerName) {
+  public ModelAndView getCustomerCarSelling(String customerId, String customerName, String serviceId) {
     ModelAndView mav = new ModelAndView("customer/carSellingTemp");
+    SessionUtil.setAttributes("serviceId", serviceId);
     SessionUtil.setAttributes("customerId", customerId);
     SessionUtil.setAttributes("customerName", customerName);
     return mav;
@@ -277,64 +273,47 @@ public class CustomerController {
 
   @RequestMapping(value = "service/carselling/get", method = RequestMethod.GET)
   @ResponseBody
-  public CarSelling getCustomerSellbuying(String customerId) {
-
-    log.debug("param, customerId:{}", customerId);
-    Example<TCarSelling> example = Example.newExample(TCarSelling.class);
-    example.param("userId", customerId);
-    List<CarSelling> list = carSellingBusiness.list(example);
-
-    if (list == null || list.size() == 0) {
-      return new CarSelling();
+  public CarSelling getCustomerCarSellingGet(String serviceId) {
+    log.debug("param, serviceId:{}", serviceId);
+    if(StringUtils.isBlank(serviceId) || "null".equals(serviceId)){
+    	return new CarSelling();
     }
-    CarSelling carSelling = list.get(0);
-    if (carSelling == null) {
-      return new CarSelling();
+    CarSelling carSelling = carSellingBusiness.find(serviceId, CarSelling.class);
+    if(carSelling == null){
+    	CarSelling c = new CarSelling();
+    	c.setId("0");
+    	return c;
     }
-    //*
-    Example<TNotes> example1 = Example.newExample(TNotes.class);
-    example1.param("userId", customerId);
-    example1.param("noteServiceType", LumeiCrmConstants.SERVICE_TYPE.CAR_SELLING.getValue());//TODO
-    example1.orderBy("updateTime").desc();
-    List<Notes> notes = notesBusiness.list(example1);
-    //*/
-    if (notes != null && notes.size() > 0) {
-      carSelling.setNotes(notes.get(0).getContent());
+    List<String> salesIds = new ArrayList<String>();
+    salesIds.add(carSelling.getSalesId());
+    Map<String,OpAuthUser> userMap = getUserInfoById(salesIds);
+    OpAuthUser user = userMap.get(carSelling.getSalesId());
+    if (user != null) {
+    	carSelling.setSalesName(user.getNickName());
     }
-
     if(SessionUtil.getCurrentUser().getRoles().contains(SysRole.SALES)){
       if(!SessionUtil.getCurrentUserId().equals(carSelling.getSalesId())){
         carSelling.setReadonly(true);
       }
     }
-
     return carSelling;
   }
 
   @RequestMapping(value = "service/carselling/save", method = RequestMethod.POST)
   @ResponseBody
   public String saveCarSelling(CarSelling carSelling) {
-
     int result = 0;
-    if (StringUtils.isBlank(carSelling.getUserId())) {
-      return "fail";
-    }
     Date now = DateTimeUtil.now();
-    if (carSelling.getCreateTime() == null) {
-      carSelling.setCreateTime(now);
-      carSelling.setUpdateTime(now);
-    }
-    if (StringUtils.isBlank(carSelling.getCreateUserId())) {
-      carSelling.setCreateUserId(SessionUtil.getCurrentUserId());
-    }
+    String id = carSelling.getId();
 
-    String id = null;
-
-    if (StringUtils.isBlank(carSelling.getId())) {
+    if (StringUtils.isBlank(id) || "null".equals(id) ||"undefined".equals(id)) {
       id = KeyGenerator.uuid();
       carSelling.setId(id);
-      result = carSellingBusiness.create(carSelling);
-
+      carSelling.setCreateTime(now);
+      carSelling.setUpdateTime(now);
+      carSelling.setCreateUserId(SessionUtil.getCurrentUserId());
+      carSelling.setUpdateUserId(SessionUtil.getCurrentUserId());
+      carSellingBusiness.create(carSelling);
       Transaction transaction = new Transaction();
       transaction.setServiceId(id);
       transaction.setUserId(carSelling.getUserId());
@@ -346,53 +325,25 @@ public class CustomerController {
       transactionBusiness.create(transaction);
 
     } else {
+      carSelling.setUpdateTime(now);
       carSelling.setUpdateUserId(SessionUtil.getCurrentUserId());
-      id = carSelling.getId();
-      result = carSellingBusiness.update(carSelling);
-
+      carSellingBusiness.update(carSelling);
       Example<TTransaction> example0 = Example.newExample(TTransaction.class);
       example0.param("serviceId", id);
       List<Transaction> transactions = transactionBusiness.list(example0);
       Transaction transaction = transactions.get(0);
       transaction.setUpdateTime(now);
       transaction.setUpdateUserId(SessionUtil.getCurrentUserId());
-
       transactionBusiness.update(transaction);
     }
 
-    String notes = carSelling.getNotes();
-
-    String customerId = carSelling.getUserId();
-    Example<TNotes> example1 = Example.newExample(TNotes.class);
-    example1.param("userId", customerId);
-    example1.param("noteServiceType", LumeiCrmConstants.SERVICE_TYPE.CAR_SELLING.getValue());//TODO
-    example1.orderBy("updateTime").desc();
-    List<Notes> notesList = notesBusiness.list(example1);
-    Notes newNotes;
-    if (notesList == null || notesList.size() < 1) {
-      newNotes = new Notes();
-      newNotes.setUserId(customerId);
-      newNotes.setCreateTime(now);
-      newNotes.setCreateUserId(SessionUtil.getCurrentUserId());
-      newNotes.setUpdateTime(now);
-      newNotes.setUpdateUserId(SessionUtil.getCurrentUserId());
-      newNotes.setContent(notes);
-      newNotes.setNoteServiceType(LumeiCrmConstants.SERVICE_TYPE.CAR_SELLING.getValue());
-      notesBusiness.create(newNotes);
-    } else {
-      newNotes = notesList.get(0);
-      newNotes.setUpdateTime(now);
-      newNotes.setUpdateUserId(SessionUtil.getCurrentUserId());
-      newNotes.setContent(notes);
-      notesBusiness.updateSelective(newNotes);
-    }
-
-    return 1 == result ? "success" : "fail";
+    return id;
   }
 
   @RequestMapping(value = "getEmergencyContact", method = RequestMethod.GET)
-  public ModelAndView getEmergency(String customerId, String customerName) {
+  public ModelAndView getEmergency(String customerId, String customerName, String serviceId) {
     ModelAndView mav = new ModelAndView("customer/emergencyContactTemp");
+    SessionUtil.setAttributes("serviceId", serviceId);
     SessionUtil.setAttributes("customerId", customerId);
     SessionUtil.setAttributes("customerName", customerName);
     return mav;
@@ -400,145 +351,98 @@ public class CustomerController {
 
   @RequestMapping(value = "service/emergencycontact/get", method = RequestMethod.GET)
   @ResponseBody
-  public EmergencyContact getCustomerEmergency(String customerId) {
-
-    log.debug("param, customerId:{}", customerId);
-    Example<TEmergencyContact> example = Example.newExample(TEmergencyContact.class);
-    example.param("userId", customerId);
-    List<EmergencyContact> list = emergencyContactBusiness.list(example);
-    if (list == null || list.size() == 0) {
-      return new EmergencyContact();
-    }
-    EmergencyContact emergencyContact = list.get(0);
-
-    if (emergencyContact == null) {
-      return new EmergencyContact();
-    }
-
-    //*
-    Example<TNotes> example1 = Example.newExample(TNotes.class);
-    example1.param("userId", customerId);
-    example1
-      .param("noteServiceType", LumeiCrmConstants.SERVICE_TYPE.EMERGENCY_CONTACT.getValue());//TODO
-    example1.orderBy("updateTime").desc();
-    List<Notes> notes = notesBusiness.list(example1);
-    //*/
-    if (notes != null && notes.size() > 0) {
-      emergencyContact.setNotes(notes.get(0).getContent());
-    }
-
-    if(SessionUtil.getCurrentUser().getRoles().contains(SysRole.SALES)){
-      if(!SessionUtil.getCurrentUserId().equals(emergencyContact.getSalesId())){
-        emergencyContact.setReadonly(true);
-      }
-    }
-    return emergencyContact;
+  public EmergencyContact getCustomerEmergency(String serviceId) {
+	    log.debug("param, serviceId:{}", serviceId);
+	    if(StringUtils.isBlank(serviceId) || "null".equals(serviceId)){
+	    	EmergencyContact c = new EmergencyContact();
+	    	c.setTotal(6);
+	    	c.setUsed(0);
+	    	return c;
+	    }
+	    EmergencyContact emergencyContact = emergencyContactBusiness.find(serviceId, EmergencyContact.class);
+	    if(emergencyContact == null){
+	    	EmergencyContact c = new EmergencyContact();
+	    	c.setId("0");
+	    	return c;
+	    }
+	    List<String> salesIds = new ArrayList<String>();
+	    salesIds.add(emergencyContact.getSalesId());
+	    Map<String,OpAuthUser> userMap = getUserInfoById(salesIds);
+	    OpAuthUser user = userMap.get(emergencyContact.getSalesId());
+	    if (user != null) {
+	    	emergencyContact.setSalesName(user.getNickName());
+	    }
+	    if(SessionUtil.getCurrentUser().getRoles().contains(SysRole.SALES)){
+	      if(!SessionUtil.getCurrentUserId().equals(emergencyContact.getSalesId())){
+	    	  emergencyContact.setReadonly(true);
+	      }
+	    }
+	    return emergencyContact;
   }
 
   @RequestMapping(value = "service/emergencycontact/save", method = RequestMethod.POST)
   @ResponseBody
   public String saveEmergencyContact(EmergencyContact emergencyContact) {
+	   int result = 0;
+	    Date now = DateTimeUtil.now();
+	    String id = emergencyContact.getId();
 
-    int result = 0;
-    if (StringUtils.isBlank(emergencyContact.getUserId())) {
-      return "fail";
-    }
-    Date now = DateTimeUtil.now();
-    if (emergencyContact.getCreateTime() == null) {
-      emergencyContact.setCreateTime(now);
-      emergencyContact.setUpdateTime(now);
-    }
-    if (StringUtils.isBlank(emergencyContact.getCreateUserId())) {
-      emergencyContact.setCreateUserId(SessionUtil.getCurrentUserId());
-    }
-    String customerId = emergencyContact.getUserId();
-    String id;
-    if (StringUtils.isBlank(emergencyContact.getId())) {
-      id = KeyGenerator.uuid();
-      emergencyContact.setId(id);
-      result = emergencyContactBusiness.create(emergencyContact);
+	    if (StringUtils.isBlank(id) || "null".equals(id) ||"undefined".equals(id)) {
+	      id = KeyGenerator.uuid();
+	      emergencyContact.setId(id);
+	      emergencyContact.setCreateTime(now);
+	      emergencyContact.setUpdateTime(now);
+	      emergencyContact.setCreateUserId(SessionUtil.getCurrentUserId());
+	      emergencyContact.setUpdateUserId(SessionUtil.getCurrentUserId());
+	      emergencyContactBusiness.create(emergencyContact);
+	      Transaction transaction = new Transaction();
+	      transaction.setServiceId(id);
+	      transaction.setUserId(emergencyContact.getUserId());
+	      transaction.setServiceType(LumeiCrmConstants.SERVICE_TYPE.EMERGENCY_CONTACT.getValue());
+	      transaction.setCreateTime(now);
+	      transaction.setCreateUserId(SessionUtil.getCurrentUserId());
+	      transaction.setUpdateTime(now);
+	      transaction.setUpdateUserId(SessionUtil.getCurrentUserId());
+	      transactionBusiness.create(transaction);
 
-      Transaction transaction = new Transaction();
-      transaction.setServiceId(id);
-      transaction.setUserId(emergencyContact.getUserId());
-      transaction.setServiceType(LumeiCrmConstants.SERVICE_TYPE.EMERGENCY_CONTACT.getValue());
-      transaction.setCreateTime(now);
-      transaction.setCreateUserId(SessionUtil.getCurrentUserId());
-      transaction.setUpdateTime(now);
-      transaction.setUpdateUserId(SessionUtil.getCurrentUserId());
-      transactionBusiness.create(transaction);
-    } else {
-      id = emergencyContact.getId();
-      emergencyContact.setUpdateUserId(SessionUtil.getCurrentUserId());
-      result = emergencyContactBusiness.update(emergencyContact);
+	    } else {
+	      emergencyContact.setUpdateTime(now);
+	      emergencyContact.setUpdateUserId(SessionUtil.getCurrentUserId());
+	      emergencyContactBusiness.update(emergencyContact);
+	      Example<TTransaction> example0 = Example.newExample(TTransaction.class);
+	      example0.param("serviceId", id);
+	      List<Transaction> transactions = transactionBusiness.list(example0);
+	      Transaction transaction = transactions.get(0);
+	      transaction.setUpdateTime(now);
+	      transaction.setUpdateUserId(SessionUtil.getCurrentUserId());
+	      transactionBusiness.update(transaction);
+	    }
 
-      Example<TTransaction> example0 = Example.newExample(TTransaction.class);
-      example0.param("serviceId", id);
-      List<Transaction> transactions = transactionBusiness.list(example0);
-      Transaction transaction = transactions.get(0);
-      transaction.setUpdateTime(now);
-      transaction.setUpdateUserId(SessionUtil.getCurrentUserId());
-
-      transactionBusiness.update(transaction);
-    }
-
-    String notes = emergencyContact.getNotes();
-
-    Example<TNotes> example1 = Example.newExample(TNotes.class);
-    example1.param("userId", customerId);
-    example1
-      .param("noteServiceType", LumeiCrmConstants.SERVICE_TYPE.EMERGENCY_CONTACT.getValue());//TODO
-    example1.orderBy("updateTime").desc();
-    List<Notes> notesList = notesBusiness.list(example1);
-    Notes newNotes;
-    if (notesList == null || notesList.size() < 1) {
-      newNotes = new Notes();
-      newNotes.setUserId(customerId);
-      newNotes.setCreateTime(now);
-      newNotes.setCreateUserId(SessionUtil.getCurrentUserId());
-      newNotes.setUpdateTime(now);
-      newNotes.setUpdateUserId(SessionUtil.getCurrentUserId());
-      newNotes.setContent(notes);
-      newNotes.setNoteServiceType(LumeiCrmConstants.SERVICE_TYPE.EMERGENCY_CONTACT.getValue());
-      notesBusiness.create(newNotes);
-    } else {
-      newNotes = notesList.get(0);
-      newNotes.setUpdateTime(now);
-      newNotes.setUpdateUserId(SessionUtil.getCurrentUserId());
-      newNotes.setContent(notes);
-      notesBusiness.updateSelective(newNotes);
-    }
-
-    return 1 == result ? "success" : "fail";
+	    return id;
   }
 
   @RequestMapping(value = "service/emergencycontact/use", method = RequestMethod.POST)
   @ResponseBody
-  public String useEmergencyContactService(EmergencyContact emergencyContact) throws BusinessException{
+  public String useEmergencyContactService(String serviceId) throws BusinessException{
     int result = 0;
-
-    if(emergencyContact==null
-      ||StringUtils.isBlank(emergencyContact.getUserId())
-      ||StringUtils.isBlank(emergencyContact.getId())){
-      throw new BusinessException("","Invalid service to use");
-    }
-    String id = emergencyContact.getId();
-
-    EmergencyContact existedemergencyContact = emergencyContactBusiness.find(id, EmergencyContact.class);
-
+    EmergencyContact existedemergencyContact = emergencyContactBusiness.find(serviceId, EmergencyContact.class);
     int use = existedemergencyContact.getUsed();
     int total = existedemergencyContact.getTotal();
-    Date expDate = existedemergencyContact.getExpirationDate();
+    Date expDate = DateTimeUtil.round(existedemergencyContact.getExpirationDate());
 
     Date now = DateTimeUtil.now();
+    Date today = DateTimeUtil.today();
+    
     String opUserId = SessionUtil.getCurrentUserId();
     if(total<=use){
-      throw new BusinessException("", "No service can use, used off");
-    }else if(expDate==null||now.after(expDate)){
-      throw new BusinessException("", "No service can use, service expired");
+      throw new BusinessException("", "No times has been used");
+    }else if(today.after(expDate)){
+      throw new BusinessException("", "Service has expired");
     } else{
       use++;
       existedemergencyContact.setUsed(use);
+      existedemergencyContact.setUpdateTime(now);
+      existedemergencyContact.setUpdateUserId(SessionUtil.getCurrentUserId());
       result = emergencyContactBusiness.update(existedemergencyContact);
 
       ServiceLog serviceLog = new ServiceLog();
@@ -546,20 +450,10 @@ public class CustomerController {
       serviceLog.setCreateUserId(opUserId);
       serviceLog.setUpdateTime(now);
       serviceLog.setUpdateUserId(opUserId);
-      serviceLog.setServiceId(id);
+      serviceLog.setServiceId(serviceId);
       serviceLog.setServiceType(LumeiCrmConstants.SERVICE_TYPE.EMERGENCY_CONTACT.getValue());
-      serviceLog.setUserId(emergencyContact.getUserId());
-      serviceLog.setContent("Total:"+total+", new Used:"+use);
+      serviceLog.setContent("Total : "+total+", Used : "+use);
 
-//      Transaction transaction = new Transaction();
-//      transaction.setCreateTime(now);
-//      transaction.setCreateUserId(opUserId);
-//      transaction.setUpdateTime(now);
-//      transaction.setUpdateUserId(opUserId);
-//      transaction.setServiceId(id);
-//      transaction.setUserId(emergencyContact.getUserId());
-//      transaction.setServiceType(LumeiCrmConstants.SERVICE_TYPE.EMERGENCY_CONTACT.getValue());
-//      transactionBusiness.create(transaction);
       serviceLogBusiness.create(serviceLog);
     }
     return result==1?"success":"fail";
@@ -567,42 +461,25 @@ public class CustomerController {
 
   @RequestMapping(value = "service/emergencycontact/useList", method = RequestMethod.POST)
   @ResponseBody
-  public Pagination<ServiceLog> listEmergencyUseList(String serviceId, String customerId, int page, int limit){
-
-
-    if (StringUtils.isBlank(customerId)||StringUtils.isBlank(serviceId)) {
-      Pagination<ServiceLog> pg = Pagination.newInstance(page, limit);
-      pg.setResult(new ArrayList<ServiceLog>());
-      pg.setTotal(0);
-      pg.setTotalPage(0);
-      return pg;
-    }
-
-    Example<TServiceLog> example = Example.newExample(TServiceLog.class);
-
+  public Pagination<ServiceLog> listEmergencyUseList(String serviceId,int page, int limit){
+    Example<TServiceLog> example = Example.newExample(TServiceLog.class)
+    		.param("serviceId", serviceId).orderBy("createTime").desc();
     Pagination<ServiceLog> pg = serviceLogBusiness.listByPage(example, page, limit);
-
+//    Pagination<ServiceLog> pg = Pagination.newInstance(1,10);
     List<ServiceLog> serviceLogs = pg.getResult();
-    if (serviceLogs != null || serviceLogs.size() > 0) {
+    if (serviceLogs != null && serviceLogs.size() > 0) {
       List<String> uids = new ArrayList<String>();
       for (ServiceLog tmp : serviceLogs) {
-        String uid0 = tmp.getUpdateUserId();
         String uid1 = tmp.getCreateUserId();
-        uids.add(uid0);
         uids.add(uid1);
       }
       List<ServiceLog> serviceLog = new ArrayList();
       Map<String,OpAuthUser> userMap = getUserInfoById(uids);
       for (ServiceLog tmp : serviceLogs) {
         String crtUId = tmp.getCreateUserId();
-        String updUId = tmp.getUpdateUserId();
         OpAuthUser crtUser = userMap.get(crtUId);
-        OpAuthUser updUser = userMap.get(updUId);
-
         String crtUName = crtUser == null ? "" : crtUser.getNickName();
-        String updUName = updUser == null ? "" : updUser.getNickName();
         tmp.setCreateUserName(crtUName);
-        tmp.setUpdateUserName(updUName);
         serviceLog.add(tmp);
       }
       pg.setResult(serviceLog);
@@ -665,11 +542,9 @@ public class CustomerController {
   @ResponseBody
   public String saveNotes(Notes notes) {
     int result = 0;
-    if (notes.getCreateTime() == null) {
       Date now = DateTimeUtil.now();
       notes.setCreateTime(now);
       notes.setUpdateTime(now);
-    }
     if (StringUtils.isBlank(notes.getCreateUserId())) {
       notes.setCreateUserId(SessionUtil.getCurrentUserId());
     }
@@ -713,7 +588,7 @@ public class CustomerController {
     }
 
     example.param("userId", customerId);
-    example.orderBy("createTime");
+    example.orderBy("createTime").desc();
     Pagination<Transaction> pg = transactionBusiness.listByPage(example, page, limit);
 
     /*
@@ -772,9 +647,8 @@ public class CustomerController {
     return 1 == result ? "success" : "fail";
   }
 
-  @RequestMapping(value = "transaction/delete", method = RequestMethod.POST)
-  @ResponseBody
-  public String deleteTransaction(String id) {
+  
+  private String deleteTransaction(String id) {
     int result = 0;
     log.info("delete note:{}, opId:{},opName:{}", id, SessionUtil.getCurrentUserId(),
       SessionUtil.getCurrentUserName());
@@ -802,11 +676,25 @@ public class CustomerController {
   @RequestMapping(value = "service/carselling/delete", method = RequestMethod.POST)
   @ResponseBody
   private String deleteCarSelling(String id){
-    return carSellingBusiness.delete(id, CarSelling.class)==1?"success":"fail";
+	  int i = carSellingBusiness.delete(id, CarSelling.class);
+	  List<Transaction> list = transactionBusiness.list(
+			  Example.newExample(TTransaction.class).param("serviceId", id));
+	  if(null != list && list.size() > 0){
+		  i = transactionBusiness.delete(list.get(0).getId(), Transaction.class);
+	  }
+	  
+    return i ==1?"success":"fail";
   }
   @RequestMapping(value = "service/emergencycontact/delete", method = RequestMethod.POST)
   @ResponseBody
   private String deleteEmergencyContact(String id){
-    return emergencyContactBusiness.delete(id, EmergencyContact.class)==1?"success":"fail";
+	  int i = emergencyContactBusiness.delete(id, EmergencyContact.class);
+	  List<Transaction> list = transactionBusiness.list(
+			  Example.newExample(TTransaction.class).param("serviceId", id));
+	  if(null != list && list.size() > 0){
+		  i = transactionBusiness.delete(list.get(0).getId(), Transaction.class);
+	  }
+	  
+  return i ==1?"success":"fail";
   }
 }

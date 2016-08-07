@@ -25,20 +25,12 @@ function searchSubmit(){
 
 	$.iget(
 			contextPath + '/customer/service/emergencycontact/get',
-			{customerId:param['customerId']},
+			{serviceId:param['serviceId']},
 			function(data){
-				if(!data.expirationDate){
-
-				}
-				var a = !param['customerId'];
-				if(!param['customerId']&&!$("#serviceId-this")&&!$("#serviceId-this").val()){
-					data['total']="6";
-					data['used']="0";
-
-					/*
-					var expirationDate = new Date();
-					expirationDate.setFullYear(expirationDate.getFullYear() + 1);
-					data['expirationDate'] = expirationDate;//*/
+				if(data.id=="0"){
+					$.ialert("Transaction not exist!");
+					setTimeout("backtoprofile()",2000);
+					return;
 				}
 				var pagefn = doT.template($('#step_temp_1').text());
 				var htmlpage = pagefn(data);
@@ -56,13 +48,15 @@ function searchSubmit(){
 
 				$page = $('#event-content').igrid({
 					url : contextPath + '/customer/service/emergencycontact/useList',
-					param : $.extend({},param,{serviceId:$("#serviceId-this").val()}),
-					temp : "event_grid_temp"
+					param : {serviceId:param['serviceId']},
+					temp : "event_grid_temp",
+					rowlist: [100],
+					paginationBarTemp:"pagination_bar_temp3"
 				});
 			},
 			function(errmsg){
 				$.ialert(errmsg,"error");
-			}//*/
+			}
 	);
 }
 
@@ -80,19 +74,16 @@ function listNotes(){
 function saveEmergencyContact(){
 	var param = {};
 	$($('#submit-form1').serializeArray()).each(function(k, v){
-		if(!(v.value === '' || v.value == null || v.value === 'undefined')){
 			param[v.name]=v.value;
-		}
 	});
-
-	var customerId = $("#customerId").val();
-	param = $.extend({}, param, {userId:customerId});
+	param['userId'] = $("#customerId").val();
 	$.ipost(
 	contextPath + '/customer/service/emergencycontact/save',
 	param,
-	function(){
+	function(data){
 		$.ialert("Save success!");
-		searchSubmit();
+		$("#serviceId").val(data);
+		setTimeout("searchSubmit()",2000);
 	},
 	function(errmsg){
 		$.ialert("Save failed! "+errmsg,"error");
@@ -101,36 +92,41 @@ function saveEmergencyContact(){
 }
 
 function useService(id) {
-
-	var customerId = $("#customerId").val();
-	$.iconfirm("Confirm to use?",function(){
+	if(!id||id===''||id==='undefined'||id==='null'){
+		$.ialert("Please save Emergency Contact before use");
+		return;
+	}
+	$.iconfirm("Do you want to use Emergency Contact Service?",function(){
 		$.ipost(
 			contextPath+'/customer/service/emergencycontact/use',
-			{id:id,userId:customerId},
-			function(){
+			{serviceId:id},
+			function(data){
 				$.ialert("Success!");
-				searchSubmit();
+				setTimeout("searchSubmit()",2000);
 			},
 			function(errmsg){
 				$.ialert(errmsg,"Fail");
+				setTimeout("searchSubmit()",2000);
 			});
 	});
 }
 
 function deleteEmergencyContact(id){
-	$.iconfirm("Are you sure to delete?",function(){
+	$.iconfirm("Do you want to delete it?",function(){
 		$.ipost(
-			contextPath+'/customer/service/emergencycontact/delete',
-			{id:id},
-			function(){
-				$.ialert("Success!");
-				// searchSubmit();
-				var customerId = $("#customerId");
-				var customerName = $("#customerName");
-				location.href = contextPath+'/customer/getProfile?customerId='+customerId+'&customerName='+customerName;
-			},
-			function(errmsg){
-				$.ialert(errmsg,"Fail");
-			});
+				contextPath+'/customer/service/emergencycontact/delete',
+				{id:id},
+				function(){
+					$.ialert("Delete success!");
+					setTimeout("backtoprofile()",2000);
+					},
+				function(errmsg){
+					$.ialert(errmsg,"Fail");
+				});
 	});
+}
+
+function backtoprofile(){
+	var customerId = $("#customerId").val();
+	location.href = contextPath+'/customer/getProfile?customerId='+customerId;
 }
