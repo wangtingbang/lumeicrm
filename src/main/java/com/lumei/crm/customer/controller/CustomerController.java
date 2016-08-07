@@ -173,7 +173,9 @@ public class CustomerController {
 
     Profile profile = profileBusiness.find(customerId, Profile.class);
     if (profile == null || StringUtils.isBlank(profile.getId())) {
-      return new Profile();
+    	Profile p = new Profile();
+    	p.setId("0");
+      return p;
     }
 
     /*
@@ -197,7 +199,7 @@ public class CustomerController {
     }//*/
     if(StringUtils.isBlank(profile.getService())){
       serviceInfo.setS1("0");
-      serviceInfo.setS1("0");
+      serviceInfo.setS2("0");
     }else{
       int idx = 0;
       for(char ch:profile.getService().toCharArray()){
@@ -262,7 +264,7 @@ public class CustomerController {
       result = profileBusiness.update(profile);
     }
 
-    return 1 == result ? "success" : "fail";
+    return profile.getId();
   }
   
   @RequestMapping(value = "getCarSelling", method = RequestMethod.GET)
@@ -612,14 +614,14 @@ public class CustomerController {
   @RequestMapping(value = "notes/listByPage", method = RequestMethod.POST)
   @ResponseBody
   public Pagination<Notes> listNotesByPage(
-    String customerId, String serviceType, String serviceId,
-    int page,
+	String serviceId,//
+    int page,//
     int limit) {
 
-    log.debug("param, page:{}, limit:{}", customerId, serviceType);
+    log.debug("param:{}, page:{}, limit:{}", serviceId);
     Example<TNotes> example = Example.newExample(TNotes.class);
 
-    if (StringUtils.isBlank(customerId)||StringUtils.isBlank(serviceId)) {
+    if (StringUtils.isBlank(serviceId)) {
       Pagination<Notes> pg = Pagination.newInstance(page, limit);
       pg.setResult(new ArrayList<Notes>());
       pg.setTotal(0);
@@ -627,11 +629,8 @@ public class CustomerController {
       return pg;
     }
 
-    example.param("userId", customerId);
-//    example.param("noteServiceType", serviceType);
-    
     example.param("serviceId", serviceId);
-    example.orderBy("createTime");
+    example.orderBy("createTime").desc();
     Pagination<Notes> pg = notesBusiness.listByPage(example, page, limit);
 
     List<Notes> notes = pg.getResult();

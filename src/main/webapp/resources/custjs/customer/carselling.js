@@ -34,18 +34,23 @@ function searchSubmit(){
 				data = $.extend(data, {customerId:param['customerId']});
 				var htmlpage = pagefn(data);
 				$("#car-selling-content").html(htmlpage);
-				$page = $('#notesdiv').igrid({
-					url : contextPath + '/customer/notes/listByPage',
-					paginationBarTemp:"pagination_bar_temp2",
-					param : {customerId:param['customerId'], serviceType:1, serviceId:data.id},
-					temp : "notes_temp",
-					rowlist: [5]
-				});
+				listNotes();
 			},
 			function(errmsg){
 				$.ialert(errmsg,"error");
 			}//*/
 	);
+}
+
+function listNotes(){
+	var id = $("#id").val();
+	$page = $('#notesdiv').igrid({
+		url : contextPath + '/customer/notes/listByPage',
+		paginationBarTemp:"pagination_bar_temp2",
+		param : {serviceId:id},
+		temp : "notes_temp",
+		rowlist: [5]
+	});
 }
 
 function saveCarSelling(){

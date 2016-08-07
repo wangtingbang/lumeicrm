@@ -27,7 +27,7 @@ function searchSubmit() {
 	var param = {};
 	var rating = new Array();
 	$($('#search_form').serializeArray()).each(function(k, v){
-		 if(v.name="ratingArray"){
+		 if(v.name=="ratingArray"){
 			 rating.push(v.value);
 		 }else{
 			 param[v.name]=v.value;

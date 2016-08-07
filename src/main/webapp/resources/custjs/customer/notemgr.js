@@ -55,8 +55,7 @@ function addNote2(msgDom){
 		contextPath+'/customer/notes/save',
 		data,
 		function (result) {
-			$.ialert("Success!");
-			searchSubmit();
+			listNotes();
 			$.imodalClose();
 		}, function(error){
 			$.ialert(errmsg,"Fail");
@@ -65,13 +64,12 @@ function addNote2(msgDom){
 }
 
 function deleteNotes(id){
-	$.iconfirm("Are you sure to delete this note?",function(){
+	$.iconfirm("Do you want to delete it?",function(){
 		$.ipost(
 			contextPath+'/customer/notes/delete',
 			{id:id},
 			function(){
-				$.ialert("Success!");
-				searchSubmit();
+				listNotes();
 			},
 			function(errmsg){
 				$.ialert(errmsg,"Fail");

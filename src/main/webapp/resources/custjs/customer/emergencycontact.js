@@ -52,13 +52,7 @@ function searchSubmit(){
 					$(this).prev().focus();
 				});
 
-				$page = $('#notesdiv').igrid({
-					url : contextPath + '/customer/notes/listByPage',
-					paginationBarTemp:"pagination_bar_temp2",
-					param : {customerId:param['customerId'], serviceType:2, serviceId:data.id},
-					temp : "notes_temp",
-					rowlist: [5]
-				});
+				listNotes();
 
 				$page = $('#event-content').igrid({
 					url : contextPath + '/customer/service/emergencycontact/useList',
@@ -70,6 +64,17 @@ function searchSubmit(){
 				$.ialert(errmsg,"error");
 			}//*/
 	);
+}
+
+function listNotes(){
+	var id = $("#id").val();
+	$page = $('#notesdiv').igrid({
+		url : contextPath + '/customer/notes/listByPage',
+		paginationBarTemp:"pagination_bar_temp2",
+		param : {serviceId:id},
+		temp : "notes_temp",
+		rowlist: [5]
+	});
 }
 
 function saveEmergencyContact(){

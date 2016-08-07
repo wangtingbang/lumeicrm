@@ -48,8 +48,9 @@ function saveProfile(){
 	contextPath + '/customer/profile/save',
 	param,
 	function(data){
-		// $.ialert("Save success!");
-		location.href = contextPath + '/customer/list?active=customerList';
+		$.ialert("Save success!");
+		$("#customerId").val(data);
+		setTimeout("searchSubmit()",2000);
 	},
 	function(errmsg){
 		$.ialert("Save failed! "+errmsg,"error");
@@ -68,9 +69,12 @@ function searchSubmit(){
 	$.iget(
 			contextPath + '/customer/profile/get',
 			{customerId:param['customerId']},
-//			temp : "grid_temp"
-				//*
 			function(data){
+				if(data.id=="0"){
+					$.ialert("customer not exist!");
+					setTimeout("backtolist()",2000);
+					return;
+				}
 				var pagefn = doT.template($('#step_temp_1').text());
 				var htmlpage = pagefn(data);
 				$("#profile-content").html(htmlpage);
@@ -82,14 +86,7 @@ function searchSubmit(){
 					$(this).prev().focus();
 				});
 
-
-				$page = $('#notesdiv').igrid({
-					url : contextPath + '/customer/notes/listByPage',
-					paginationBarTemp:"pagination_bar_temp2",
-					param : {customerId:param['customerId']},
-					temp : "notes_temp",
-					rowlist: [5]
-				});
+				listNotes();
 				$page = $('#transaction-content').igrid({
 					//url : contextPath + '/consume/'+authType + '/postsalepay/listConsume',
 					url : contextPath + '/customer/transaction/listByPage',
@@ -100,8 +97,19 @@ function searchSubmit(){
 			},
 			function(errmsg){
 				$.ialert(errmsg,"error");
-			}//*/
+			}
 	);
+}
+
+function listNotes(){
+	var id = $("#id").val();
+	$page = $('#notesdiv').igrid({
+		url : contextPath + '/customer/notes/listByPage',
+		paginationBarTemp:"pagination_bar_temp2",
+		param : {serviceId:id},
+		temp : "notes_temp",
+		rowlist: [5]
+	});
 }
 
 //*
@@ -198,17 +206,20 @@ function viewTran(serviceType, serviceId) {
 
 
 function deleteProfile(id){
-	$.iconfirm("Are you sure to delete?",function(){
+	$.iconfirm("Do you want to delete it?",function(){
 		$.ipost(
 			contextPath+'/customer/profile/delete',
 			{id:id},
 			function(){
-				$.ialert("Success!");
-				searchSubmit();
+				$.ialert("Delete success!");
+				setTimeout("backtolist()",2000);
 			},
 			function(errmsg){
 				$.ialert(errmsg,"Fail");
 			});
 	});
+}
 
+function backtolist(){
+	location.href=contextPath+"/customer/list";
 }
