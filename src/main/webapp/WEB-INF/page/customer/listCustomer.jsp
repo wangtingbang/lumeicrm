@@ -113,9 +113,16 @@
         </div>
 
         <script id="grid_temp" type="text/x-dot-template">
+	<label class="col-sm-12"><h5 class="header ligth blue" style="margin-top:0px;margin-bottom:0px">
+    <a id="send_email_btn" href="javascript:void(0);"><i class="ace-icon fa fa-envelope"></i>&nbsp; Send Email</i></a></h5></label>
         <table id="sample-table-1" class="table table-striped table-bordered table-hover">
         <thead>
         <tr>
+		<th class="center">
+			<label class="position-relative"><input id="checkAll" type="checkbox" class="ace"/>
+			<span class="lbl"/>
+			</label>
+		</th>
         <th>Name</th>
         <th>Wechat</th>
         <th>Phone</th>
@@ -129,6 +136,12 @@
         <tbody>
         {{~it.data :p:index}}
         <tr>
+		<td class="center">
+		<label class="position-relative">
+		<input name="checkItem" type="checkbox" class="ace" value="{{=p.email||''}}"/>
+		<span class="lbl"/>
+		</label>
+		</td>
         <td>{{=p.name||''}}</td>
         <td>{{=p.wechatId||''}}</td>
         <td>{{=p.phone||''}}</td>
