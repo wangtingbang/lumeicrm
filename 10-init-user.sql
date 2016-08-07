@@ -1,0 +1,2 @@
+insert into op_auth_user values ('c77342f81e934543b9fb29c9583a3873','admin','bc9606c08ed1c00e0b1f3c6b107731f84f927156','578ad8af1aa34b9f','Administrator','1',NULL,'2015-06-16 20:45:20','c77342f81e934543b9fb29c9583a3873','2015-06-17 19:53:17','0');
+insert into op_auth_user_role values ('2cf43d15bcd74b818f7bd56eda322358','c77342f81e934543b9fb29c9583a3873','ADMIN','admin','c77342f81e934543b9fb29c9583a3873','2015-06-17 13:55:55',NULL,NULL,'0');

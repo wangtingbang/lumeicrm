@@ -1,4 +1,0 @@
-insert into op_auth_user_role values ('2cf43d15bcd74b818f7bd56eda322358','c77342f81e934543b9fb29c9583a3873','ADMIN','系统管理员','c77342f81e934543b9fb29c9583a3873','2015-06-17 13:55:55',NULL,NULL,'0');
-insert into op_auth_user_role values ('a9311c4f33c54ad885bbc933bf873190','c9e04db19d4944f2a27957b9fca113d0','STORE_USER_OP','系统管理员','c77342f81e934543b9fb29c9583a3873','2015-06-17 13:55:57',NULL,NULL,'0');
-insert into op_auth_user_role values ('b3abc911cd3a4f03a2d5f44cffb14083','05099314516b48b391e1a687f51d7e8f','op','运营人员','c9e04db19d4944f2a27957b9fca113d0','2015-06-17 15:27:03',NULL,NULL,'1');
-insert into op_auth_user_role values ('00e019e343064dde9b2727a9c4428710','05099314516b48b391e1a687f51d7e8f','op','运营人员','c9e04db19d4944f2a27957b9fca113d0','2015-06-17 15:28:52',NULL,NULL,'0');
