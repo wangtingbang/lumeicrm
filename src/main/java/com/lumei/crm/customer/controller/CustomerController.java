@@ -73,6 +73,7 @@ public class CustomerController {
     @RequestParam(value = "rating[]") Byte[] ratingArray, //
     Date potentialBuyingDateStart, //
     Date potentialBuyingDateEnd, //
+    String sales,
     int page, int limit,//
     String orderColumn, boolean orderDesc) {
 
@@ -81,7 +82,9 @@ public class CustomerController {
     	return Pagination.newInstance(page, limit, 0);
     }
     Example<TProfile> example = Example.newExample(TProfile.class);
-    
+    if (!StringUtils.isBlank(sales)) {
+        example.param("salesId", sales);
+    }
     if (!StringUtils.isBlank(customerName)) {
       example.paramLikeTo("name", customerName);
     }

@@ -67,7 +67,7 @@
         </div>
         </div>
 
-        <div class="col-sm-8 form-group">
+        <div class="col-sm-6 form-group">
         <label class="col-sm-1 control-label no-padding-right">Rating</label>
         <div class="col-sm-11">
         <label style="margin-right: 10px; margin-top: 5px;">
@@ -88,19 +88,25 @@
         </div>
         </div>
 
-        <div class="col-sm-4 form-group">
-        <div class="col-sm-6 form-group center">
+        <div class="col-sm-6 form-group">
+        <div class="col-sm-4 form-group center">
         <a class="btn btn-info btn-sm" id="search_btn">
-        <i class="ace-icon fa fa-search bigger-110"></i> Search
+        <i class="ace-icon fa fa-search bigger-110"></i> Search All
         </a>
         </div>
-        <div class="col-sm-6 form-group center">
+        <div class="col-sm-4 form-group center">
+        <a class="btn btn-info btn-sm" id="searchbyme_btn">
+        <i class="ace-icon fa fa-search bigger-110"></i> Search mine
+        </a>
+        </div>
+        <div class="col-sm-4 form-group center">
         <a class="btn btn-info btn-sm" id="create_btn">
-        <i class="ace-icon fa fa-plus bigger-110"></i> Add
+        <i class="ace-icon fa fa-plus bigger-110"></i> Add Customer
         </a>
         </div>
         </div>
         </form>
+        <input type="hidden" value="<%=SessionUtil.getCurrentUserId() %>" id="currentUserId">
         </div>
         </div>
         <div class="row">

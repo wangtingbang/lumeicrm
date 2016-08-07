@@ -18,12 +18,17 @@ $(function () {
 	$('#search_btn').click(function() {
 		searchSubmit();
 	});
-
+	
+	$('#searchbyme_btn').click(function() {
+		var sales = $("#currentUserId").val();
+		searchSubmit(sales);
+	});
+	
 	$('#search_btn').click();
 
 });
 
-function searchSubmit() {
+function searchSubmit(sales) {
 	var param = {};
 	var rating = new Array();
 	rating.push(-1);
@@ -35,7 +40,9 @@ function searchSubmit() {
 		 }
 	});
 	param["rating"]=rating;
-
+	if(sales){
+		param["sales"]=sales;
+	}
 	$page = $('#page').igrid({
 		url : contextPath + '/customer/list',
 		param : param,
