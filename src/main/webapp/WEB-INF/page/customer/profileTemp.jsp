@@ -168,7 +168,6 @@
     </div>
     </div>
 
-
 	<div class="form-group">
     <label class="col-sm-4 control-label no-padding-right">Sales:</label>
     <div class="col-sm-8">
@@ -362,7 +361,7 @@
     </div>
 <div class="form-group"  style="margin-left:8.3%">
 	<label class="col-sm-11"><h5 class="header ligth blue" style="margin-top:0px;margin-bottom:0px">Transaction&nbsp;&nbsp;&nbsp;&nbsp;
-    {{?it&&it.id}}<a onclick="javascript:addTransaction('{{=it.id}}','{{=it.name }}');">+ Add</a>{{?}}</h5></label>
+    <a href="javascript:addTransaction('{{=it.id}}','{{=it.name }}');">+ Add</a></h5></label>
 </div>
 <div class="form-group">
 <div class="col-sm-10" id="transaction-content" style="margin-left:8.3%">
@@ -444,7 +443,7 @@
     <tr>
     <th>Service Type</th>
     <th>Transaction Date</th>
-    <th></th>
+    <th>Operation</th>
     </tr>
     </thead>
     <tbody>
@@ -454,7 +453,7 @@
     <tr>
     <td>{{=datadic['serviceType'][p.serviceType]}}</td>
     <td>{{=new Date(p.createTime).toChString(false) ||''}}</td>
-    <td><a onclick="javascript:viewTran('{{=p.serviceType}}','{{=it.id}}','{{=it.name }}');">Detail</a></td>
+    <td><a href="javascript:viewTran('{{=p.serviceType}}','{{=it.id}}','{{=it.name }}');">Detail</a></td>
     </tr>
     {{~}}
     {{? !it||!it.data||!it.data.length}}
@@ -469,7 +468,7 @@
 <div class="form-group">
 <input type="hidden" id="userId" name="userId" value="{{=it.customerId||''}}" class="col-xs-12 col-sm-12" value=""/>
 <input type="hidden" id="noteId" name="noteId" value="{{=it.noteId||''}}" class="col-xs-12 col-sm-12" />
-<input type="hidden" id="serviceId" name="serviceId" value="{{=it.serviceId||''}}" class="col-xs-12 col-sm-12" />
+<input type="hidden" id="serviceId" name="serviceId" value="{{=it.customerId||''}}" class="col-xs-12 col-sm-12" />
 <input type="hidden" id="createUserId" name="createUserId" value="{{=it.noteCrtUId||''}}" class="col-xs-12 col-sm-12" />
 <label class="col-sm-2 control-label no-padding-right" for="id">Created By:</label>
 <div class="col-sm-4">

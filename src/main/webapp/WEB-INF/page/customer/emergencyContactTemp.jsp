@@ -85,7 +85,8 @@
 
 <div class="col-sm-6">
 	<div class="form-group" style="margin-left:8.3%">
-	<label class="col-sm-12"><h5 class="header ligth blue" style="margin-top:0px;margin-bottom:0px">Basic</h5></label>
+	<label class="col-sm-12"><h5 class="header ligth blue" style="margin-top:0px;margin-bottom:0px">Basic&nbsp;&nbsp;&nbsp;&nbsp;
+  <a href="javascript:useService('{{=it.id}}');">+ Use</a></h5></label>
 	</div>
 
 <div class="form-group">
@@ -110,7 +111,7 @@
   <label class="col-sm-4 control-label no-padding-right">Expiration Date:</label>
   <div class="col-sm-8">
   <div class="clearfix">
-  <input id="expirationDate" class="date-timepicker form-control col-sm-12 " type="text" name="expirationDate" value="{{=new Date(it.expirationDate).toChString(false)|| '' }}" readonly="readonly"/>
+  <input id="expirationDate" class="date-timepicker form-control col-sm-12 " type="text" name="expirationDate" value="{{=new Date(it.expirationDate).toChString(false)|| '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
   </div>
   </div>
   </div>
@@ -677,7 +678,7 @@
   <label class="col-sm-10"><h5 class="header ligth blue" style="margin-top:0px;margin-bottom:0px">Event</h5></label>
   </div>
   <div class="form-group">
-  <div class="col-sm-10" id="transaction-content" style="margin-left:8.3%">
+  <div class="col-sm-10" id="event-content" style="margin-left:8.3%">
   </div>
   </div>
 
@@ -707,12 +708,13 @@
 </form>
 </script>
 
-  <script id="transaction_grid_temp" type="text/x-dot-template">
+  <script id="event_grid_temp" type="text/x-dot-template">
   <table id="sample-table-2" class="table table-striped table-bordered table-hover">
   <thead>
   <tr>
-  <th>Service Type</th>
-  <th>Transaction Time</th>
+  <th>Event Time</th>
+  <th>Operator</th>
+  <th>Content</th>
   </tr>
   </thead>
   <tbody>
@@ -720,8 +722,9 @@
   <div class="col-sm-2 form-group center">
   </div>
   <tr>
-  <td>{{=datadic['serviceType'][p.serviceType]}}</td>
-  <td>{{=new Date(p.createTime).toChString(false) ||''}}</td>
+  <td>{{=new Date(p.createTime).toChString(true) ||''}}</td>
+  <td>{{=p.createUserName||''}}</td>
+  <td>{{=p.content ||''}}</td>
   </tr>
   {{~}}
   {{? !it||!it.data||!it.data.length}}
@@ -736,7 +739,7 @@
   <script id="add-notes-temp" type="text/x-dot-template">
   <form class="form-horizontal" id="add-notes-form">
   <div class="form-group">
-  <input type="hidden" id="userId" name="userId" value="{{=it.customerId||''}}" class="col-xs-12 col-sm-12" value=""/>
+  <input type="hidden" id="userId" name="userId" value="{{=it.customerId||''}}" class="col-xs-12 col-sm-12"/>
   <input type="hidden" id="noteId" name="noteId" value="{{=it.noteId||''}}" class="col-xs-12 col-sm-12" />
   <input type="hidden" id="serviceId" name="serviceId" value="{{=it.serviceId||''}}" class="col-xs-12 col-sm-12" />
   <input type="hidden" id="createUserId" name="createUserId" value="{{=it.noteCrtUId||''}}" class="col-xs-12 col-sm-12" />

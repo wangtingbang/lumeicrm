@@ -79,8 +79,11 @@ function deleteCarSelling(id){
 			contextPath+'/customer/service/carselling/delete',
 			{id:id},
 			function(){
-				$.ialert("Success!");
-				searchSubmit();
+				// $.ialert("Success!");
+				// searchSubmit();
+				var customerId = $("#customerId");
+				var customerName = $("#customerName");
+				location.href = contextPath+'/customer/getProfile?customerId='+customerId+'&customerName='+customerName;
 			},
 			function(errmsg){
 				$.ialert(errmsg,"Fail");

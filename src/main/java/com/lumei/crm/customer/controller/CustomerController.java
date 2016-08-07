@@ -1,6 +1,5 @@
 package com.lumei.crm.customer.controller;
 
-import com.google.common.collect.Lists;
 import com.lumei.crm.auth.bean.SysRole;
 import com.lumei.crm.auth.biz.OpAuthUserBusiness;
 import com.lumei.crm.auth.dto.OpAuthUser;
@@ -8,20 +7,14 @@ import com.lumei.crm.auth.entity.TOpAuthUser;
 import com.lumei.crm.commons.bean.BusinessException;
 import com.lumei.crm.commons.mybatis.support.Example;
 import com.lumei.crm.commons.mybatis.support.Pagination;
-import com.lumei.crm.commons.util.*;
+import com.lumei.crm.commons.util.BeanUtils;
+import com.lumei.crm.commons.util.DateTimeUtil;
+import com.lumei.crm.commons.util.KeyGenerator;
 import com.lumei.crm.customer.biz.*;
 import com.lumei.crm.customer.constants.LumeiCrmConstants;
 import com.lumei.crm.customer.dto.*;
 import com.lumei.crm.customer.entity.*;
 import com.lumei.crm.util.SessionUtil;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import com.sun.corba.se.impl.naming.cosnaming.TransientNameServer;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,32 +26,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.lumei.crm.auth.biz.OpAuthUserBusiness;
-import com.lumei.crm.auth.dto.OpAuthUser;
-import com.lumei.crm.auth.entity.TOpAuthUser;
-import com.lumei.crm.commons.bean.BusinessException;
-import com.lumei.crm.commons.mybatis.support.Example;
-import com.lumei.crm.commons.mybatis.support.Pagination;
-import com.lumei.crm.commons.util.BeanUtils;
-import com.lumei.crm.commons.util.DateTimeUtil;
-import com.lumei.crm.customer.biz.CarSellingBusiness;
-import com.lumei.crm.customer.biz.EmergencyContactBusiness;
-import com.lumei.crm.customer.biz.NotesBusiness;
-import com.lumei.crm.customer.biz.ProfileBusiness;
-import com.lumei.crm.customer.biz.TransactionBusiness;
-import com.lumei.crm.customer.constants.LumeiCrmConstants;
-import com.lumei.crm.customer.dto.CarSelling;
-import com.lumei.crm.customer.dto.EmergencyContact;
-import com.lumei.crm.customer.dto.Notes;
-import com.lumei.crm.customer.dto.Profile;
-import com.lumei.crm.customer.dto.ServiceInfo;
-import com.lumei.crm.customer.dto.Transaction;
-import com.lumei.crm.customer.entity.TCarSelling;
-import com.lumei.crm.customer.entity.TEmergencyContact;
-import com.lumei.crm.customer.entity.TNotes;
-import com.lumei.crm.customer.entity.TProfile;
-import com.lumei.crm.customer.entity.TTransaction;
-import com.lumei.crm.util.SessionUtil;
+import java.util.*;
 
 /**
  * Created by wangtingbang on 15/7/30.
@@ -82,6 +50,9 @@ public class CustomerController {
 
   @Autowired
   private TransactionBusiness transactionBusiness;
+
+  @Autowired
+  private ServiceLogBusiness serviceLogBusiness;
 
   @Autowired
   private OpAuthUserBusiness opAuthUserBusiness;
@@ -293,8 +264,7 @@ public class CustomerController {
 
     return 1 == result ? "success" : "fail";
   }
-
-
+  
   @RequestMapping(value = "getCarSelling", method = RequestMethod.GET)
   public ModelAndView getCustomerCarSelling(String customerId, String customerName) {
     ModelAndView mav = new ModelAndView("customer/carSellingTemp");
@@ -302,7 +272,6 @@ public class CustomerController {
     SessionUtil.setAttributes("customerName", customerName);
     return mav;
   }
-
 
   @RequestMapping(value = "service/carselling/get", method = RequestMethod.GET)
   @ResponseBody
@@ -570,18 +539,75 @@ public class CustomerController {
       existedemergencyContact.setUsed(use);
       result = emergencyContactBusiness.update(existedemergencyContact);
 
-      Transaction transaction = new Transaction();
-      transaction.setCreateTime(now);
-      transaction.setCreateUserId(opUserId);
-      transaction.setUpdateTime(now);
-      transaction.setUpdateUserId(opUserId);
-      transaction.setServiceId(id);
-      transaction.setUserId(transaction.getUserId());
-      transaction.setServiceType(LumeiCrmConstants.SERVICE_TYPE.EMERGENCY_CONTACT.getValue());
-      transactionBusiness.create(transaction);
+      ServiceLog serviceLog = new ServiceLog();
+      serviceLog.setCreateTime(now);
+      serviceLog.setCreateUserId(opUserId);
+      serviceLog.setUpdateTime(now);
+      serviceLog.setUpdateUserId(opUserId);
+      serviceLog.setServiceId(id);
+      serviceLog.setServiceType(LumeiCrmConstants.SERVICE_TYPE.EMERGENCY_CONTACT.getValue());
+      serviceLog.setUserId(emergencyContact.getUserId());
+      serviceLog.setContent("Total:"+total+", new Used:"+use);
+
+//      Transaction transaction = new Transaction();
+//      transaction.setCreateTime(now);
+//      transaction.setCreateUserId(opUserId);
+//      transaction.setUpdateTime(now);
+//      transaction.setUpdateUserId(opUserId);
+//      transaction.setServiceId(id);
+//      transaction.setUserId(emergencyContact.getUserId());
+//      transaction.setServiceType(LumeiCrmConstants.SERVICE_TYPE.EMERGENCY_CONTACT.getValue());
+//      transactionBusiness.create(transaction);
+      serviceLogBusiness.create(serviceLog);
     }
     return result==1?"success":"fail";
   }
+
+  @RequestMapping(value = "service/emergencycontact/useList", method = RequestMethod.POST)
+  @ResponseBody
+  public Pagination<ServiceLog> listEmergencyUseList(String serviceId, String customerId, int page, int limit){
+
+
+    if (StringUtils.isBlank(customerId)||StringUtils.isBlank(serviceId)) {
+      Pagination<ServiceLog> pg = Pagination.newInstance(page, limit);
+      pg.setResult(new ArrayList<ServiceLog>());
+      pg.setTotal(0);
+      pg.setTotalPage(0);
+      return pg;
+    }
+
+    Example<TServiceLog> example = Example.newExample(TServiceLog.class);
+
+    Pagination<ServiceLog> pg = serviceLogBusiness.listByPage(example, page, limit);
+
+    List<ServiceLog> serviceLogs = pg.getResult();
+    if (serviceLogs != null || serviceLogs.size() > 0) {
+      List<String> uids = new ArrayList<String>();
+      for (ServiceLog tmp : serviceLogs) {
+        String uid0 = tmp.getUpdateUserId();
+        String uid1 = tmp.getCreateUserId();
+        uids.add(uid0);
+        uids.add(uid1);
+      }
+      List<ServiceLog> serviceLog = new ArrayList();
+      Map<String,OpAuthUser> userMap = getUserInfoById(uids);
+      for (ServiceLog tmp : serviceLogs) {
+        String crtUId = tmp.getCreateUserId();
+        String updUId = tmp.getUpdateUserId();
+        OpAuthUser crtUser = userMap.get(crtUId);
+        OpAuthUser updUser = userMap.get(updUId);
+
+        String crtUName = crtUser == null ? "" : crtUser.getNickName();
+        String updUName = updUser == null ? "" : updUser.getNickName();
+        tmp.setCreateUserName(crtUName);
+        tmp.setUpdateUserName(updUName);
+        serviceLog.add(tmp);
+      }
+      pg.setResult(serviceLog);
+    }
+    return pg;
+  }
+
 
   @RequestMapping(value = "notes/listByPage", method = RequestMethod.POST)
   @ResponseBody
@@ -593,7 +619,7 @@ public class CustomerController {
     log.debug("param, page:{}, limit:{}", customerId, serviceType);
     Example<TNotes> example = Example.newExample(TNotes.class);
 
-    if (StringUtils.isBlank(customerId)) {
+    if (StringUtils.isBlank(customerId)||StringUtils.isBlank(serviceId)) {
       Pagination<Notes> pg = Pagination.newInstance(page, limit);
       pg.setResult(new ArrayList<Notes>());
       pg.setTotal(0);
@@ -602,7 +628,8 @@ public class CustomerController {
     }
 
     example.param("userId", customerId);
-    example.param("noteServiceType", serviceType);
+//    example.param("noteServiceType", serviceType);
+    
     example.param("serviceId", serviceId);
     example.orderBy("createTime");
     Pagination<Notes> pg = notesBusiness.listByPage(example, page, limit);
@@ -670,7 +697,6 @@ public class CustomerController {
   /**
    *
    */
-
   @RequestMapping(value = "transaction/listByPage", method = RequestMethod.POST)
   @ResponseBody
   public Pagination<Transaction> listTransactionByPage(String customerId, int page,

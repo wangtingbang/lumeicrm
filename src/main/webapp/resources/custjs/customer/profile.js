@@ -48,7 +48,7 @@ function saveProfile(){
 	contextPath + '/customer/profile/save',
 	param,
 	function(data){
-		$.ialert("Save success!");
+		// $.ialert("Save success!");
 		location.href = contextPath + '/customer/list?active=customerList';
 	},
 	function(errmsg){
@@ -121,7 +121,7 @@ function addTransaction(customerId, customerName){
 		contents:notesfn(data),
 		buttons:[
 				{addClass: 'btn btn-sm btn-default', text: '<i class="ace-icon fa fa-times  bigger-110"></i>Cancel', attr:'data-dismiss="modal"'},
-				{addClass: 'btn btn-sm btn-primary', text: '<i class="ace-icon fa fa-check  bigger-110"></i>Save', onClick: function(msgDom) {
+				{addClass: 'btn btn-sm btn-primary', text: '<i class="ace-icon fa fa-check  bigger-110"></i>Add', onClick: function(msgDom) {
 					addTransaction2(msgDom);
 				}
 				}
@@ -134,7 +134,10 @@ function addTransaction2(msgDom) {
 	var customerId = $("#customerId").val();
 	var customerName = $("#customerName").val();
 	if ($("#tran-servicetype-select").val() == 1) {
-		location.href = contextPath + '/customer/getCarSelling?customerId='+customerId+"&customerName="+customerName;
+		location.href = contextPath + '/customer/createCarSelling?customerId='+customerId+"&customerName="+customerName;
+//		var data = {customerId:customerId, customerName:customerName};
+//		var pagefn = doT.template($('#step_temp_1').text());
+//		var htmlpage = pagefn(data);
 	}else if ($("#tran-servicetype-select").val() ==2) {
 		location.href = contextPath + '/customer/getEmergencyContact?customerId='+customerId+"&customerName="+customerName
 	}

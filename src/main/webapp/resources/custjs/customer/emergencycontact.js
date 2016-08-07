@@ -59,11 +59,10 @@ function searchSubmit(){
 					rowlist: [5]
 				});
 
-				$page = $('#transaction-content').igrid({
-					//url : contextPath + '/consume/'+authType + '/postsalepay/listConsume',
-					url : contextPath + '/customer/transaction/listByPage',
-					param : param,
-					temp : "transaction_grid_temp"
+				$page = $('#event-content').igrid({
+					url : contextPath + '/customer/service/emergencycontact/useList',
+					param : $.extend({},param,{serviceId:$("#id").val()}),
+					temp : "event_grid_temp"
 				});
 			},
 			function(errmsg){
@@ -119,7 +118,10 @@ function deleteEmergencyContact(id){
 			{id:id},
 			function(){
 				$.ialert("Success!");
-				searchSubmit();
+				// searchSubmit();
+				var customerId = $("#customerId");
+				var customerName = $("#customerName");
+				location.href = contextPath+'/customer/getProfile?customerId='+customerId+'&customerName='+customerName;
 			},
 			function(errmsg){
 				$.ialert(errmsg,"Fail");
