@@ -75,7 +75,7 @@
 		<result column="SPECIAL_COMMENT" property="specialComment" jdbcType="VARCHAR" />
 		<result column="TOTAL" property="total" jdbcType="INTEGER" />
 		<result column="USED" property="used" jdbcType="INTEGER" />
-		<result column="EXPIRATION_DATE" property="expirationDate" jdbcType="DATE" />
+		<result column="EXPIRATION_DATE" property="expirationDate" jdbcType="TIMESTAMP" />
 		<result column="DELETE_FLAG" property="deleteFlag" jdbcType="TINYINT" />
 		<result column="CREATE_USER_ID" property="createUserId" jdbcType="VARCHAR" />
 		<result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />

@@ -11,9 +11,9 @@
 		<result column="URI" property="uri" jdbcType="VARCHAR" />
 		<result column="DELETE_FLAG" property="deleteFlag" jdbcType="TINYINT" />
 		<result column="CREATE_USER_ID" property="createUserId" jdbcType="VARCHAR" />
-		<result column="CREATE_TIME" property="createTime" jdbcType="DATE" />
+		<result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
 		<result column="UPDATE_USER_ID" property="updateUserId" jdbcType="VARCHAR" />
-		<result column="UPDATE_TIME" property="updateTime" jdbcType="DATE" />
+		<result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
 	</resultMap>
 
 	<sql id="Base_Column_List">

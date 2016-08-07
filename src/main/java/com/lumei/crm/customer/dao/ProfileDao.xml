@@ -20,13 +20,13 @@
 		<result column="FINANCE_STATUS" property="financeStatus" jdbcType="VARCHAR" />
 		<result column="LEASE_STATUS" property="leaseStatus" jdbcType="VARCHAR" />
 		<result column="RATING" property="rating" jdbcType="VARCHAR" />
-		<result column="POTENTIAL_BUYING_DATE" property="potentialBuyingDate" jdbcType="DATE" />
+		<result column="POTENTIAL_BUYING_DATE" property="potentialBuyingDate" jdbcType="TIMESTAMP" />
 		<result column="SERVICE" property="service" jdbcType="VARCHAR" />
 		<result column="DELETE_FLAG" property="deleteFlag" jdbcType="TINYINT" />
 		<result column="CREATE_USER_ID" property="createUserId" jdbcType="VARCHAR" />
-		<result column="CREATE_TIME" property="createTime" jdbcType="DATE" />
+		<result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
 		<result column="UPDATE_USER_ID" property="updateUserId" jdbcType="VARCHAR" />
-		<result column="UPDATE_TIME" property="updateTime" jdbcType="DATE" />
+		<result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
 	</resultMap>
 
 	<sql id="Base_Column_List">
