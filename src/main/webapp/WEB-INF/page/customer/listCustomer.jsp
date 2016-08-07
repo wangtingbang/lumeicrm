@@ -96,7 +96,7 @@
         </div>
         <div class="col-sm-4 form-group center">
         <a class="btn btn-info btn-sm" id="searchbyme_btn">
-        <i class="ace-icon fa fa-search bigger-110"></i> Search mine
+        <i class="ace-icon fa fa-search bigger-110"></i> Search Mine
         </a>
         </div>
         <div class="col-sm-4 form-group center">

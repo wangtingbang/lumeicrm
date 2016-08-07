@@ -160,9 +160,9 @@
 			#{serviceId,jdbcType=VARCHAR},
 			#{deleteFlag,jdbcType=TINYINT},
 			#{createUserId,jdbcType=VARCHAR},
-			#{createTime,jdbcType=DATE},
+			#{createTime,jdbcType=TIMESTAMP},
 			#{updateUserId,jdbcType=VARCHAR},
-			#{updateTime,jdbcType=DATE}
+			#{updateTime,jdbcType=TIMESTAMP}
 		)
 	</insert>
 
@@ -223,13 +223,13 @@
 				#{createUserId,jdbcType=VARCHAR},
 		</if>
 		<if test="createTime != null">
-				#{createTime,jdbcType=DATE},
+				#{createTime,jdbcType=TIMESTAMP},
 		</if>
 		<if test="updateUserId != null">
 				#{updateUserId,jdbcType=VARCHAR},
 		</if>
 		<if test="updateTime != null">
-				#{updateTime,jdbcType=DATE}
+				#{updateTime,jdbcType=TIMESTAMP}
 		</if>
 		</trim>
 	</insert>
@@ -265,13 +265,13 @@
 		CREATE_USER_ID = #{createUserId,jdbcType=VARCHAR},
 	</if>
 	<if test="createTime != null" >
-		CREATE_TIME = #{createTime,jdbcType=DATE},
+		CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
 	</if>
 	<if test="updateUserId != null" >
 		UPDATE_USER_ID = #{updateUserId,jdbcType=VARCHAR},
 	</if>
 	<if test="updateTime != null" >
-		UPDATE_TIME = #{updateTime,jdbcType=DATE}
+		UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
 	</if>
 		</set>
 		where ID = #{id,jdbcType=VARCHAR}
@@ -289,9 +289,9 @@
 		SERVICE_ID = #{serviceId,jdbcType=VARCHAR},
 		DELETE_FLAG = #{deleteFlag,jdbcType=TINYINT},
 		CREATE_USER_ID = #{createUserId,jdbcType=VARCHAR},
-		CREATE_TIME = #{createTime,jdbcType=DATE},
+		CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
 		UPDATE_USER_ID = #{updateUserId,jdbcType=VARCHAR},
-		UPDATE_TIME = #{updateTime,jdbcType=DATE}
+		UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
 		</set>
 		where ID = #{id,jdbcType=VARCHAR}
 		and DELETE_FLAG = ${deleteFlag}

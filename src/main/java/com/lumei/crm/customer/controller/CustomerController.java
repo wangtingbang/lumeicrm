@@ -241,6 +241,23 @@ public class CustomerController {
       }
     }
 
+    List<String> salesIds = new ArrayList<String>();
+    salesIds.add(profile.getSalesId());
+    salesIds.add(profile.getCreateUserId());
+    salesIds.add(profile.getUpdateUserId());
+    Map<String,OpAuthUser> userMap = getUserInfoById(salesIds);
+    OpAuthUser user0 = userMap.get(profile.getSalesId());
+    OpAuthUser user1 = userMap.get(profile.getCreateUserId());
+    OpAuthUser user2 = userMap.get(profile.getUpdateUserId());
+    if (user0 != null) {
+    	profile.setSales(user0.getNickName());
+    }
+    if (user1 != null) {
+    	profile.setCreateUserName(user1.getNickName());
+    }
+    if (user2 != null) {
+    	profile.setUpdateUserName(user2.getNickName());
+    }
     return profile;
   }
 
