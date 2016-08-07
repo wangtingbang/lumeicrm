@@ -8,9 +8,9 @@ CREATE TABLE `op_auth_user` (
   `nick_name` varchar(100) NOT NULL COMMENT '用户名',
   `enabled` tinyint(4) NOT NULL COMMENT '是否启用 1-启用 0-禁用',
   `create_by` varchar(32) DEFAULT NULL COMMENT '创建人',
-  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `create_time` timestamp DEFAULT NULL COMMENT '创建时间',
   `update_by` varchar(32) DEFAULT NULL COMMENT '更新人',
-  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `update_time` timestamp DEFAULT NULL COMMENT '更新时间',
   `delete_flag` tinyint(4) DEFAULT '0' COMMENT '是否删除 1-已删除 0-未删除'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -20,15 +20,15 @@ CREATE TABLE `op_auth_user_role` (
   `role_id` varchar(32) DEFAULT NULL COMMENT '角色key',
   `role_name` varchar(32) DEFAULT NULL COMMENT '角色名',
   `create_by` varchar(32) DEFAULT NULL COMMENT '创建人',
-  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `create_time` timestamp DEFAULT NULL COMMENT '创建时间',
   `update_by` varchar(32) DEFAULT NULL COMMENT '更新人',
-  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `update_time` timestamp DEFAULT NULL COMMENT '更新时间',
   `delete_flag` tinyint(4) DEFAULT '0' COMMENT '是否删除 1-已删除 0-未删除'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 
-create table `car_buying` (
+create table `car_selling` (
   `id` varchar(32) not null,
   `user_id` varchar(32) default null,
   `sales_id` varchar(255) default null,
@@ -70,9 +70,9 @@ create table `car_buying` (
   `trade_in_interior` varchar(255) default null,
   `delete_flag` tinyint(4) default null,
   `create_user_id` varchar(32) default null,
-  `create_time` datetime null default null,
+  `create_time` timestamp null default null,
   `update_user_id` varchar(32) default null,
-  `update_time` datetime null default null,
+  `update_time` timestamp null default null,
   primary key (`id`)
 ) engine=innodb default charset=utf8;
 
@@ -148,12 +148,12 @@ create table `emergency_contact` (
   `special_comment` varchar(512) default null,
   `total` int(10) default 0,
   `used` int(10) default 0,
-  `expiration_date` datetime default null,
+  `expiration_date` date default null,
   `delete_flag` tinyint(4) default null,
   `create_user_id` varchar(32) default null,
-  `create_time` datetime null default null,
+  `create_time` timestamp null default null,
   `update_user_id` varchar(32) default null,
-  `update_time` datetime null default null,
+  `update_time` timestamp null default null,
   primary key (`id`)
 ) engine=innodb default charset=utf8;
 
@@ -165,9 +165,9 @@ create table `files` (
   `uri` varchar(255) default null,
   `delete_flag` tinyint(4) default null,
   `create_user_id` varchar(32) default null,
-  `create_time` datetime default null,
+  `create_time` timestamp default null,
   `update_user_id` varchar(32) default null,
-  `update_time` datetime default null,
+  `update_time` timestamp default null,
   primary key (`id`)
 ) engine=innodb default charset=utf8;
 
@@ -178,9 +178,9 @@ create table `transaction` (
   `service_id` varchar(32) default null,
   `delete_flag` tinyint(4) default null,
   `create_user_id` varchar(32) default null,
-  `create_time` datetime default null,
+  `create_time` timestamp default null,
   `update_user_id` varchar(32) default null,
-  `update_time` datetime default null,
+  `update_time` timestamp default null,
   primary key (`id`)
 ) engine=innodb default charset=utf8;
 
@@ -192,9 +192,9 @@ create table `notes` (
   `content` varchar(512) default null,
   `delete_flag` tinyint(4) default null,
   `create_user_id` varchar(32) default null,
-  `create_time` datetime default null,
+  `create_time` timestamp default null,
   `update_user_id` varchar(32) default null,
-  `update_time` datetime default null,
+  `update_time` timestamp default null,
   primary key (`id`)
 ) engine=innodb default charset=utf8;
 
@@ -219,9 +219,9 @@ create table `profile` (
   `service` varchar(255) default null comment 'car selling, emergency contact, car buying, car renal, cellphone, airport pickup, temporary house, aim',
   `delete_flag` tinyint(4) default null,
   `create_user_id` varchar(32) default null,
-  `create_time` datetime default null,
+  `create_time` timestamp default null,
   `update_user_id` varchar(32) default null,
-  `update_time` datetime default null,
+  `update_time` timestamp default null,
   primary key (`id`)
 ) engine=innodb default charset=utf8;
 
@@ -231,9 +231,9 @@ CREATE TABLE `service_log` (
   `service_id` varchar(32) DEFAULT NULL,
   `service_type` tinyint(3) DEFAULT NULL,
   `content` varchar(255) DEFAULT NULL,
-  `create_time` datetime default null,
+  `create_time` timestamp default null,
   `create_user_id` varchar(32) DEFAULT NULL,
-  `update_time` datetime default null,
+  `update_time` timestamp default null,
   `update_user_id` varchar(32) DEFAULT NULL,
   `delete_flag` tinyint(3) DEFAULT NULL,
   PRIMARY KEY (`id`)
