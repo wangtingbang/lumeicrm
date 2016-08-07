@@ -16,6 +16,16 @@ public class EmergencyContact extends BaseModel<String> implements Serializable 
 
   private static final long serialVersionUID = 1L;
 
+  private boolean specialReadable;
+  
+  public boolean isSpecialReadable() {
+    return specialReadable;
+  }
+
+  public void setSpecialReadable(boolean specialReadable) {
+    this.specialReadable = specialReadable;
+  }
+
   private boolean readonly;
 
   public boolean isReadonly() {

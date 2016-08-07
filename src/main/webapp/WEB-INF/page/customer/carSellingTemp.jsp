@@ -136,11 +136,11 @@
 	<label class="col-sm-4 control-label no-padding-right">Is New:</label>
 	<div class="col-sm-8">
 			<label class="line-height-1" style="margin-right: 10px;">
-				<input name="isNew" value="1" type="radio" class="ace" {{? it.readonly && 1 != it.isNew}}disabled="disabled"{{?}} {{? !it.isNew || 1 == it.isNew}}checked="checked"{{?}}  {{? it.readonly}}readonly="readonly"{{?}}/>
+				<input name="isNew" value="1" type="radio" class="ace" {{? it.readonly}}disabled="disabled"{{?}} {{? !it.isNew || 1 == it.isNew}}checked="checked"{{?}}  {{? it.readonly}}readonly="readonly"{{?}}/>
 				<span class="lbl">New</span>
 			</label>
 			<label class="line-height-1" style="margin-right: 10px;">
-				<input name="isNew" value="0" type="radio" class="ace" {{? it.readonly && 0 != it.isNew}}disabled="disabled"{{?}} {{? 0 == it.isNew}}checked="checked"{{?}}  {{? it.readonly}}readonly="readonly"{{?}}/>
+				<input name="isNew" value="0" type="radio" class="ace" {{? it.readonly}}disabled="disabled"{{?}} {{? 0 == it.isNew}}checked="checked"{{?}}  {{? it.readonly}}readonly="readonly"{{?}}/>
 				<span class="lbl">Used</span>
 			</label>
 	</div>
@@ -340,11 +340,11 @@
 	<div class="col-sm-4">
 	<div class="clearfix">
 		<label class="line-height-1" style="margin-right: 10px;">
-		<input id="tradeIn1" name="tradeIn" value="1" type="radio" class="ace" {{? it.readonly && 1 != it.tradeIn}}disabled="disabled"{{?}}  {{? it.readonly}}readonly="readonly"{{?}} {{? !it.tradeIn||1 == it.tradeIn}}checked="checked"{{?}}/>
+		<input id="tradeIn1" name="tradeIn" value="1" type="radio" class="ace" {{? it.readonly}}disabled="disabled"{{?}}  {{? it.readonly}}readonly="readonly"{{?}} {{? !it.tradeIn||1 == it.tradeIn}}checked="checked"{{?}}/>
 		<span class="lbl">Yes</span>
 		</label>
 		<label class="line-height-1" style="margin-right: 10px;">
-		<input id="tradeIn2" name="tradeIn" value="0" type="radio" class="ace" {{? it.readonly && 0 != it.tradeIn}}disabled="disabled"{{?}}  {{? it.readonly}}readonly="readonly"{{?}} {{? 0 == it.tradeIn}}checked="checked"{{?}}/>
+		<input id="tradeIn2" name="tradeIn" value="0" type="radio" class="ace" {{? it.readonly}}disabled="disabled"{{?}}  {{? it.readonly}}readonly="readonly"{{?}} {{? 0 == it.tradeIn}}checked="checked"{{?}}/>
 		<span class="lbl">No</span>
 		</label>
 	</div>

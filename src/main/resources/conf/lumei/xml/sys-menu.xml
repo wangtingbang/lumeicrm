@@ -6,6 +6,7 @@
 			<role name="ADMIN" />
 			<role name="SALES" />
 			<role name="CUSTOMER_SERVICE" />
+			<role name="CUSTOMER_MANAGER" />
 		</roles>
 	</menu>
 	<menu id="systemConfig" pid="" name="User Config" icon="fa-cog"

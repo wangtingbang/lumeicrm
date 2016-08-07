@@ -87,14 +87,14 @@
 <div class="col-sm-6">
 	<div class="form-group" style="margin-left:8.3%">
 	<label class="col-sm-12"><h5 class="header ligth blue" style="margin-top:0px;margin-bottom:0px">Basic&nbsp;&nbsp;&nbsp;&nbsp;
-    <a href="javascript:useService('{{=it.id}}');"><i class="ace-icon fa fa-user"></i>&nbsp; Use Emergency Contact</i></a></h5></label>
+    {{? !it.readonly}}<a href="javascript:useService('{{=it.id}}');"><i class="ace-icon fa fa-user"></i>&nbsp; Use Emergency Contact</i></a>{{?}}</h5></label>
 	</div>
 
 <div class="form-group">
   <label class="col-sm-4 control-label no-padding-right">Total:</label>
   <div class="col-sm-8">
   <div class="clearfix">
-  <input type="text" class="form-control limited" id="total"  name="total" maxlength="1000" readonly="readonly" value="{{=it.total || ''}}"/>
+  <input type="text" class="form-control limited" id="total"  name="total" maxlength="1000" {{? !it.specialReadable}}readonly="readonly"{{?}} value="{{=it.total || ''}}"/>
   </div>
   </div>
   </div>
@@ -103,7 +103,7 @@
   <label class="col-sm-4 control-label no-padding-right">Used:</label>
   <div class="col-sm-8">
   <div class="clearfix">
-  <input type="text" class="form-control limited" id="used"  name="used" maxlength="1000" readonly="readonly" value="{{=it.used}}"/>
+  <input type="text" class="form-control limited" id="used"  name="used" maxlength="1000" {{? !it.specialReadable}}readonly="readonly"{{?}} value="{{=it.used}}"/>
   </div>
   </div>
   </div>
@@ -112,7 +112,7 @@
   <label class="col-sm-4 control-label no-padding-right">Expiration Date:</label>
   <div class="col-sm-8">
   <div class="clearfix">
-  <input id="expirationDate" class="date-timepicker form-control col-sm-12 " type="text" name="expirationDate" value="{{=new Date(it.expirationDate).toChString(false)|| '' }}" {{? it.readonly}}readonly="readonly"{{?}}/>
+  <input id="expirationDate" class="date-timepicker form-control col-sm-12 " type="text" name="expirationDate" value="{{=new Date(it.expirationDate).toChString(false)|| '' }}" {{? it.readonly}}disabled="disabled"{{?}}/>
   </div>
   </div>
   </div>
@@ -656,11 +656,11 @@
   <label class="col-sm-2 control-label no-padding-right">Special:</label>
 	<div class="col-sm-4">
       <label style="margin-right: 10px; margin-top: 5px;">
-      <input id="special1" name="special" type="radio" value="1" class="ace" {{? it.readonly && 1 != it.special}}disabled="disabled"{{?}} {{? !it.special||1 == it.special}}checked="checked"{{?}}/>
+      <input id="special1" name="special" type="radio" value="1" class="ace" {{? it.readonly}}disabled="disabled"{{?}} {{? !it.special||1 == it.special}}checked="checked"{{?}}/>
       <span class="lbl">Yes&nbsp;&nbsp;</span>
       </label>
       <label style="margin-right: 10px; margin-top: 5px;">
-      <input id="special2" name="special" type="radio" value="0" class="ace" {{? 0 == it.special}}checked="checked"{{?}} />
+      <input id="special2" name="special" type="radio" value="0" class="ace" {{? it.readonly}}disabled="disabled"{{?}} {{? 0 == it.special}}checked="checked"{{?}} />
       <span class="lbl">No&nbsp;&nbsp;</span>
       </label>
   </div>

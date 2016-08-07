@@ -235,7 +235,7 @@ public class CustomerController {
 
     profile.setServiceInfo(serviceInfo);
 
-    if(SessionUtil.getCurrentUser().getRoles().contains(SysRole.SALES)){
+    if(SessionUtil.getCurrentUser().getRoles().contains(SysRole.SALES.getKey())){
       if(!SessionUtil.getCurrentUserId().equals(profile.getSalesId())){
         profile.setReadonly(true);
       }
@@ -294,7 +294,8 @@ public class CustomerController {
     if (user != null) {
     	carSelling.setSalesName(user.getNickName());
     }
-    if(SessionUtil.getCurrentUser().getRoles().contains(SysRole.SALES)){
+    
+    if(SessionUtil.getCurrentUser().getRoles().contains(SysRole.SALES.getKey())){
       if(!SessionUtil.getCurrentUserId().equals(carSelling.getSalesId())){
         carSelling.setReadonly(true);
       }
@@ -375,10 +376,13 @@ public class CustomerController {
 	    if (user != null) {
 	    	emergencyContact.setSalesName(user.getNickName());
 	    }
-	    if(SessionUtil.getCurrentUser().getRoles().contains(SysRole.SALES)){
+	    if(SessionUtil.getCurrentUser().getRoles().contains(SysRole.SALES.getKey())){
 	      if(!SessionUtil.getCurrentUserId().equals(emergencyContact.getSalesId())){
 	    	  emergencyContact.setReadonly(true);
 	      }
+	    }
+	    if(SessionUtil.getCurrentUser().getRoles().contains(SysRole.ADMIN.getKey())){
+	      emergencyContact.setSpecialReadable(true);
 	    }
 	    return emergencyContact;
   }
@@ -501,7 +505,7 @@ public class CustomerController {
     log.debug("param:{}, page:{}, limit:{}", serviceId);
     Example<TNotes> example = Example.newExample(TNotes.class);
 
-    if (StringUtils.isBlank(serviceId)) {
+    if (StringUtils.isBlank(serviceId)|| "null".equals(serviceId) ||"undefined".equals(serviceId)) {
       Pagination<Notes> pg = Pagination.newInstance(page, limit);
       pg.setResult(new ArrayList<Notes>());
       pg.setTotal(0);
@@ -582,7 +586,7 @@ public class CustomerController {
     log.debug("param, customerId:{}, page:{}, limit:{}", customerId);
     Example<TTransaction> example = Example.newExample(TTransaction.class);
 
-    if (StringUtils.isBlank(customerId)) {
+    if (StringUtils.isBlank(customerId)|| "null".equals(customerId) ||"undefined".equals(customerId)) {
       Pagination<Transaction> pg = Pagination.newInstance(page, limit);
       pg.setResult(new ArrayList<Transaction>());
       pg.setTotal(0);
