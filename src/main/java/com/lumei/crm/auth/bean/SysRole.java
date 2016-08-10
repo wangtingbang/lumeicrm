@@ -14,7 +14,7 @@ public enum SysRole {
 
   ADMIN("ADMIN", "Administrator"),
   SALES("SALES", "Sales"),
-  CUSTOMER_MANAGER("CUSTOMER_MANAGER ", "Customer Manager"),
+  CUSTOMER_MANAGER("CUSTOMER_MANAGER", "Customer Manager"),
   CUSTOMER_SERVICE("CUSTOMER_SERVICE", "Customer Service");
   
   private String key;
