@@ -34,6 +34,76 @@ public class CarDeal extends BaseModel<String> implements Serializable {
   //@Length(min = 1, max = 0, message = "SALES_ID长度为0")
   private String salesId;
 
+  private String customerName;
+
+  private String wechat;
+
+  private String phone;
+
+  private String salesName;
+
+  private String createUserName;
+
+  private String updateUserName;
+
+  private boolean readonly;
+
+  public String getCustomerName() {
+    return customerName;
+  }
+
+  public void setCustomerName(String customerName) {
+    this.customerName = customerName;
+  }
+
+  public String getWechat() {
+    return wechat;
+  }
+
+  public void setWechat(String wechat) {
+    this.wechat = wechat;
+  }
+
+  public String getPhone() {
+    return phone;
+  }
+
+  public void setPhone(String phone) {
+    this.phone = phone;
+  }
+
+  public String getSalesName() {
+    return salesName;
+  }
+
+  public void setSalesName(String salesName) {
+    this.salesName = salesName;
+  }
+
+  public String getCreateUserName() {
+    return createUserName;
+  }
+
+  public void setCreateUserName(String createUserName) {
+    this.createUserName = createUserName;
+  }
+
+  public String getUpdateUserName() {
+    return updateUserName;
+  }
+
+  public void setUpdateUserName(String updateUserName) {
+    this.updateUserName = updateUserName;
+  }
+
+  public boolean isReadonly() {
+    return readonly;
+  }
+
+  public void setReadonly(boolean readonly) {
+    this.readonly = readonly;
+  }
+
   /**
    * @field dealStatus
    */

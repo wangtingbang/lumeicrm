@@ -1,5 +1,11 @@
 package com.lumei.crm.customer.biz;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
+import com.lumei.crm.commons.mybatis.support.Pagination;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,4 +67,35 @@ public class CarDealBusiness extends CommonBusiness<CarDeal, TCarDeal, String> {
     return logger;
   }
 
+//  public Pagination<CarDeal> selectForList(String name, String phone, String wechat,
+//      Byte rating, Byte dealStatus, Date dealDateStart, Date dealDateEnd,
+//      int page, int limit){
+  public Pagination<CarDeal> selectForList(Map param, int page, int limit){
+
+    param.put("page", page-1);
+    param.put("limit", limit);
+    Integer count = carDealDao.countForList(param);
+
+    Pagination<CarDeal> pg = Pagination.newInstance(page, limit);
+    
+    if(count==null||count<1){
+      pg.setResult(new ArrayList());
+      pg.setTotal(0);
+      return pg;
+    }
+    pg.setTotal(count);
+    List<TCarDeal> list = carDealDao.selectForList(param);
+//    List<TCarDeal> list = carDealDao.selectForList(name, phone, wechat, rating,
+//        dealStatus, dealDateStart, dealDateEnd, page, limit);
+    if(list==null||list.size()<1){
+      pg.setResult(new ArrayList());
+      return pg;
+    }
+    List<CarDeal> result = new ArrayList();
+    for(TCarDeal tmp:list){
+      result.add(fromEntity(tmp));
+    }
+    pg.setResult(result);
+    return pg;
+  }
 }

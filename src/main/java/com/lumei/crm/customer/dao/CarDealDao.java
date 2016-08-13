@@ -1,5 +1,9 @@
 package com.lumei.crm.customer.dao;
 
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
 import com.lumei.crm.commons.dao.support.BaseDao;
 import com.lumei.crm.customer.entity.TCarDeal;
 
@@ -10,4 +14,16 @@ import com.lumei.crm.customer.entity.TCarDeal;
  */
 public interface CarDealDao extends BaseDao<TCarDeal> {
 
+  public List<TCarDeal> selectForList(Map param);
+  
+  public List<TCarDeal> selectForList(String name, String phone, String wechat,
+      Byte rating, Byte dealStatus, Date dealDateStart, Date dealDateEnd,
+      int page, int limit);
+
+
+  public Integer countForList(Map param);
+
+  public Integer countForList(String name, String phone, String wechat,
+    Byte rating, Byte dealStatus, Date dealDateStart, Date dealDateEnd,
+    int page, int limit);
 }

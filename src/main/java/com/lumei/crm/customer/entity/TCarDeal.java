@@ -11,6 +11,37 @@ import com.lumei.crm.commons.dao.support.BaseEntity;
  */
 public class TCarDeal extends BaseEntity<String> {
 
+  
+  private String customerName;
+
+  private String wechat;
+
+  private String phone;
+  
+  public String getCustomerName() {
+    return customerName;
+  }
+
+  public void setCustomerName(String customerName) {
+    this.customerName = customerName;
+  }
+
+  public String getWechat() {
+    return wechat;
+  }
+
+  public void setWechat(String wechat) {
+    this.wechat = wechat;
+  }
+
+  public String getPhone() {
+    return phone;
+  }
+
+  public void setPhone(String phone) {
+    this.phone = phone;
+  }
+
   /**
    * @field id
    */
