@@ -107,4 +107,37 @@ public class LumeiCrmConstants {
       return desc;
     }
   }
+  
+  public static enum CAR_DEAL_SOURCE {
+    FRIENDS_REFER((byte)1,"Friends refer"),
+    WECHAT_GROUP((byte)2,"WeChat Group"),
+    WECHAT_PUBLIC_ACCOUNT ((byte)3,"WeChat Public Account"),
+    WEBSITE ((byte)4,"Website"),
+    CITIC_BANK((byte)5,"Citic Bank"),
+    FLYER_DM((byte)6,"Flyer/DM"),
+    UNIVERSITY_AMBASSADOR((byte)7,"University Ambassador"),
+    UNIVERSITY_EVENT((byte)8,"University Event"),
+    LONE_CLUB((byte)9,"LONE Club"),
+    AIRPORT_PICKUP((byte)10,"Airport Pickup"),
+    EMERGENCY_CONTACT ((byte)11,"Emergency Contact"),
+    CAR_RENTAL((byte)12,"Car Rental"),
+    CELLPHONE((byte)13,"Cellphone"),
+    TEMPORARY_ACCOMMODATION ((byte)14,"Temporary Accommodation"),
+    AIM((byte)15,"AiM");
+
+    private Byte value;
+    private String desc;
+
+    private CAR_DEAL_SOURCE(Byte value, String desc){
+      this.value = value;
+      this.desc = desc;
+    }
+    public Byte getValue() {
+      return value;
+    }
+    public String getDesc() {
+      return desc;
+    }
+  }
+  
 }
