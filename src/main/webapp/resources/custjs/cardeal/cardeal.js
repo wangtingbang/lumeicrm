@@ -53,6 +53,16 @@ function searchSubmit(){
 					}
 				}
 				$('#deposit').append(depositList);
+				var sourceList = '';
+				for(p in datadic['carDealSource']){
+					if(data.source==p){
+						sourceList += '<option selected="selected" value="'+p+'">'
+						+datadic['carDealSource'][p]+'</option>';
+					}else{
+						sourceList += '<option value="'+p+'">'+datadic['carDealSource'][p]+'</option>';
+					}
+				}
+				$('#source').append(sourceList);
 				
 				$("#isNew input[name='isNew']").each(function(n,p){
 					$(this).click(function(){
@@ -131,11 +141,12 @@ function saveProfile(){
 		$.ialert("Deposit Required!","error");
 		return;
 	}
-	if(param['creditCardNo'] == ''){
-		$.ialert("CC# Required!", "error");
-		return;
+	if(param['deposit'] != '1'){
+		if(param['creditCardNo'] == ''){
+			$.ialert("CC# Required!", "error");
+			return;
+		}
 	}
-
 	$.ipost(
 	contextPath + '/cardeal/save',
 	param,

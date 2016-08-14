@@ -91,7 +91,11 @@ function serviceTypeDisp(serviceType){
 	var serviceTypeString = '';
 	var stArray = serviceType.split(",");
 	for (i=0;i<stArray.length;i++){
-		serviceTypeString += datadic['serviceType'][stArray[i]] + ' / ';
+		var s = datadic['serviceType'][stArray[i]];
+		if(!s){
+			continue;
+		}
+		serviceTypeString += s + ' / ';
 	}
 	serviceTypeString = serviceTypeString.substring(0, serviceTypeString.length-3)
 	return serviceTypeString;

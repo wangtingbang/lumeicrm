@@ -38,7 +38,7 @@ var datadic = {
 		"5":"Non-refundable"
 	},
 	carDealSource:{
-		"1":"Friends refer ",
+		"1":"Friends Refer ",
 		"2":"WeChat Group",
 		"3":"WeChat Public Account",
 		"4":"Website",

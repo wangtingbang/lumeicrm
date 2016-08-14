@@ -21,7 +21,9 @@ function searchSubmit(){
 				$page = $('#transaction-content').igrid({
 					url : contextPath + '/transaction/list',
 					param : {customerId:$("#id").val()},
-					temp : "transaction_grid_temp"
+					temp : "transaction_grid_temp",
+					rowlist: [10],
+					paginationBarTemp:"pagination_bar_temp2"
 				});
 
 			},
@@ -36,7 +38,10 @@ function saveProfile(){
 	$($('#submit-form').serializeArray()).each(function(k, v){
 			param[v.name]=v.value;
 	});
-<<<<<<< HEAD
+	if(param['name'] == ''){
+		$.ialert("Customer Name Required!","error");
+		return;
+	}
 	if(param['wechat'] == ''){
 		$.ialert("WeChat Required!","error");
 		return;
@@ -48,16 +53,6 @@ function saveProfile(){
 	if(carSelling){
 		service+='1,';
 	}
-=======
-	
-	var carSelling = $("#service-car-selling-checkbox").prop("checked");
-	var emergencyContact = $("#service-emergency-contact-checkbox").prop("checked");
-
-	var service = '';
-	if(carSelling){
-		service+='1,';
-	}
->>>>>>> dev
 	if(emergencyContact){
 		service+='2,';
 	}

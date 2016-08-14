@@ -218,6 +218,8 @@ public class CarDealController {
         transaction.setServiceId(id);
         transaction.setUserId(carDeal.getCustomerId());
         transaction.setServiceType(LumeiCrmConstants.SERVICE_TYPE.CAR_SELLING.getValue());
+        transaction.setDetails(carDeal.getCaseNo()
+        		+" / "+carDeal.getYears()+" / "+ carDeal.getModel());
         transaction.setCreateTime(now);
         transaction.setCreateUserId(SessionUtil.getCurrentUserId());
         transaction.setUpdateTime(now);
@@ -230,10 +232,14 @@ public class CarDealController {
     	Example<TTransaction> example0 = Example.newExample(TTransaction.class);
         example0.param("serviceId", carDeal.getId());
         List<Transaction> transactions = transactionBusiness.list(example0);
+        if(null != transactions && transactions.size() >0){
         Transaction transaction = transactions.get(0);
+        transaction.setDetails(carDeal.getCaseNo()
+        		+" / "+carDeal.getYears()+" / "+ carDeal.getModel());
         transaction.setUpdateTime(now);
         transaction.setUpdateUserId(SessionUtil.getCurrentUserId());
         transactionBusiness.update(transaction);
+        }
     }
       log.debug("result:{}",carDeal.getId());
     return carDeal.getId();

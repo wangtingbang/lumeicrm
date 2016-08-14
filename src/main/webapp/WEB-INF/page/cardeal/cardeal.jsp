@@ -102,6 +102,33 @@
 	</div>
 
 	<div class="form-group">
+    <label class="col-sm-4 control-label no-padding-right">Source</label>
+    <div class="col-sm-8">
+		<div class="clearfix">
+		<select class="form-control" id="source" name="source" {{? it.readonly}}disabled="disabled" readonly="readonly"{{?}}/>
+    	</div>
+    </div>
+	</div>
+
+	<div class="form-group">
+    <label class="col-sm-4 control-label no-padding-right">Trade In</label>
+    <div class="col-sm-8">
+		<div class="clearfix">
+		<input type="text" name="tradeIn" id="tradeIn" class="form-control col-sm-1" value="{{=it.tradeIn||'N/A'}}" {{? it.readonly}}readonly="readonly"{{?}}/>
+    	</div>
+    </div>
+	</div>
+
+	<div class="form-group">
+    <label class="col-sm-4 control-label no-padding-right">Case No</label>
+    <div class="col-sm-8">
+		<div class="clearfix">
+		<input type="text" name="caseNo" id="caseNo" class="form-control col-sm-1" value="{{=it.caseNo||''}}" {{? it.readonly}}readonly="readonly"{{?}}/>
+    	</div>
+    </div>
+	</div>
+
+	<div class="form-group">
 	  <label class="col-sm-4 control-label no-padding-right">Used/New</label>
 	  <div class="col-sm-8" id="isNew">
 	      <label class="line-height-1" style="margin-right: 10px; margin-top: 5px;">

@@ -59,7 +59,7 @@
     <div class="col-sm-8">
     <label style="margin-right: 10px; margin-top: 5px;">
     <input id="service-car-selling-checkbox" name="service-car-selling-checkbox" type="checkbox" class="ace" {{? it.readonly}}readonly="readonly"{{?}} {{? it.readonly}}disabled="disabled"{{?}} {{? serviceTypeCheck('1',it.service||'')}}checked="checked"{{?}}>
-    <span class="lbl">Car Selling&nbsp;&nbsp;</span>
+    <span class="lbl">Car Deals&nbsp;&nbsp;</span>
     </label>
 
     <label style="margin-right: 10px; margin-top: 5px;">
