@@ -60,39 +60,6 @@ public class TransactionController {
     example.param("userId", customerId);
     example.orderBy("createTime").desc();
     Pagination<Transaction> pg = transactionBusiness.listByPage(example, page, limit);
-
-    /*
-    List<Transaction> notes = pg.getResult();
-    if (notes != null || notes.size() > 0) {
-      List<String> uids = new ArrayList<String>();
-      for (Transaction tmp : notes) {
-        String uid0 = tmp.getUpdateUserId();
-        String uid1 = tmp.getCreateUserId();
-        uids.add(uid0);
-        uids.add(uid1);
-      }
-      Example<TOpAuthUser> example1 = Example.newExample(TOpAuthUser.class);
-      example1.paramIn("id", uids);
-      List<OpAuthUser> users = opAuthUserBusiness.list(example1);
-      Map<String, OpAuthUser> userMap = new HashMap();
-      for (OpAuthUser user : users) {
-        userMap.put(user.getId(), user);
-      }
-      List<Notes> notesNew = new ArrayList();
-      for (Notes tmp : notes) {
-        String crtUId = tmp.getCreateUserId();
-        String updUId = tmp.getUpdateUserId();
-        OpAuthUser crtUser = userMap.get(crtUId);
-        OpAuthUser updUser = userMap.get(updUId);
-
-        String crtUName = crtUser == null ? "" : crtUser.getUserName();
-        String updUName = updUser == null ? "" : updUser.getUserName();
-        tmp.setCreateUserName(crtUName);
-        tmp.setUpdateUserName(updUName);
-        notesNew.add(tmp);
-      }
-      pg.setResult(notesNew);
-    } // */
     return pg;
   }
 
