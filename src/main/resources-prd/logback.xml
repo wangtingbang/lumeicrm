@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
 	<jmxConfigurator />
-	<property name="LOG_HOME" value="log/lumeicrm" />
+	<property name="LOG_HOME" value="../log/lumeicrm" />
 	<property name="LOG_NAME" value="lumeicrm" />
 	<appender name="console" class="ch.qos.logback.core.ConsoleAppender">
 	<Encoding>UTF-8</Encoding>
@@ -21,10 +21,7 @@
 		</layout>
 	</appender>
 	
-	<logger name="dao" level="DEBUG"/>
-	<logger name="com.jq" level="DEBUG"/>
-	
-	<root level="INFO">
+	<root level="ERROR">
 		<appender-ref ref="console" />
 		<appender-ref ref="file" />
 	</root>

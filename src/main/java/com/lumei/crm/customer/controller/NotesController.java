@@ -1,16 +1,10 @@
 package com.lumei.crm.customer.controller;
 
-import com.lumei.crm.auth.bean.SysRole;
-import com.lumei.crm.auth.biz.OpAuthUserBusiness;
-import com.lumei.crm.auth.dto.OpAuthUser;
-import com.lumei.crm.auth.entity.TOpAuthUser;
-import com.lumei.crm.commons.mybatis.support.Example;
-import com.lumei.crm.commons.mybatis.support.Pagination;
-import com.lumei.crm.commons.util.DateTimeUtil;
-import com.lumei.crm.customer.biz.NotesBusiness;
-import com.lumei.crm.customer.dto.Notes;
-import com.lumei.crm.customer.entity.TNotes;
-import com.lumei.crm.util.SessionUtil;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +14,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.*;
+import com.lumei.crm.auth.dto.OpAuthUser;
+import com.lumei.crm.commons.mybatis.support.Example;
+import com.lumei.crm.commons.mybatis.support.Pagination;
+import com.lumei.crm.commons.util.DateTimeUtil;
+import com.lumei.crm.customer.biz.NotesBusiness;
+import com.lumei.crm.customer.biz.UserInfoBusiness;
+import com.lumei.crm.customer.dto.Notes;
+import com.lumei.crm.customer.entity.TNotes;
+import com.lumei.crm.util.SessionUtil;
 
 /**
  * Created by wangtingbang on 16/8/13.
@@ -34,41 +36,36 @@ public class NotesController {
 
   @Autowired
   NotesBusiness notesBusiness;
-
   @Autowired
-  OpAuthUserBusiness opAuthUserBusiness;
-
-  private Map<String, OpAuthUser> getUserInfoById(List<String> userIds) {
-    Example<TOpAuthUser> example1 = Example.newExample(TOpAuthUser.class);
-    example1.paramIn("id", userIds);
-    List<OpAuthUser> users = opAuthUserBusiness.list(example1);
-    Map<String, OpAuthUser> userMap = new HashMap();
-    for (OpAuthUser user : users) {
-      userMap.put(user.getId(), user);
-    }
-    return userMap;
-  }
-
+  UserInfoBusiness userInfoBusiness;
+  
   @RequestMapping(value = "list", method = RequestMethod.POST)
   @ResponseBody
   public Pagination<Notes> listNotesByPage(
+	String customerId,//
     String serviceId,//
     int page,//
     int limit) {
 
-    log.debug("param:{}, page:{}, limit:{}", serviceId);
+    log.debug("customerId:{}, serviceId:{}, page:{}, limit:{}",customerId, serviceId,
+    		page, limit);
     Example<TNotes> example = Example.newExample(TNotes.class);
 
-    if (StringUtils.isBlank(serviceId)|| "null".equals(serviceId) ||"undefined".equals(serviceId)) {
+    if (StringUtils.isBlank(serviceId)|| "0".equals(serviceId) || "1".equals(serviceId) 
+    		||"null".equals(serviceId) ||"undefined".equals(serviceId)) {
       Pagination<Notes> pg = Pagination.newInstance(page, limit);
       pg.setResult(new ArrayList<Notes>());
       pg.setTotal(0);
       pg.setTotalPage(0);
       return pg;
     }
-    boolean readonly = false;
-
-    example.param("serviceId", serviceId);
+    
+    if("0".equals(customerId)){
+    	example.param("serviceId", serviceId);
+    }else{
+    	example.param("userId", customerId);
+    }
+    
     example.orderBy("createTime").desc();
     Pagination<Notes> pg = notesBusiness.listByPage(example, page, limit);
 
@@ -76,28 +73,21 @@ public class NotesController {
     if (notes != null || notes.size() > 0) {
       List<String> uids = new ArrayList<String>();
       for (Notes tmp : notes) {
-        String uid0 = tmp.getUpdateUserId();
         String uid1 = tmp.getCreateUserId();
-        uids.add(uid0);
         uids.add(uid1);
       }
       List<Notes> notesNew = new ArrayList();
-      Map<String,OpAuthUser> userMap = getUserInfoById(uids);
+      Map<String,OpAuthUser> userMap = userInfoBusiness.getUserInfoById(uids);
       for (Notes tmp : notes) {
         String crtUId = tmp.getCreateUserId();
-        String updUId = tmp.getUpdateUserId();
         OpAuthUser crtUser = userMap.get(crtUId);
-        OpAuthUser updUser = userMap.get(updUId);
-
-        if(SessionUtil.getCurrentUser().getRoles().contains(SysRole.SALES.getKey())){
-          if(!SessionUtil.getCurrentUserId().equals((tmp.getCreateUserId()))){
-            tmp.setReadonly(true);
-          }
+        
+        if(SessionUtil.notesReadonly(tmp.getCreateUserId())){
+        	tmp.setReadonly(true);
         }
+        
         String crtUName = crtUser == null ? "" : crtUser.getNickName();
-        String updUName = updUser == null ? "" : updUser.getNickName();
         tmp.setCreateUserName(crtUName);
-        tmp.setUpdateUserName(updUName);
         notesNew.add(tmp);
       }
       pg.setResult(notesNew);
@@ -108,19 +98,16 @@ public class NotesController {
   @RequestMapping(value = "save", method = RequestMethod.POST)
   @ResponseBody
   public String saveNotes(Notes notes) {
+	log.info("delete user:{}, service:{}, opId:{},opName:{}", notes.getUserId(), notes.getServiceId(), 
+			SessionUtil.getCurrentUserId(),
+		      SessionUtil.getCurrentUserName());
     int result = 0;
     Date now = DateTimeUtil.now();
     notes.setCreateTime(now);
     notes.setUpdateTime(now);
-    if (StringUtils.isBlank(notes.getCreateUserId())) {
-      notes.setCreateUserId(SessionUtil.getCurrentUserId());
-    }
-    if (StringUtils.isBlank(notes.getId())) {
-      result = notesBusiness.create(notes);
-    } else {
-      notes.setUpdateUserId(SessionUtil.getCurrentUserId());
-      result = notesBusiness.update(notes);
-    }
+    notes.setCreateUserId(SessionUtil.getCurrentUserId());
+    notes.setUpdateUserId(SessionUtil.getCurrentUserId());
+    result = notesBusiness.create(notes);
     return 1 == result ? "success" : "fail";
   }
 
@@ -130,7 +117,6 @@ public class NotesController {
     int result = 0;
     log.info("delete note:{}, opId:{},opName:{}", id, SessionUtil.getCurrentUserId(),
       SessionUtil.getCurrentUserName());
-
     result = notesBusiness.delete(id, Notes.class);
     return 1 == result ? "success" : "fail";
   }

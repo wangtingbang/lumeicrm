@@ -8,6 +8,7 @@ import org.apache.shiro.subject.Subject;
 
 import com.lumei.crm.auth.bean.LoginUser;
 import com.lumei.crm.auth.bean.SysMenu;
+import com.lumei.crm.auth.bean.SysRole;
 import com.lumei.crm.auth.dto.OpAuthUser;
 
 /**
@@ -64,5 +65,37 @@ public class SessionUtil {
   public static String getLoginIp(){
     return getAttributes("loginIp").toString();
   }
+  
+  public static boolean salesReadonly(String salesId){
+  if(getCurrentUser().getRoles().contains(SysRole.CUSTOMER_MANAGER.getKey())
+		  ||getCurrentUser().getRoles().contains(SysRole.ADMIN.getKey())
+		  ||getCurrentUser().getRoles().contains(SysRole.CUSTOMER_SERVICE.getKey())){
+        return false;
+  }
+  if(SessionUtil.getCurrentUserId().equals(salesId)){
+    return false;
+  }
+  return true;
+  }
+  
+  public static boolean notesReadonly(String salesId){
+	  if(getCurrentUser().getRoles().contains(SysRole.CUSTOMER_MANAGER.getKey())
+			  ||getCurrentUser().getRoles().contains(SysRole.ADMIN.getKey())){
+	        return false;
+	    }
+	  if(SessionUtil.getCurrentUserId().equals(salesId)){
+		    return false;
+		}
+	  return true;
+  }
+  
+  public static boolean assignRight(){
+	  if(getCurrentUser().getRoles().contains(SysRole.CUSTOMER_MANAGER.getKey())
+			  ||getCurrentUser().getRoles().contains(SysRole.ADMIN.getKey())){
+	        return true;
+	    }
+	  return false;
+  }
+  
   
 }

@@ -391,9 +391,6 @@
 		ADDRESS = #{address,jdbcType=VARCHAR},
 		ZIP_CODE = #{zipCode,jdbcType=VARCHAR},
 		SERVICE = #{service,jdbcType=VARCHAR},
-		DELETE_FLAG = #{deleteFlag,jdbcType=TINYINT},
-		CREATE_USER_ID = #{createUserId,jdbcType=VARCHAR},
-		CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
 		UPDATE_USER_ID = #{updateUserId,jdbcType=VARCHAR},
 		UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
 		</set>
