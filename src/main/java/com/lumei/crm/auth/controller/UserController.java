@@ -105,6 +105,13 @@ public class UserController {
         limit);
   }
 
+  @RequestMapping(value = "auth/user/listAllUserEnabled", method = RequestMethod.GET)
+  @ResponseBody
+  public List<OpAuthUser> listAllUserEnabled() {
+    return opAuthUserBusiness.list(
+        Example.newExample(TOpAuthUser.class).param("enabled", 1).orderBy("nickName").asc());
+  }
+  
   @RequestMapping(value = "auth/user/create", method = RequestMethod.POST)
   @ResponseBody
   public Map create(OpAuthUser opAuthUser, HttpServletRequest request) throws BusinessException {

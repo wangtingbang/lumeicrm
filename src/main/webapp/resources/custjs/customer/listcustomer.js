@@ -16,7 +16,7 @@ $(function () {
 		var ids = new Array();
 		$("[name=checkItem]:checkbox").each(function(){
 			if($(this).prop("checked")){
-				var id = $(this).val();
+				var id = $(this).attr("data_id");
 				ids.push(id);
 			}
 		});
@@ -24,6 +24,7 @@ $(function () {
 			$.ialert("please checked one record atleast");
 			return;
 		}
+		assign(ids);
 	});
 	
 	$('#email_btn').click(function() {
@@ -32,7 +33,6 @@ $(function () {
 		$("[name=checkItem]:checkbox").each(function(){
 			if($(this).prop("checked")){
 				var ea = $(this).attr("data_email");
-//				alert(ea);
 				emailAddress.push(ea);
 				if(ea && ea!="" && ea !="null" && ea!="undefined"){
 					eaString+="bcc="+ea+"&"
@@ -99,4 +99,18 @@ function serviceTypeDisp(serviceType){
 	}
 	serviceTypeString = serviceTypeString.substring(0, serviceTypeString.length-3)
 	return serviceTypeString;
+}
+
+function assign2(sales,ids){
+	$.ipost(
+			contextPath + '/customer/assign',
+			{sales:sales,ids:ids},
+			function(data){
+				$.ialert("Assign success!");
+				setTimeout("$('#searchMine_btn').click();",2000);
+			},
+			function(errmsg){
+				$.ialert("assign failed! "+errmsg,"error");
+			}
+	);
 }

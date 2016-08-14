@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -263,4 +264,18 @@ public class CarDealController {
     return 1 == result ? "success" : "fail";
   }
 
+  @RequestMapping(value = "assign", method = RequestMethod.POST)
+  @ResponseBody
+  public String assign(String sales, @RequestParam("ids[]") String[] ids) {
+    Date now = DateTimeUtil.now();
+    for (int i = 0; i < ids.length; i++) {
+	CarDeal carDeal = new CarDeal();
+	carDeal.setId(ids[i]);
+	carDeal.setSalesId(sales);
+	carDeal.setUpdateTime(now);
+	carDeal.setUpdateUserId(SessionUtil.getCurrentUserId());
+	carDealBusiness.updateSelective(carDeal);
+    }
+    return sales;
+  }
 }

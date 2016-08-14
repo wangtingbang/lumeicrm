@@ -40,7 +40,7 @@ $(function () {
 		var ids = new Array();
 		$("[name=checkItem]:checkbox").each(function(){
 			if($(this).prop("checked")){
-				var id = $(this).val();
+				var id = $(this).attr("data_id");
 				ids.push(id);
 			}
 		});
@@ -48,6 +48,7 @@ $(function () {
 			$.ialert("please checked one record atleast");
 			return;
 		}
+		assign(ids);
 	});
 	
 	$('#searchMine_btn').click();
@@ -93,4 +94,18 @@ function viewDetails(customerId, cardealId) {
 
 function addDeal(customerId) {
 	location.href = contextPath + '/cardeal/create?customerId='+customerId;
+}
+
+function assign2(sales,ids){
+	$.ipost(
+			contextPath + '/cardeal/assign',
+			{sales:sales,ids:ids},
+			function(data){
+				$.ialert("Assign success!");
+				setTimeout("$('#searchMine_btn').click();",2000);
+			},
+			function(errmsg){
+				$.ialert("assign failed! "+errmsg,"error");
+			}
+	);
 }

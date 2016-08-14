@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -181,4 +182,18 @@ public class CustomerController {
     return customerBusiness.delete(id, Customer.class)==1?"success":"fail";
   }  
   
+  @RequestMapping(value = "assign", method = RequestMethod.POST)
+  @ResponseBody
+  public String assign(String sales, @RequestParam("ids[]") String[] ids) {
+    Date now = DateTimeUtil.now();
+    for (int i = 0; i < ids.length; i++) {
+    Customer customer = new Customer();
+    customer.setId(ids[i]);
+    customer.setSalesId(sales);
+	customer.setUpdateTime(now);
+	customer.setUpdateUserId(SessionUtil.getCurrentUserId());
+	customerBusiness.updateSelective(customer);
+    }
+    return sales;
+  }
 }

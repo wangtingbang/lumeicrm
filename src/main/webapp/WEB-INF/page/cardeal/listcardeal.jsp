@@ -179,3 +179,4 @@
         </table>
         </script>
 <%@ include file="../customer/customerSearch.jsp"%>
+<%@ include file="../customer/assign.jsp"%>
