@@ -32,10 +32,10 @@ $(function () {
 		$("[name=checkItem]:checkbox").each(function(){
 			if($(this).prop("checked")){
 				var ea = $(this).attr("data_email");
-				alert(ea);
+//				alert(ea);
 				emailAddress.push(ea);
 				if(ea && ea!="" && ea !="null" && ea!="undefined"){
-					eaString+=ea+";"
+					eaString+="bcc="+ea+"&"
 				}
 			}
 		});
@@ -43,7 +43,7 @@ $(function () {
 			$.ialert("please checked one record atleast");
 			return;
 		}
-		window.location.href = 'mailto:' + eaString;
+		window.location.href = 'mailto:?' + eaString;
 	});
 	
 	$('#searchMine_btn').click();

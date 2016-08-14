@@ -218,7 +218,7 @@
 	<label class="col-sm-4 control-label no-padding-right" for="comments">Comments:</label>
 	<div class="col-sm-8">
 	<div class="clearfix">
-	<textarea class="form-control limited" id="comments"  name="comments" maxlength="1000" {{? it.readonly}}readonly="readonly"{{?}}>{{=it.carDescription || ''}}</textarea>
+	<textarea class="form-control limited" id="comments"  name="comments" maxlength="1000" {{? it.readonly}}readonly="readonly"{{?}}>{{=it.comments || ''}}</textarea>
 	</div>
 	</div>
 	</div>
