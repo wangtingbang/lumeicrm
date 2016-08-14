@@ -4,7 +4,7 @@
         <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
         <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 		<link rel="stylesheet" href="<%=request.getContextPath() %>/resources/custcss/common.css" />
-        <script src="<%=request.getContextPath()%>/resources/custjs/customer/listcustomer.js"></script>
+        <script src="<%=request.getContextPath()%>/resources/custjs/cardeal/listcardeal.js"></script>
 
         <div class="page-header">
         <div class="row">
@@ -15,7 +15,7 @@
         <i class="ace-icon fa fa-home home-icon"></i>
         <a href="<%=request.getContextPath() %>/">Home</a>
         <i class="ace-icon fa fa-angle-double-right"></i>
-        Customers
+        Car Deals
         </small>
         </h1>
         </div>
@@ -29,7 +29,7 @@
         <div class="col-sm-3 form-group">
         <label class="col-sm-4 control-label no-padding-right">Name</label>
         <div class="col-sm-8">
-        <input id="name" class="form-control" type="text" name="name"/>
+        <input id="name" class="form-control" type="text" name="customerName"/>
         </div>
         </div>
         	
@@ -58,13 +58,49 @@
 		
 		</div>
         </div>
+        
+		<div class="row">
+        <div class="col-xs-12">
+        
+        <div class="col-sm-3 form-group">
+        <label class="col-sm-4 control-label no-padding-right">Status</label>
+        <div class="col-sm-8">
+        <select class="form-control" id="dealStatus" name="dealStatus">
+		</select>
+        </div>
+        </div>
+        
+        <div class="col-sm-3 form-group">
+        <label class="col-sm-4 control-label no-padding-right">Rating</label>
+        <div class="col-sm-8">
+        <select class="form-control" id="rating" name="rating">
+		</select>
+        </div>
+        </div>
+        
+        <div class="col-sm-3 form-group">
+        <label class="col-sm-4 control-label no-padding-right">Date</label>
+        <div class="col-sm-8">
+        <input id="dateStart" class="date-timepicker form-control col-sm-12 " type="text"
+        name="dealDateStart" value="<%=SessionUtil.getAttributes("dateStart")%>"/>
+        </div>
+        </div>
+        <div class="col-sm-3 form-group">
+        <label class="col-sm-1 no-padding-left">To</label>
+        <div class="col-sm-8">
+        <input id="dateEnd" class="date-timepicker form-control col-sm-12 " type="text"
+        name="dealDateEnd" value="<%=SessionUtil.getAttributes("dateEnd")%>"/>
+        </div>
+        </div>
+        
+		
+		</div>
+        </div>        
+        
 		<div class="row">
         <div class="col-xs-12">
                
        	<div class="col-sm-3 no-padding-left">
-        <a class="btn btn-info btn-sm" id="email_btn">
-        <i class="ace-icon fa fa-envelope bigger-110"></i> Send Email
-        </a>
         <% if(SessionUtil.assignRight()){ %>
         <a class="btn btn-info btn-sm" id="assign_btn">
         <i class="ace-icon fa fa-check-square-o bigger-110"></i> Assign
@@ -75,7 +111,7 @@
         <div class="col-sm-3 form-group"></div>
        	<div class="col-sm-3 form-group pull-right">
         <a class="btn btn-info btn-sm pull-right" id="create_btn">
-        <i class="ace-icon fa fa-plus bigger-110"></i> Add Customer
+        <i class="ace-icon fa fa-plus bigger-110"></i> Add Deal
         </a>
         </div>
         
@@ -105,10 +141,13 @@
 		</th>
         <th>Name</th>
         <th>WeChat</th>
-        <th>Phone</th>
-        <th>Email</th>
-		<th>Service Types</th>
-        <th>Sales</th>
+        <th>Car Info</th>
+        <th>New/Used</th>
+		<th>Method</th>
+        <th>Rating</th>
+		<th>Deal Status</th>
+		<th>Date</th>
+		<th>Sales</th>
         <th>Operation</th>
         </tr>
         </thead>
@@ -117,17 +156,20 @@
         <tr>
 		<td class="center">
 		<label class="position-relative">
-		<input name="checkItem" type="checkbox" class="ace" data_email="{{=p.email||''}}" data_id="{{=p.id||''}}"/>
+		<input name="checkItem" type="checkbox" class="ace" data_id="{{=p.id||''}}"/>
 		<span class="lbl"/>
 		</label>
 		</td>
-        <td>{{=p.name||''}}</td>
+        <td>{{=p.customerName||''}}</td>
         <td>{{=p.wechat||''}}</td>
-        <td>{{=p.phone||''}}</td>
-        <td>{{=p.email||''}}</td>
-		<td>{{=serviceTypeDisp(p.service||'')}}</td>
-        <td>{{=p.sales||''}}</td>
-        <td><a href="javascript:viewProfile('{{=p.id }}');">profile</a></td>
+        <td>{{=p.years||''}} / {{=p.model||''}}</td>
+		<td>{{=datadic['usedNew'][p.isNew]||''}}</td>
+		<td>{{=datadic['method'][p.method]||''}}</td>
+		<td>{{=datadic['customerRating'][p.rating]||''}}</td>
+		<td>{{=datadic['carSaleStatus'][p.dealStatus]||''}}</td>
+		<td>{{=new Date(p.dealDate).toChString()||''}}</td>
+        <td>{{=p.salesName||''}}</td>
+        <td><a href="javascript:viewDetails('{{=p.customerId }}','{{=p.id }}');">details</a></td>
         </tr>
         {{~}}
         {{? !it.data.length}}

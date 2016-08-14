@@ -352,4 +352,42 @@ public class Customer extends BaseModel<String> implements Serializable {
     this.updateTime = updateTime;
   }
 
+  	private String sales;
+
+	public String getSales() {
+		return sales;
+	}
+	
+	public void setSales(String sales) {
+		this.sales = sales;
+	}
+  	private String createUserName;
+  	private String updateUserName;
+
+	public String getCreateUserName() {
+		return createUserName;
+	}
+	
+	public void setCreateUserName(String createUserName) {
+		this.createUserName = createUserName;
+	}
+	
+	public String getUpdateUserName() {
+		return updateUserName;
+	}
+	
+	public void setUpdateUserName(String updateUserName) {
+		this.updateUserName = updateUserName;
+	}
+	
+	private boolean Readonly;
+
+	public boolean isReadonly() {
+		return Readonly;
+	}
+
+	public void setReadonly(boolean readonly) {
+		Readonly = readonly;
+	}
+	
 }

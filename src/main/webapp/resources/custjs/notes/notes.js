@@ -1,38 +1,37 @@
+function listNotes2(customerId,serviceId){
+	$page = $('#notesdiv').igrid({
+		url : contextPath + '/notes/list',
+		paginationBarTemp:"pagination_bar_temp2",
+		param : {customerId:customerId,serviceId:serviceId},
+		temp : "list_notes_temp",
+		rowlist: [10]
+	});
+}
 
-function addNote(){
-	var serviceId = $("#id").val();
-	if(!serviceId||serviceId===''||serviceId==='undefined'){
-		$.ialert("Please save before add notes");
-		return;
-	}
+function addNote2(customerId,serviceId,serviceType){
 	var notesfn = doT.template($('#add-notes-temp').text());
-
-	var customerId = $("#customerId").val();
-	var data = {serviceId:serviceId,customerId:customerId};
-
+	var data = {customerId:customerId,serviceId:serviceId,serviceType:serviceType};
 	$.imodal({
 		title:"Notes",
 		contents:notesfn(data),
 		buttons:[
 				{addClass: 'btn btn-sm btn-default', text: '<i class="ace-icon fa fa-times  bigger-110"></i>Cancel', attr:'data-dismiss="modal"'},
 				{addClass: 'btn btn-sm btn-primary', text: '<i class="ace-icon fa fa-check  bigger-110"></i>Save', onClick: function(msgDom) {
-					addNote2(msgDom);
+					addNote3();
 				}
 				}
 		]
 	});
 }
 
-function addNote2(msgDom){
+function addNote3(){
 	var param = {};
 	$($('#add-notes-form').serializeArray()).each(function(k, v){
 			param[v.name]=v.value;
 	});
-	var serviceType = $("#noteservicetype-select").val();
-	var data = $.extend({},param,{noteServiceType:serviceType});
 	$.ipost(
-		contextPath+'/customer/notes/save',
-		data,
+		contextPath+'/notes/save',
+		param,
 		function (result) {
 			listNotes();
 			$.imodalClose();
@@ -45,7 +44,7 @@ function addNote2(msgDom){
 function deleteNotes(id){
 	$.iconfirm("Do you want to delete it?",function(){
 		$.ipost(
-			contextPath+'/customer/notes/delete',
+			contextPath+'/notes/delete',
 			{id:id},
 			function(){
 				listNotes();
@@ -54,5 +53,4 @@ function deleteNotes(id){
 				$.ialert(errmsg,"Fail");
 			});
 	});
-
 }
