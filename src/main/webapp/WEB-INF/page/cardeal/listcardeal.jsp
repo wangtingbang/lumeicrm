@@ -178,3 +178,5 @@
         </tbody>
         </table>
         </script>
+        
+<%@ include file="../customer/customerSearch.jsp"%>

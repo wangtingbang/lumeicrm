@@ -103,7 +103,7 @@
 
 	<div class="form-group">
 	  <label class="col-sm-4 control-label no-padding-right">Used/New</label>
-	  <div class="col-sm-8">
+	  <div class="col-sm-8" id="isNew">
 	      <label class="line-height-1" style="margin-right: 10px; margin-top: 5px;">
 	        <input name="isNew" value="1" type="radio" class="ace" {{? it.readonly}}disabled="disabled"{{?}} {{? !it.gender|| 1 == it.isNew}}checked="checked"{{?}} {{? it.readonly}}readonly="readonly"{{?}}/>
 	        <span class="lbl"> New</span>
@@ -160,11 +160,20 @@
     </div>
 	</div>
 
- 	<div class="form-group">
+ 	<div class="form-group" id="msrpdiv">
     <label class="col-sm-4 control-label no-padding-right">MSRP</label>
     <div class="col-sm-8">
 		<div class="clearfix">
     		<input type="text" name="msrp" id="msrp" class="form-control col-sm-1 " value="{{=it.msrp||''}}" {{? it.readonly}}readonly="readonly"{{?}}/>
+    	</div>
+    </div>
+	</div>
+
+	<div class="form-group" id="mileagesdiv">
+    <label class="col-sm-4 control-label no-padding-right">Mileages</label>
+    <div class="col-sm-8">
+		<div class="clearfix">
+    		<input type="text" name="mileages" id="mileages" class="form-control col-sm-1 " value="{{=it.mileages||''}}" {{? it.readonly}}readonly="readonly"{{?}}/>
     	</div>
     </div>
 	</div>
@@ -189,7 +198,7 @@
 
 	<div class="form-group">
 	  <label class="col-sm-4 control-label no-padding-right">Method</label>
-	  <div class="col-sm-8">
+	  <div class="col-sm-8" id="method">
 	      <label class="line-height-1" style="margin-right: 10px; margin-top: 5px;">
 	        <input name="method" value="1" type="radio" class="ace" {{? it.readonly}}disabled="disabled"{{?}} {{? !it.gender|| 1 == it.method}}checked="checked"{{?}} {{? it.readonly}}readonly="readonly"{{?}}/>
 	        <span class="lbl"> Cash Deal</span>
@@ -205,7 +214,7 @@
 	  </div>
 	</div>
 
-	<div class="form-group">
+	<div class="form-group" id="downPaymentdiv">
     <label class="col-sm-4 control-label no-padding-right">Down Payment</label>
     <div class="col-sm-8">
 		<div class="clearfix">
@@ -214,7 +223,7 @@
     </div>
 	</div>
 
-	<div class="form-group">
+	<div class="form-group" id="ratediv">
     <label class="col-sm-4 control-label no-padding-right">Rate</label>
     <div class="col-sm-8">
 		<div class="clearfix">
@@ -223,7 +232,7 @@
     </div>
 	</div>
 
-	<div class="form-group">
+	<div class="form-group" id="termsdiv">
     <label class="col-sm-4 control-label no-padding-right">Terms</label>
     <div class="col-sm-8">
 		<div class="clearfix">
@@ -232,7 +241,7 @@
     </div>
 	</div>
 
-	<div class="form-group">
+	<div class="form-group" id="monthlyPaydiv">
     <label class="col-sm-4 control-label no-padding-right">Monthly Pay</label>
     <div class="col-sm-8">
 		<div class="clearfix">

@@ -35,7 +35,7 @@ function searchSubmit(){
 				$('#dealStatus').append(dealStatusList);
 				var ratingList = '';
 				for(p in datadic['customerRating']){
-					if(data.dealStatus==p){
+					if(data.rating==p){
 						ratingList += '<option selected="selected" value="'+p+'">'
 						+datadic['customerRating'][p]+'</option>';
 					}else{
@@ -54,6 +54,22 @@ function searchSubmit(){
 				}
 				$('#deposit').append(depositList);
 				
+				$("#isNew input[name='isNew']").each(function(n,p){
+					$(this).click(function(){
+						isNewCheck();
+					});
+				});
+				
+				isNewCheck();
+				
+				$("#method input[name='method']").each(function(n,p){
+					$(this).click(function(){
+						methodCheck();
+					});
+				});
+				
+				methodCheck();
+				
 				listNotes();
 			},
 			function(errmsg){
@@ -62,12 +78,63 @@ function searchSubmit(){
 	);
 }
 
+function methodCheck(){
+	var v = $("#method input[name='method']:checked").val();
+	if(1==v){
+		$("#downPayment").val("");
+		$("#rate").val("");
+		$("#terms").val("");
+		$("#monthlyPay").val("");
+		
+		$("#downPaymentdiv").hide();
+		$("#ratediv").hide();
+		$("#termsdiv").hide();
+		$("#monthlyPaydiv").hide();
+	}else if(2==v){
+		$("#downPaymentdiv").show();
+		$("#ratediv").show();
+		$("#termsdiv").show();
+		$("#monthlyPaydiv").show();
+	}else if(3==v){
+		$("#rate").val("");
+		
+		$("#downPaymentdiv").show();
+		$("#ratediv").hide();
+		$("#termsdiv").show();
+		$("#monthlyPaydiv").show();
+	}
+}
+
+function isNewCheck(){
+	var v = $("#isNew input[name='isNew']:checked").val();
+	if(1==v){
+		$("#mileages").val("");
+		$("#msrpdiv").show();
+		$("#mileagesdiv").hide();
+	}else if(2==v){
+		$("#msrp").val("");
+		$("#mileagesdiv").show();
+		$("#msrpdiv").hide();
+	}
+}
+
 function saveProfile(){
 	var param = {};
 	$($('#submit-form').serializeArray()).each(function(k, v){
 			param[v.name]=v.value;
 	});
-	
+	if(param['dealDate'] == ''){
+		$.ialert("Date Required!","error");
+		return;
+	}
+	if(param['deposit'] == ''){
+		$.ialert("Deposit Required!","error");
+		return;
+	}
+	if(param['creditCardNo'] == ''){
+		$.ialert("CC# Required!", "error");
+		return;
+	}
 	$.ipost(
 	contextPath + '/cardeal/save',
 	param,

@@ -24,7 +24,7 @@ $(function () {
 	});
 	
 	$('#create_btn').click(function() {
-		location.href = contextPath + '/cardeal/create?customerId=4dbc90c3cb8348efb804021a6caa502d';
+		createDeal();
 	});
 
 	$('#searchAll_btn').click(function() {
@@ -91,3 +91,6 @@ function viewDetails(customerId, cardealId) {
 	location.href = contextPath + '/cardeal/get?id='+cardealId+"&customerId="+customerId;
 }
 
+function addDeal(customerId) {
+	location.href = contextPath + '/cardeal/create?customerId='+customerId;
+}

@@ -36,7 +36,10 @@ function saveProfile(){
 	$($('#submit-form').serializeArray()).each(function(k, v){
 			param[v.name]=v.value;
 	});
-	
+	if(param['wechat'] == ''){
+		$.ialert("WeChat Required!","error");
+		return;
+	}
 	var carSelling = $("#service-car-selling-checkbox").prop("checked");
 	var emergencyContact = $("#service-emergency-contact-checkbox").prop("checked");
 

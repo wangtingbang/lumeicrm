@@ -250,8 +250,10 @@ public class CarDealController {
       Example<TTransaction> example0 = Example.newExample(TTransaction.class);
       example0.param("serviceId", id);
       List<Transaction> transactions = transactionBusiness.list(example0);
+      if(null != transactions && transactions.size() >0){
       Transaction transaction = transactions.get(0);
       transactionBusiness.delete(transaction.getId(),Transaction.class);
+      }
     return 1 == result ? "success" : "fail";
   }
 
