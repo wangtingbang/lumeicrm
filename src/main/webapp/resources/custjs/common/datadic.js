@@ -37,6 +37,23 @@ var datadic = {
 		"4":"To Refunded",
 		"5":"Non-refundable"
 	},
+	carDealSource:{
+		"1":"Friends refer ",
+		"2":"WeChat Group",
+		"3":"WeChat Public Account",
+		"4":"Website",
+		"5":"Citic Bank",
+		"6":"Flyer/DM",
+		"7":"University Ambassador",
+		"8":"University Event",
+		"9":"LONE Club",
+		"10":"Airport Pickup",
+		"11":"Emergency Contact",
+		"12":"Car Rental",
+		"13":"Cellphone",
+		"14":"Temporary Accommodation",
+		"15":"AiM"
+	}
 }
 
 function datadicArray(obj){

@@ -86,6 +86,14 @@ public class TCarDeal extends BaseEntity<String> {
    * @field isNew
    */
   private Byte isNew;
+  
+  private Byte source;
+  
+  private String mileages;
+  
+  private String tradeIn;
+  
+  private String caseNo;
 
   /**
    * @field years
@@ -301,6 +309,38 @@ public class TCarDeal extends BaseEntity<String> {
    */
   public void setIsNew(Byte isNew) {
     this.isNew = isNew;
+  }
+
+  public Byte getSource() {
+    return source;
+  }
+
+  public void setSource(Byte source) {
+    this.source = source;
+  }
+
+  public String getMileages() {
+    return mileages;
+  }
+
+  public void setMileages(String mileages) {
+    this.mileages = mileages;
+  }
+
+  public String getTradeIn() {
+    return tradeIn;
+  }
+
+  public void setTradeIn(String tradeIn) {
+    this.tradeIn = tradeIn;
+  }
+
+  public String getCaseNo() {
+    return caseNo;
+  }
+
+  public void setCaseNo(String caseNo) {
+    this.caseNo = caseNo;
   }
 
   /**
