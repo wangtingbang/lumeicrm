@@ -189,6 +189,11 @@
 	</div>
 </div>
 
+<!-- transaction -->
+<div class="form-group">
+<div class="col-sm-10" id="transaction-content" style="margin-left:8.3%">
+</div>
+</div>
 
 <div class="col-sm-12 form-group">
 <hr class="no-margin-top"> </hr>
@@ -212,4 +217,31 @@
 
 </form>
 </script>
+
+<script id="transaction_grid_temp" type="text/x-dot-template">
+    <table id="sample-table-2" class="table table-striped table-bordered table-hover">
+    <thead>
+    <tr>
+    <th>Date</th>
+    <th>Service Type</th>
+    <th>Detail</th>
+    </tr>
+    </thead>
+    <tbody>
+    {{~it.data:p:index}}
+    <div class="col-sm-2 form-group center">
+    </div>
+    <tr>
+    <td>{{=new Date(p.createTime).toChString(false) ||''}}</td>
+    <td>{{=datadic['serviceType'][p.serviceType]}}</td>
+    <td>{{=p.details||''}}</td>
+    </tr>
+    {{~}}
+    {{? !it||!it.data||!it.data.length}}
+    <tr ><td colspan="12">No Transaction</td></tr>
+    {{?}}
+    </tbody>
+    </table>
+</script>
+
 <%@ include file="../notes/notes.jsp"%>

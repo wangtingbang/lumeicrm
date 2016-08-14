@@ -18,11 +18,11 @@ function searchSubmit(){
 				var htmlpage = pagefn(data);
 				$("#profile-content").html(htmlpage);
 				listNotes();
-//				$page = $('#transaction-content').igrid({
-//					url : contextPath + '/customer/transaction/listByPage',
-//					param : {customerId:$("#id").val()},
-//					temp : "transaction_grid_temp"
-//				});
+				$page = $('#transaction-content').igrid({
+					url : contextPath + '/transaction/list',
+					param : {customerId:$("#id").val()},
+					temp : "transaction_grid_temp"
+				});
 
 			},
 			function(errmsg){
