@@ -18,6 +18,15 @@ function searchSubmit(){
 				var htmlpage = pagefn(data);
 				$("#profile-content").html(htmlpage);
 				listNotes();
+				$('#addDeal_btn').click(function() {
+					var id = $("#id").val();
+					if(!id||id=='0'||id=='1'||id==''
+						||id=='null'||id=='undefined'){
+						$.ialert("Please save before add deal");
+						return;
+					}
+					addDeal(id);
+				});
 				$page = $('#transaction-content').igrid({
 					url : contextPath + '/transaction/list',
 					param : {customerId:$("#id").val()},
@@ -116,4 +125,29 @@ function serviceTypeCheck(serviceType, serviceTypeString){
 		}
 	}
 	return false;
+}
+
+function addDeal(id){
+	var pagefn = doT.template($('#addDeal-temp').text());
+	$.imodal({
+				title:"Add Deal",
+				contents:pagefn({}),
+				buttons:[
+						{addClass: 'btn btn-sm btn-default', text: '<i class="ace-icon fa fa-times  bigger-110"></i>Cancel', attr:'data-dismiss="modal"'},
+						{addClass: 'btn btn-sm btn-primary', text: '<i class="ace-icon fa fa-check  bigger-110"></i>Add Deal', onClick: function(msgDom) {
+							var deal = $("#deal-select").val();
+							if("1"==deal){
+								location.href=contextPath+'/cardeal/create?customerId='+id;
+							}
+						  }
+						}
+				],
+				afterRender:function(){
+					var dealSelectList = '';
+					for(p in datadic['serviceType']){
+						dealSelectList += '<option value="'+p+'">'+datadic['serviceType'][p]+'</option>';
+					}
+					$('#deal-select').append(dealSelectList);
+				}
+			});
 }

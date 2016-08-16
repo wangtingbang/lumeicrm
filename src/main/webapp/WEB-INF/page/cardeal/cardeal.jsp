@@ -40,10 +40,17 @@
 <div class="col-sm-6">
 	<div class="form-group">
 	<label class="col-sm-4 control-label no-padding-right" for="name">Customer Name</label>
-	<div class="col-sm-8">
+	<div class="col-sm-6">
     	<div class="clearfix">
     		<input type="text" name="customerName" id="customerName" class="form-control col-sm-1 " value="{{=it.customerName||'' }}" readonly="readonly"/>
-    	</div>
+		</div>
+ 	</div>
+	<div class="col-sm-2">
+    	<div class="clearfix">
+    	<a class="btn btn-info btn-sm pull-right" href="<%=request.getContextPath() %>/customer/get?customerId={{=it.customerId||''}}">
+        <i class="ace-icon fa fa-user bigger-110"></i> Profile
+        </a>
+		</div>
  	</div>
 	</div>
 

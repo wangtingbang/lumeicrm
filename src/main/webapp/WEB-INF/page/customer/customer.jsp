@@ -101,6 +101,16 @@
     </div>
 
 	<div class="form-group">
+	  <div class="col-sm-12">
+		<div class="clearfix">
+		<a class="btn btn-info btn-xs pull-right" id="addDeal_btn">
+        <i class="ace-icon fa fa-plus bigger-110"></i> Add Deal
+        </a>
+		</div>
+	  </div>
+	</div>
+
+	<div class="form-group">
 	  <label class="col-sm-4 control-label no-padding-right">Gender</label>
 	  <div class="col-sm-8">
 	      <label class="line-height-1" style="margin-right: 10px; margin-top: 5px;">
@@ -242,6 +252,23 @@
     {{?}}
     </tbody>
     </table>
+</script>
+
+<script id="addDeal-temp" type="text/x-dot-template">
+<form class="form-horizontal" action="#">
+<div class="row" style="min-width:300px;">
+<div class="col-xs-12">
+	<div class="form-group">
+    <label class="col-sm-4 control-label no-padding-right">Service Type</label>
+    <div class="col-sm-8">
+		<div class="clearfix">
+		<select class="form-control" id="deal-select" name="dealselect"/>
+    	</div>
+    </div>
+	</div>
+</div>
+</div>
+</form>
 </script>
 
 <%@ include file="../notes/notes.jsp"%>

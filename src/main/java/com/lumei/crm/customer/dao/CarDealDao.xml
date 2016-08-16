@@ -620,6 +620,7 @@
 		<if test="salesId != null" >
 			AND CAR_DEAL.SALES_ID = #{salesId,jdbcType=VARCHAR}
 		</if>
+		order by CAR_DEAL.DEAL_DATE asc, CAR_DEAL.CREATE_TIME desc
 	</select>
 	
 	<select id="countForList" parameterType="java.util.Map" resultType="java.lang.Integer" >
