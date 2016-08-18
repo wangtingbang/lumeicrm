@@ -52,7 +52,8 @@ var datadic = {
 		"12":"Car Rental",
 		"13":"Cellphone",
 		"14":"Temporary Accommodation",
-		"15":"AiM"
+		"15":"AiM",
+		"16":"Customer Refer"
 	}
 }
 

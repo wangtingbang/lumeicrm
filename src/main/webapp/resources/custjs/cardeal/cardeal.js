@@ -64,21 +64,29 @@ function searchSubmit(){
 				}
 				$('#source').append(sourceList);
 				
-				$("#isNew input[name='isNew']").each(function(n,p){
-					$(this).click(function(){
-						isNewCheck();
-					});
+				$("#source").change(function(){
+					sourceCheck();
+				});
+				
+				sourceCheck();
+				
+				$("#isNew").change(function(){
+					isNewCheck();
 				});
 				
 				isNewCheck();
 				
-				$("#method input[name='method']").each(function(n,p){
-					$(this).click(function(){
-						methodCheck();
-					});
+				$("#method").change(function(){
+					methodCheck();
 				});
 				
 				methodCheck();
+				
+				$("#tradeIn").change(function(){
+					tradeInCheck();
+				});
+				
+				tradeInCheck();
 				
 				listNotes();
 			},
@@ -88,8 +96,36 @@ function searchSubmit(){
 	);
 }
 
+function tradeInCheck(){
+	var v = $("#tradeIn").val();
+	if(1==v){
+		$("#tradeInValue").val("");
+		$("#tradeInMake").val("");
+		$("#tradeInModel").val("");
+		$("#tradeInYear").val("");
+		$("#tradeInMileage").val("");
+		$("#tradeInEc").val("");
+		$("#tradeInIc").val("");
+		
+		$("#tradeInValueDiv").hide();
+		$("#tradeInMakeDiv").hide();
+		$("#tradeInModelDiv").hide();
+		$("#tradeInYearDiv").hide();
+		$("#tradeInMileageDiv").hide();
+		$("#tradeInEcDiv").hide();
+		$("#tradeInIcDiv").hide();
+	}else{
+		$("#tradeInValueDiv").show();
+		$("#tradeInMakeDiv").show();
+		$("#tradeInModelDiv").show();
+		$("#tradeInYearDiv").show();
+		$("#tradeInMileageDiv").show();
+		$("#tradeInEcDiv").show();
+		$("#tradeInIcDiv").show();
+	}
+}
 function methodCheck(){
-	var v = $("#method input[name='method']:checked").val();
+	var v = $("#method").val();
 	if(1==v){
 		$("#downPayment").val("");
 		$("#rate").val("");
@@ -115,8 +151,18 @@ function methodCheck(){
 	}
 }
 
+function sourceCheck(){
+	var v = $("#source").val();
+	if(7==v){
+		$("#ambassadordiv").show();
+	}else{
+		$("#ambassador").val("");
+		$("#ambassadordiv").hide();
+	}
+}
+
 function isNewCheck(){
-	var v = $("#isNew input[name='isNew']:checked").val();
+	var v = $("#isNew").val();
 	if(1==v){
 		$("#mileages").val("");
 		$("#msrpdiv").show();

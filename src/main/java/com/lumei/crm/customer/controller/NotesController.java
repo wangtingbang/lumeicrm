@@ -61,16 +61,16 @@ public class NotesController {
     }
     
     if("0".equals(customerId)){
-    	example.param("serviceId", serviceId);
+    	example.paramEqualTo("serviceId", serviceId);
     }else{
-    	example.param("userId", customerId);
+    	example.paramEqualTo("userId", customerId);
     }
     
-    example.orderBy("createTime").desc();
+    example.orderByDesc("createTime");
     Pagination<Notes> pg = notesBusiness.listByPage(example, page, limit);
 
     List<Notes> notes = pg.getResult();
-    if (notes != null || notes.size() > 0) {
+    if (notes != null && notes.size() > 0) {
       List<String> uids = new ArrayList<String>();
       for (Notes tmp : notes) {
         String uid1 = tmp.getCreateUserId();

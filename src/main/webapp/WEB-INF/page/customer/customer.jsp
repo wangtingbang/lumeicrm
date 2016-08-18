@@ -54,73 +54,29 @@
     </div>
 	</div>
 
-    <div class="form-group">
-    <label class="col-sm-4 control-label no-padding-right" for="name">Service Types</label>
-    <div class="col-sm-8">
-    <label style="margin-right: 10px; margin-top: 5px;">
-    <input id="service-car-selling-checkbox" name="service-car-selling-checkbox" type="checkbox" class="ace" {{? it.readonly}}readonly="readonly"{{?}} {{? it.readonly}}disabled="disabled"{{?}} {{? serviceTypeCheck('1',it.service||'')}}checked="checked"{{?}}>
-    <span class="lbl">Car Deals&nbsp;&nbsp;</span>
-    </label>
-
-    <label style="margin-right: 10px; margin-top: 5px;">
-    <input id="service-emergency-contact-checkbox" name="service-emergency-contact-checkbox" type="checkbox" class="ace" {{? it.readonly}}readonly="readonly"{{?}} {{? it.readonly}}disabled="disabled"{{?}} {{? serviceTypeCheck('2',it.service||'')}}checked="checked"{{?}}/>
-    <span class="lbl">Emergency Contact&nbsp;&nbsp;</span>
-    </label>
-
-    <label style="margin-right: 10px; margin-top: 5px;">
-    <input id="form-search-status-failed" name="form-search-status-failed" type="checkbox" class="ace" disabled="disabled" />
-    <span class="lbl">Car Buying&nbsp;&nbsp;</span>
-    </label>
-
-    <label style="margin-right: 10px; margin-top: 5px;">
-    <input id="form-search-status-paied" name="form-search-status-paied" type="checkbox" class="ace" disabled="disabled" />
-    <span class="lbl">Car Rental&nbsp;&nbsp;</span>
-    </label>
-
-    <label style="margin-right: 10px; margin-top: 5px;">
-    <input id="form-search-status-paied" name="form-search-status-paied" type="checkbox" class="ace" disabled="disabled"/>
-    <span class="lbl">Cellphone&nbsp;&nbsp;</span>
-    </label>
-
-    <label style="margin-right: 10px; margin-top: 5px;">
-    <input id="form-search-status-paied" name="form-search-status-paied" type="checkbox" class="ace" disabled="disabled"/>
-    <span class="lbl">Airport Pickup&nbsp;&nbsp;</span>
-    </label>
-
-    <label style="margin-right: 10px; margin-top: 5px;">
-    <input id="form-search-status-paied" name="form-search-status-paied" type="checkbox" class="ace" disabled="disabled"/>
-    <span class="lbl">Temporary House&nbsp;&nbsp;</span>
-    </label>
-
-    <label style="margin-right: 10px; margin-top: 5px;">
-    <input id="form-search-status-paied" name="form-search-status-paied" type="checkbox" class="ace" disabled="disabled"/>
-    <span class="lbl">AIM&nbsp;&nbsp;</span>
-    </label>
-    </label>
-    </div>
-    </div>
-
 	<div class="form-group">
-	  <div class="col-sm-12">
-		<div class="clearfix">
-		<a class="btn btn-info btn-xs pull-right" id="addDeal_btn">
-        <i class="ace-icon fa fa-plus bigger-110"></i> Add Deal
+	<label class="col-sm-4 control-label no-padding-right" for="name">Service Types</label>
+	<div class="col-sm-6">
+    	<div class="clearfix col-sm-11 no-padding-left">
+		<select class="form-control" id="service" name="service"/>
+		</div>
+ 	</div>
+	<div class="col-sm-2">
+    	<div class="clearfix">
+    	<a class="btn btn-info btn-sm pull-right" id="addDeal_btn">
+        <i class="ace-icon fa fa-briefcase bigger-110"></i> Add Deal
         </a>
 		</div>
-	  </div>
+ 	</div>
 	</div>
 
 	<div class="form-group">
 	  <label class="col-sm-4 control-label no-padding-right">Gender</label>
 	  <div class="col-sm-8">
-	      <label class="line-height-1" style="margin-right: 10px; margin-top: 5px;">
-	        <input name="gender" value="1" type="radio" class="ace" {{? it.readonly}}disabled="disabled"{{?}} {{? !it.gender|| 1 == it.gender}}checked="checked"{{?}} {{? it.readonly}}readonly="readonly"{{?}}/>
-	        <span class="lbl"> F</span>
-	      </label>
-	      <label class="line-height-1" style="margin-right: 10px;">
-	        <input name="gender" value="0" type="radio" class="ace" {{? it.readonly}}disabled="disabled"{{?}} {{? 0 == it.gender}}checked="checked"{{?}} {{? it.readonly}}readonly="readonly"{{?}}/>
-	        <span class="lbl"> M</span>
-	      </label>
+		<select class="form-control" id="gender" name="gender" {{? it.readonly}}disabled="disabled" readonly="readonly"{{?}}>
+		<option value="1" {{? 1 == it.gender}}selected="selected"{{?}}>Female</option>
+		<option value="0" {{? 0 == it.gender}}selected="selected"{{?}}>Male</option>
+		</select>
 	  </div>
 	</div>
 
@@ -191,12 +147,14 @@
 
 <div class="col-sm-6">
 	<div class="form-group" style="margin-left:8.3%">
-	<label class="col-sm-12"><h5 class="header ligth blue" style="margin-top:0px;margin-bottom:0px">Notes</h5></label>
-</div>
-	<div class="comments" id="notesdiv"></div>
-	<div class="center">
-	<a href="#" onclick="javascript:addNote();"><i class="ace-icon fa fa-comments-o"></i>&nbsp; Add Note</a>
+	<label class="col-sm-12"><h5 class="header ligth blue" style="margin-top:0px;margin-bottom:0px">Notes
+	<a href="#" class="btn btn-info btn-xs pull-right" onclick="javascript:addNote();">
+        <i class="ace-icon fa fa-comments-o"></i> Add Note
+    </a>
+	</h5>
+	</label>
 	</div>
+	<div class="comments" id="notesdiv"></div>
 </div>
 
 <!-- transaction -->
@@ -234,7 +192,8 @@
     <tr>
     <th>Date</th>
     <th>Service Type</th>
-    <th>Detail</th>
+    <th>Sales</th>
+	<th>Detail</th>
     </tr>
     </thead>
     <tbody>
@@ -245,6 +204,7 @@
     <td>{{=new Date(p.createTime).toChString(false) ||''}}</td>
     <td>{{=datadic['serviceType'][p.serviceType]}}</td>
     <td>{{=p.details||''}}</td>
+	<td><a href="javascript:viewTran('{{=p.serviceType}}','{{=p.serviceId}}','{{=p.userId}}');">view</a></td>
     </tr>
     {{~}}
     {{? !it||!it.data||!it.data.length}}

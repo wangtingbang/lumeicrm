@@ -117,11 +117,11 @@
     </div>
 	</div>
 
-	<div class="form-group">
-    <label class="col-sm-4 control-label no-padding-right">Trade In</label>
+	<div class="form-group" id="ambassadordiv">
+    <label class="col-sm-4 control-label no-padding-right">Ambassador</label>
     <div class="col-sm-8">
 		<div class="clearfix">
-		<input type="text" name="tradeIn" id="tradeIn" class="form-control col-sm-1" value="{{=it.tradeIn||'N/A'}}" {{? it.readonly}}readonly="readonly"{{?}}/>
+		<input type="text" name="ambassador" id="ambassador" class="form-control col-sm-1" value="{{=it.ambassador||''}}" {{? it.readonly}}readonly="readonly"{{?}}/>
     	</div>
     </div>
 	</div>
@@ -137,15 +137,11 @@
 
 	<div class="form-group">
 	  <label class="col-sm-4 control-label no-padding-right">Used/New</label>
-	  <div class="col-sm-8" id="isNew">
-	      <label class="line-height-1" style="margin-right: 10px; margin-top: 5px;">
-	        <input name="isNew" value="1" type="radio" class="ace" {{? it.readonly}}disabled="disabled"{{?}} {{? !it.gender|| 1 == it.isNew}}checked="checked"{{?}} {{? it.readonly}}readonly="readonly"{{?}}/>
-	        <span class="lbl"> New</span>
-	      </label>
-	      <label class="line-height-1" style="margin-right: 10px;">
-	        <input name="isNew" value="2" type="radio" class="ace" {{? it.readonly}}disabled="disabled"{{?}} {{? 2 == it.isNew}}checked="checked"{{?}} {{? it.readonly}}readonly="readonly"{{?}}/>
-	        <span class="lbl"> Used</span>
-	      </label>
+	  <div class="col-sm-8">
+		<select class="form-control" id="isNew" name="isNew" {{? it.readonly}}disabled="disabled" readonly="readonly"{{?}}>
+		<option value="1" {{? 1 == it.isNew}}selected="selected"{{?}}>New</option>
+		<option value="2" {{? 2 == it.isNew}}selected="selected"{{?}}>Used</option>
+		</select>
 	  </div>
 	</div>
 
@@ -185,20 +181,11 @@
     </div>
 	</div>
 
- 	<div class="form-group">
+	<div class="form-group">
     <label class="col-sm-4 control-label no-padding-right">Interior Color</label>
     <div class="col-sm-8">
 		<div class="clearfix">
     		<input type="text" name="interiorColor" id="interiorColor" class="form-control col-sm-1 " value="{{=it.interiorColor||''}}" {{? it.readonly}}readonly="readonly"{{?}}/>
-    	</div>
-    </div>
-	</div>
-
- 	<div class="form-group" id="msrpdiv">
-    <label class="col-sm-4 control-label no-padding-right">MSRP</label>
-    <div class="col-sm-8">
-		<div class="clearfix">
-    		<input type="text" name="msrp" id="msrp" class="form-control col-sm-1 " value="{{=it.msrp||''}}" {{? it.readonly}}readonly="readonly"{{?}}/>
     	</div>
     </div>
 	</div>
@@ -212,9 +199,20 @@
     </div>
 	</div>
 
+ 	<div class="form-group" id="msrpdiv">
+    <label class="col-sm-4 control-label no-padding-right">MSRP</label>
+	<label class="col-sm-1 control-label no-padding-right">$</label>
+    <div class="col-sm-7">
+		<div class="clearfix">
+    		<input type="text" name="msrp" id="msrp" class="form-control col-sm-1 " value="{{=it.msrp||''}}" {{? it.readonly}}readonly="readonly"{{?}}/>
+		</div>
+    </div>
+	</div>
+
 	<div class="form-group">
     <label class="col-sm-4 control-label no-padding-right">Selling Price</label>
-    <div class="col-sm-8">
+	<label class="col-sm-1 control-label no-padding-right">$</label>
+    <div class="col-sm-7">
 		<div class="clearfix">
     		<input type="text" name="sellingPrice" id="sellingPrice" class="form-control col-sm-1 " value="{{=it.sellingPrice||''}}" {{? it.readonly}}readonly="readonly"{{?}}/>
     	</div>
@@ -230,27 +228,38 @@
 	</div>
 	</div>
 
+</div>
+
+<div class="col-sm-6">
+	<div class="form-group" style="margin-left:8.3%">
+	<label class="col-sm-12"><h5 class="header ligth blue" style="margin-top:0px;margin-bottom:0px">Notes
+	<a href="#" class="btn btn-info btn-xs pull-right" onclick="javascript:addNote();">
+        <i class="ace-icon fa fa-comments-o"></i> Add Note
+    </a>
+	</h5>
+	</label>
+	</div>
+	<div class="comments" id="notesdiv"></div>
+</div>
+
+<div class="col-sm-12">
+
+<div class="col-sm-6">
 	<div class="form-group">
-	  <label class="col-sm-4 control-label no-padding-right">Method</label>
-	  <div class="col-sm-8" id="method">
-	      <label class="line-height-1" style="margin-right: 10px; margin-top: 5px;">
-	        <input name="method" value="1" type="radio" class="ace" {{? it.readonly}}disabled="disabled"{{?}} {{? !it.gender|| 1 == it.method}}checked="checked"{{?}} {{? it.readonly}}readonly="readonly"{{?}}/>
-	        <span class="lbl"> Cash Deal</span>
-	      </label>
-	      <label class="line-height-1" style="margin-right: 10px;">
-	        <input name="method" value="2" type="radio" class="ace" {{? it.readonly}}disabled="disabled"{{?}} {{? 2 == it.method}}checked="checked"{{?}} {{? it.readonly}}readonly="readonly"{{?}}/>
-	        <span class="lbl"> Finance</span>
-	      </label>
-		  <label class="line-height-1" style="margin-right: 10px;">
-	        <input name="method" value="3" type="radio" class="ace" {{? it.readonly}}disabled="disabled"{{?}} {{? 3 == it.method}}checked="checked"{{?}} {{? it.readonly}}readonly="readonly"{{?}}/>
-	        <span class="lbl"> Lease</span>
-	      </label>
+	  <label class="col-sm-4 control-label no-padding-right">Type</label>
+	  <div class="col-sm-8">
+		<select class="form-control" id="method" name="method" {{? it.readonly}}disabled="disabled" readonly="readonly"{{?}}>
+		<option value="1" {{? 1 == it.method}}selected="selected"{{?}}>Cash Deal</option>
+		<option value="2" {{? 2 == it.method}}selected="selected"{{?}}>Finance</option>
+		<option value="3" {{? 3 == it.method}}selected="selected"{{?}}>Lease</option>
+		</select>
 	  </div>
 	</div>
 
 	<div class="form-group" id="downPaymentdiv">
     <label class="col-sm-4 control-label no-padding-right">Down Payment</label>
-    <div class="col-sm-8">
+	<label class="col-sm-1 control-label no-padding-right">$</label>
+    <div class="col-sm-7">
 		<div class="clearfix">
     		<input type="text" name="downPayment" id="downPayment" class="form-control col-sm-1 " value="{{=it.downPayment||''}}" {{? it.readonly}}readonly="readonly"{{?}}/>
     	</div>
@@ -277,25 +286,94 @@
 
 	<div class="form-group" id="monthlyPaydiv">
     <label class="col-sm-4 control-label no-padding-right">Monthly Pay</label>
-    <div class="col-sm-8">
+	<label class="col-sm-1 control-label no-padding-right">$</label>
+    <div class="col-sm-7">
 		<div class="clearfix">
     		<input type="text" name="monthlyPay" id="monthlyPay" class="form-control col-sm-1 " value="{{=it.monthlyPay||''}}" {{? it.readonly}}readonly="readonly"{{?}}/>
+    	</div>
+    </div>
+	</div>
+</div>
+
+
+<div class="col-sm-6">
+	<div class="form-group">
+	  <label class="col-sm-4 control-label no-padding-right">Trade In</label>
+	  <div class="col-sm-8">
+		<select class="form-control" id="tradeIn" name="tradeIn" {{? it.readonly}}disabled="disabled" readonly="readonly"{{?}}>
+		<option value="1" {{? 1 == it.tradeIn}}selected="selected"{{?}}>No</option>
+		<option value="2" {{? 2 == it.tradeIn}}selected="selected"{{?}}>Yes</option>
+		</select>
+	  </div>
+	</div>
+
+	<div class="form-group" id="tradeInValueDiv">
+    <label class="col-sm-4 control-label no-padding-right">Trade In Value</label>
+	<label class="col-sm-1 control-label no-padding-right">$</label>
+    <div class="col-sm-7">
+		<div class="clearfix">
+    		<input type="text" name="tradeInValue" id="tradeInValue" class="form-control col-sm-1 " value="{{=it.tradeInValue||''}}" {{? it.readonly}}readonly="readonly"{{?}}/>
+    	</div>
+    </div>
+	</div>
+
+	<div class="form-group" id="tradeInMakeDiv">
+    <label class="col-sm-4 control-label no-padding-right">Make</label>
+    <div class="col-sm-8">
+		<div class="clearfix">
+    		<input type="text" name="tradeInMake" id="tradeInMake" class="form-control col-sm-1 " value="{{=it.tradeInMake||''}}" {{? it.readonly}}readonly="readonly"{{?}}/>
+    	</div>
+    </div>
+	</div>
+
+	<div class="form-group" id="tradeInModelDiv">
+    <label class="col-sm-4 control-label no-padding-right">Model</label>
+    <div class="col-sm-8">
+		<div class="clearfix">
+    		<input type="text" name="tradeInModel" id="tradeInModel" class="form-control col-sm-1 " value="{{=it.tradeInModel||''}}" {{? it.readonly}}readonly="readonly"{{?}}/>
+    	</div>
+    </div>
+	</div>
+
+	<div class="form-group" id="tradeInYearDiv">
+    <label class="col-sm-4 control-label no-padding-right">Year</label>
+    <div class="col-sm-8">
+		<div class="clearfix">
+    		<input type="text" name="tradeInYear" id="tradeInYear" class="form-control col-sm-1 " value="{{=it.tradeInYear||''}}" {{? it.readonly}}readonly="readonly"{{?}}/>
+    	</div>
+    </div>
+	</div>
+
+	<div class="form-group" id="tradeInMileageDiv">
+    <label class="col-sm-4 control-label no-padding-right">Mileage</label>
+    <div class="col-sm-8">
+		<div class="clearfix">
+    		<input type="text" name="tradeInMileage" id="tradeInMileage" class="form-control col-sm-1 " value="{{=it.tradeInMileage||''}}" {{? it.readonly}}readonly="readonly"{{?}}/>
+    	</div>
+    </div>
+	</div>
+
+	<div class="form-group" id="tradeInEcDiv">
+    <label class="col-sm-4 control-label no-padding-right">Exterior Color</label>
+    <div class="col-sm-8">
+		<div class="clearfix">
+    		<input type="text" name="tradeInEc" id="tradeInEc" class="form-control col-sm-1 " value="{{=it.tradeInEc||''}}" {{? it.readonly}}readonly="readonly"{{?}}/>
+    	</div>
+    </div>
+	</div>
+
+	<div class="form-group" id="tradeInIcDiv">
+    <label class="col-sm-4 control-label no-padding-right">Interior Color</label>
+    <div class="col-sm-8">
+		<div class="clearfix">
+    		<input type="text" name="tradeInIc" id="tradeInIc" class="form-control col-sm-1 " value="{{=it.tradeInIc||''}}" {{? it.readonly}}readonly="readonly"{{?}}/>
     	</div>
     </div>
 	</div>
 
 </div>
 
-<div class="col-sm-6">
-	<div class="form-group" style="margin-left:8.3%">
-	<label class="col-sm-12"><h5 class="header ligth blue" style="margin-top:0px;margin-bottom:0px">Notes</h5></label>
 </div>
-	<div class="comments" id="notesdiv"></div>
-	<div class="center">
-	<a href="#" onclick="javascript:addNote();"><i class="ace-icon fa fa-comments-o"></i>&nbsp; Add Note</a>
-	</div>
-</div>
-
 
 <div class="col-sm-12 form-group">
 <hr class="no-margin-top"> </hr>

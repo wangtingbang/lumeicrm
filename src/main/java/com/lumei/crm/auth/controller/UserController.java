@@ -101,7 +101,7 @@ public class UserController {
     }
     return opAuthUserBusiness.listByPage(
         Example.newExample(TOpAuthUser.class).paramLikeTo("userName", opAuthUser.getUserName())
-            .paramLikeTo("nickName", opAuthUser.getNickName()).orderBy("create_time").desc(), page,
+            .paramLikeTo("nickName", opAuthUser.getNickName()).orderByDesc("create_time"), page,
         limit);
   }
 
@@ -109,7 +109,7 @@ public class UserController {
   @ResponseBody
   public List<OpAuthUser> listAllUserEnabled() {
     return opAuthUserBusiness.list(
-        Example.newExample(TOpAuthUser.class).param("enabled", 1).orderBy("nickName").asc());
+        Example.newExample(TOpAuthUser.class).paramEqualTo("enabled", 1).orderBy("nickName"));
   }
   
   @RequestMapping(value = "auth/user/create", method = RequestMethod.POST)
@@ -122,7 +122,7 @@ public class UserController {
       throw new BusinessException(PosApiCode.AUTH_ERROR4.getCode());
     }
     int cnt =
-        opAuthUserBusiness.count(Example.newExample(TOpAuthUser.class).param("userName",
+        opAuthUserBusiness.count(Example.newExample(TOpAuthUser.class).paramEqualTo("userName",
             opAuthUser.getUserName()));
     if (cnt > 0) {
       throw new BusinessException(PosApiCode.AUTH_ERROR5.getCode());
@@ -203,7 +203,7 @@ public class UserController {
   public Map listUserRoleByUserId(@RequestParam String userId) {
     Map rm = new HashMap();
     List<OpAuthUserRole> list =
-        opAuthUserRoleBusiness.list(Example.newExample(TOpAuthUserRole.class).param("userId",
+        opAuthUserRoleBusiness.list(Example.newExample(TOpAuthUserRole.class).paramEqualTo("userId",
             userId));
     rm.put("list", list);
     return rm;
@@ -252,7 +252,7 @@ public class UserController {
     Pagination<OpAuthUser> rs =
         opAuthUserBusiness.listByPage(
             Example.newExample(TOpAuthUser.class).paramLikeTo("userName", opAuthUser.getUserName())
-                .paramLikeTo("nickName", opAuthUser.getNickName()).orderBy("create_time").desc(),
+                .paramLikeTo("nickName", opAuthUser.getNickName()).orderByDesc("create_time"),
             page, limit);
     Pagination<Map> result = Pagination.newInstance(page, limit);
     result.setTotal(rs.getTotal());

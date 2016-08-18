@@ -65,7 +65,7 @@ public class OpAuthUserBusiness extends CommonBusiness<OpAuthUser, TOpAuthUser, 
   }
 
   public OpAuthUser findUserByName(String userName) {
-    List<TOpAuthUser> list = opAuthUserDao.selectByExample(Example.newExample(TOpAuthUser.class).param("userName", userName));
+    List<TOpAuthUser> list = opAuthUserDao.selectByExample(Example.newExample(TOpAuthUser.class).paramEqualTo("userName", userName));
     if (null == list || list.size() == 0) {
       return null;
     }

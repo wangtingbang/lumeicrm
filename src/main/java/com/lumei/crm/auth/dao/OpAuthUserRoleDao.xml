@@ -103,20 +103,19 @@
 		<include refid="Base_Column_List" />
 		from OP_AUTH_USER_ROLE
 		<include refid="Example_Where_Clause" />
-		<if test="order != null">
-			order by 
-			<foreach collection="order" item="listItem" open="" close="" separator=" ">
-				<![CDATA[ ${listItem } ]]>
-			</foreach>
+		<trim prefix="order by">
+			<foreach collection="order" item="o" separator=",">
+				<![CDATA[ ${o.column } ]]>
 			<choose>
-				<when test="desc">
+				<when test="o.desc">
 					desc
 				</when>
 				<otherwise>
 					asc
 				</otherwise>
 			</choose>
-		</if>
+			</foreach>
+		</trim>
 	</select>
 
   	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.lumei.crm.auth.entity.TOpAuthUserRole" >

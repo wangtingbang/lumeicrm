@@ -5,11 +5,12 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * 
@@ -21,23 +22,34 @@ public class Example<T> implements Serializable {
   /**
    * 
    */
-  private static final long serialVersionUID = 5328950191693093949L;
-  
-  private Map<String, Object> fieldsMap;
+  private static final long serialVersionUID = 1L;
+
+  private Class<T> clazz;
+  private Set<String> fieldSet;
   private boolean distinct;
-  private List<String> order;
-  private boolean desc;
   private Criteria criteria;
-  private List<Criteria> params = new LinkedList<Criteria>();
+  private List<Criteria> params;
+  private List<Order> order;
+
+  public Class<T> getClazz() {
+    return clazz;
+  }
+
+  public void setClazz(Class<T> clazz) {
+    this.clazz = clazz;
+  }
 
   public Example(Class<T> clz) {
+    this.clazz = clz;
     Field[] fields = clz.getDeclaredFields();
-    this.fieldsMap = new HashMap<String, Object>();
+    this.fieldSet = new HashSet<String>();
     for (int i = 0; i < fields.length; i++) {
-      this.fieldsMap.put(propertyToColumn(fields[i].getName()), new Object());
+      this.fieldSet.add(propertyToColumn(fields[i].getName()));
     }
     this.criteria = new Criteria();
+    this.params = new LinkedList<Criteria>();
     this.params.add(criteria);
+    this.order = new LinkedList<Example.Order>();
   }
 
   public Example<T> or() {
@@ -46,29 +58,24 @@ public class Example<T> implements Serializable {
     return this;
   }
 
-  private void param(String key, Object value, Object value2, String condition) {
-    if ("between".equals(condition) || "notbetween".equals(condition)) {
+  private void param(String key, Object value, Object value2, Condition condition) {
+    if (Condition.BETWEEN.equals(condition) || Condition.NOT_BETWEEN.equals(condition)) {
       if (value == null || value2 == null) {
         throw new RuntimeException("Between values for " + key + " cannot be null");
       }
     }
-    if (!("isnull".equals(condition) || "notnull".equals(condition))) {
+    if (!Condition.NULL.equals(condition) && !Condition.NOT_NULL.equals(condition)) {
       if (value == null) {
         return;
       }
-      if (value instanceof Collection) {
-        if (((Collection) value).size() == 0) {
-          return;
-        }
-      }
     }
     Criterion criterion = new Criterion(key, value, value2, condition);
-    if(fieldsMap.containsKey(criterion.getColunm())){
-      this.criteria.getCriteria().put(criterion.getColunm()+"$"+condition, criterion);
+    if (fieldSet.contains(criterion.getColunm())) {
+      this.criteria.getCriteria().put(criterion.getColunm() + "$" + condition.getKey(), criterion);
     }
   }
 
-  private Example<T> param(Object obj) {
+  public Example<T> paramEqualToDeclaredFields(T obj) {
     if (null == obj)
       return this;
     try {
@@ -90,12 +97,13 @@ public class Example<T> implements Serializable {
         try {
           method = clz.getMethod(prefix + getMethodName(key));
         } catch (NoSuchMethodException e) {
+          continue;
         }
         if (null != method) {
           value = method.invoke(obj);
         }
         if (null != value) {
-          this.param(key, value);
+          this.paramEqualTo(key, value);
         }
       }
     } catch (Exception e) {
@@ -110,58 +118,58 @@ public class Example<T> implements Serializable {
     return new String(items);
   }
 
-  public Example<T> param(String key, Object value) {
-    param(key, value, null, "iseq");
+  public Example<T> paramEqualTo(String key, Object value) {
+    param(key, value, null, Condition.EQ);
     return this;
   }
 
   public Example<T> paramNotEqualTo(String key, Object value) {
-    param(key, value, null, "noteq");
+    param(key, value, null, Condition.NOT_EQ);
     return this;
   }
 
   public Example<T> paramLikeTo(String key, Object value) {
-    param(key, value, null, "like");
+    param(key, value, null, Condition.LIKE);
     return this;
   }
 
   public Example<T> paramNotLikeTo(String key, Object value) {
-    param(key, value, null, "notlike");
+    param(key, value, null, Condition.NOT_LIKE);
     return this;
   }
 
   public Example<T> paramLessThan(String key, Object value) {
-    param(key, value, null, "islt");
+    param(key, value, null, Condition.LT);
     return this;
   }
 
   public Example<T> paramGreaterThan(String key, Object value) {
-    param(key, value, null, "isgt");
+    param(key, value, null, Condition.GT);
     return this;
   }
 
   public Example<T> paramLessThanOrEqualTo(String key, Object value) {
-    param(key, value, null, "isle");
+    param(key, value, null, Condition.LE);
     return this;
   }
 
   public Example<T> paramGreaterThanOrEqualTo(String key, Object value) {
-    param(key, value, null, "isge");
+    param(key, value, null, Condition.GE);
     return this;
   }
 
   public Example<T> paramBetween(String key, Object value, Object value2) {
-    param(key, value, value2, "between");
+    param(key, value, value2, Condition.BETWEEN);
     return this;
   }
 
   public Example<T> paramNotBetween(String key, Object value, Object value2) {
-    param(key, value, value2, "notbetween");
+    param(key, value, value2, Condition.NOT_BETWEEN);
     return this;
   }
 
-  public Example<T> paramIn(String key, List value) {
-    param(key, value, null, "isin");
+  public Example<T> paramIn(String key, List<?> value) {
+    param(key, value, null, Condition.IN);
     return this;
   }
 
@@ -169,8 +177,8 @@ public class Example<T> implements Serializable {
     return paramIn(key, Arrays.asList(values));
   }
 
-  public Example<T> paramNotIn(String key, List value) {
-    param(key, value, null, "notin");
+  public Example<T> paramNotIn(String key, List<?> value) {
+    param(key, value, null, Condition.NOT_IN);
     return this;
   }
 
@@ -179,12 +187,12 @@ public class Example<T> implements Serializable {
   }
 
   public Example<T> paramIsNull(String key) {
-    param(key, null, null, "isnull");
+    param(key, null, null, Condition.NULL);
     return this;
   }
 
   public Example<T> paramNotNull(String key) {
-    param(key, null, null, "notnull");
+    param(key, null, null, Condition.NOT_NULL);
     return this;
   }
 
@@ -215,49 +223,30 @@ public class Example<T> implements Serializable {
     return column.toString();
   }
 
-  /**
-   * 这个方法有问题， 不要使用
-   * @param columns
-   * @return
-   */
-  @Deprecated
-  public Example<T> orderBy(String... columns) {
-    if(columns==null) return this;
-    for (int i = 0; i < columns.length; i++) {
-      columns[i] = propertyToColumn(columns[i]);
-      if(!fieldsMap.containsKey(columns[i])){
-        throw new RuntimeException("no column [" +columns[i]+"] in table");
-      }
+  private Example<T> orderBy(String column, Seq seq) {
+    if (column == null || "".equals(column))
+      return this;
+    String columnStr = propertyToColumn(column);
+    if (!fieldSet.contains(columnStr)) {
+      throw new RuntimeException("no column [" + columnStr + "] in table");
     }
-    if (this.order == null) {
-      this.order = Arrays.asList(columns);
-    } else {
-      this.order.addAll(Arrays.asList(columns));
-    }
+    this.order.add(new Order(columnStr, seq));
     return this;
   }
 
   public Example<T> orderBy(String column) {
-    if(column==null || "".equals(column)) return this;
-     String columnStr = propertyToColumn(column);
-      if(!fieldsMap.containsKey(columnStr)){
-        throw new RuntimeException("no column [" +columnStr+"] in table");
-      }
-      this.order = Arrays.asList(columnStr);
-    return this;
-  }
-  
-  public Example<T> asc() {
-    this.desc = false;
-    return this;
+    return this.orderBy(column, Seq.ASC);
   }
 
-  public Example<T> desc() {
-    this.desc = true;
-    return this;
+  public Example<T> orderByDesc(String column) {
+    return this.orderBy(column, Seq.DESC);
   }
 
-
+  /**
+   * 
+   * @author dave
+   *
+   */
   public static class Criteria implements Serializable {
     /**
      * 
@@ -278,11 +267,11 @@ public class Example<T> implements Serializable {
     }
 
   }
+
   /**
    * 
    * @author dave
    *
-   * @param <T>
    */
   public static class Criterion implements Serializable {
 
@@ -293,6 +282,7 @@ public class Example<T> implements Serializable {
     private String colunm;
     private Object value;
     private Object secondValue;
+    private Condition condition;
     private boolean iseq;
     private boolean noteq;
     private boolean like;
@@ -307,50 +297,51 @@ public class Example<T> implements Serializable {
     private boolean notin;
     private boolean isnull;
     private boolean notnull;
-    
+
     public Criterion() {}
 
-    public Criterion(String colunm, Object value, Object secondValue, String condition) {
+    public Criterion(String colunm, Object value, Object secondValue, Condition condition) {
       this.colunm = propertyToColumn(colunm);
       this.value = value;
       this.secondValue = secondValue;
+      this.condition = condition;
       switch (condition) {
-        case "iseq":
+        case EQ:
           this.iseq = true;
           break;
-        case "noteq":
+        case NOT_EQ:
           this.noteq = true;
           break;
-        case "like":
+        case LIKE:
           this.like = true;
           break;
-        case "notlike":
+        case NOT_LIKE:
           this.notlike = true;
           break;
-        case "islt":
+        case LT:
           this.islt = true;
           break;
-        case "isgt":
+        case GT:
           this.isgt = true;
           break;
-        case "isle":
+        case LE:
           this.isle = true;
           break;
-        case "isge":
+        case GE:
           this.isge = true;
-        case "between":
+        case BETWEEN:
           this.between = true;
-        case "notbetween":
+        case NOT_BETWEEN:
           this.notbetween = true;
-        case "isin":
+        case IN:
           this.isin = true;
-        case "notin":
+        case NOT_IN:
           this.notin = true;
           break;
-        case "isnull":
+        case NULL:
           this.isnull = true;
           break;
-        case "notnull":
+        case NOT_NULL:
           this.notnull = true;
           break;
         default:
@@ -380,6 +371,14 @@ public class Example<T> implements Serializable {
 
     public void setSecondValue(Object secondValue) {
       this.secondValue = secondValue;
+    }
+
+    public Condition getCondition() {
+      return condition;
+    }
+
+    public void setCondition(Condition condition) {
+      this.condition = condition;
     }
 
     public boolean isIseq() {
@@ -496,6 +495,95 @@ public class Example<T> implements Serializable {
 
   }
 
+  /**
+   * 
+   * @author dave
+   *
+   */
+  public static enum Condition {
+    EQ("iseq"), //
+    NOT_EQ("noteq"), //
+    LIKE("like"), //
+    NOT_LIKE("notlike"), //
+    LT("islt"), //
+    LE("isle"), //
+    GT("isgt"), //
+    GE("isge"), //
+    BETWEEN("between"), //
+    NOT_BETWEEN("notbetween"), //
+    IN("isin"), //
+    NOT_IN("notin"), //
+    NULL("isnull"), //
+    NOT_NULL("notnull");//
+
+    private String key;
+
+    Condition(String key) {
+      this.key = key;
+    }
+
+    public String getKey() {
+      return key;
+    }
+
+  }
+
+  /**
+   * 
+   * @author dave
+   *
+   */
+  public static enum Seq {
+    ASC, //
+    DESC;//
+    Seq() {}
+  }
+
+  /**
+   * 
+   * @author dave
+   *
+   */
+  public static class Order implements Serializable {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
+    private String column;
+    private boolean desc;
+
+    public Order() {}
+
+    public Order(String column, Seq seq) {
+      this.column = column;
+      switch (seq) {
+        case DESC:
+          this.desc = true;
+          break;
+        default:
+          break;
+      }
+    }
+
+    public String getColumn() {
+      return column;
+    }
+
+    public void setColumn(String column) {
+      this.column = column;
+    }
+
+    public boolean isDesc() {
+      return desc;
+    }
+
+    public void setDesc(boolean desc) {
+      this.desc = desc;
+    }
+
+  }
+
   public boolean isDistinct() {
     return distinct;
   }
@@ -504,20 +592,12 @@ public class Example<T> implements Serializable {
     this.distinct = distinct;
   }
 
-  public List<String> getOrder() {
+  public List<Order> getOrder() {
     return order;
   }
 
-  public void setOrder(List<String> order) {
+  public void setOrder(List<Order> order) {
     this.order = order;
-  }
-
-  public boolean isDesc() {
-    return desc;
-  }
-
-  public void setDesc(boolean desc) {
-    this.desc = desc;
   }
 
   public List<Criteria> getParams() {
@@ -528,4 +608,10 @@ public class Example<T> implements Serializable {
     this.params = params;
   }
 
+  @Override
+  public String toString() {
+    return "";
+  }
+
 }
+

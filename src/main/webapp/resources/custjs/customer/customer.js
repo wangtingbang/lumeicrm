@@ -17,6 +17,11 @@ function searchSubmit(){
 				var pagefn = doT.template($('#profile_temp').text());
 				var htmlpage = pagefn(data);
 				$("#profile-content").html(htmlpage);
+				var dealSelectList = '';
+				for(p in datadic['serviceType']){
+					dealSelectList += '<option value="'+p+'">'+datadic['serviceType'][p]+'</option>';
+				}
+				$('#service').append(dealSelectList);
 				listNotes();
 				$('#addDeal_btn').click(function() {
 					var id = $("#id").val();
@@ -128,26 +133,14 @@ function serviceTypeCheck(serviceType, serviceTypeString){
 }
 
 function addDeal(id){
-	var pagefn = doT.template($('#addDeal-temp').text());
-	$.imodal({
-				title:"Add Deal",
-				contents:pagefn({}),
-				buttons:[
-						{addClass: 'btn btn-sm btn-default', text: '<i class="ace-icon fa fa-times  bigger-110"></i>Cancel', attr:'data-dismiss="modal"'},
-						{addClass: 'btn btn-sm btn-primary', text: '<i class="ace-icon fa fa-check  bigger-110"></i>Add Deal', onClick: function(msgDom) {
-							var deal = $("#deal-select").val();
-							if("1"==deal){
-								location.href=contextPath+'/cardeal/create?customerId='+id;
-							}
-						  }
-						}
-				],
-				afterRender:function(){
-					var dealSelectList = '';
-					for(p in datadic['serviceType']){
-						dealSelectList += '<option value="'+p+'">'+datadic['serviceType'][p]+'</option>';
-					}
-					$('#deal-select').append(dealSelectList);
-				}
-			});
+	var deal = $("#service").val();
+	if("1"==deal){
+		location.href=contextPath+'/cardeal/create?customerId='+id;
+	}
+}
+
+function viewTran(serviceType,serviceId,customerId){
+	if('1'==serviceType){
+		location.href = contextPath + '/cardeal/get?id='+serviceId+"&customerId="+customerId;
+	}
 }

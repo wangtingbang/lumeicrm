@@ -66,7 +66,7 @@ public class OpAuthUserRoleBusiness extends CommonBusiness<OpAuthUserRole, TOpAu
   }
 
   public List<String> listAllRoleByUser(String id) {
-    List<TOpAuthUserRole> list = opAuthUserRoleDao.selectByExample(Example.newExample(TOpAuthUserRole.class).param("userId", id));
+    List<TOpAuthUserRole> list = opAuthUserRoleDao.selectByExample(Example.newExample(TOpAuthUserRole.class).paramEqualTo("userId", id));
     List<String> result = new LinkedList<String>();
     for (TOpAuthUserRole tOpAuthUserRole : list) {
       result.add(tOpAuthUserRole.getRoleId());

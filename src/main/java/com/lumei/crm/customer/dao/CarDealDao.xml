@@ -38,6 +38,14 @@
 		<result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
 		<result column="UPDATE_USER_ID" property="updateUserId" jdbcType="VARCHAR" />
 		<result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+		<result column="AMBASSADOR" property="ambassador" jdbcType="VARCHAR" />
+		<result column="TRADE_IN_VALUE" property="tradeInValue" jdbcType="VARCHAR" />
+		<result column="TRADE_IN_MAKE" property="tradeInMake" jdbcType="VARCHAR" />
+		<result column="TRADE_IN_MODEL" property="tradeInModel" jdbcType="VARCHAR" />
+		<result column="TRADE_IN_YEAR" property="tradeInYear" jdbcType="VARCHAR" />
+		<result column="TRADE_IN_MILEAGE" property="tradeInMileage" jdbcType="VARCHAR" />
+		<result column="TRADE_IN_EC" property="tradeInEc" jdbcType="VARCHAR" />
+		<result column="TRADE_IN_IC" property="tradeInIc" jdbcType="VARCHAR" />
 	</resultMap>
 
 	<sql id="Base_Column_List">
@@ -72,7 +80,15 @@
 		CREATE_USER_ID,
 		CREATE_TIME,
 		UPDATE_USER_ID,
-		UPDATE_TIME
+		UPDATE_TIME,
+		AMBASSADOR,
+		TRADE_IN_VALUE,
+		TRADE_IN_MAKE,
+		TRADE_IN_MODEL,
+		TRADE_IN_YEAR,
+		TRADE_IN_MILEAGE,
+		TRADE_IN_EC,
+		TRADE_IN_IC
 	</sql>
 
 	<sql id="Example_Where_Clause">
@@ -150,20 +166,19 @@
 		<include refid="Base_Column_List" />
 		from CAR_DEAL
 		<include refid="Example_Where_Clause" />
-		<if test="order != null">
-			order by 
-			<foreach collection="order" item="listItem" open="" close="" separator=", ">
-				<![CDATA[ ${listItem } ]]>
-			</foreach>
+		<trim prefix="order by">
+			<foreach collection="order" item="o" separator=",">
+				<![CDATA[ ${o.column } ]]>
 			<choose>
-				<when test="desc">
+				<when test="o.desc">
 					desc
 				</when>
 				<otherwise>
 					asc
 				</otherwise>
 			</choose>
-		</if>
+			</foreach>
+		</trim>
 	</select>
 
   	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.lumei.crm.customer.entity.TCarDeal" >
@@ -231,7 +246,15 @@
 			#{createUserId,jdbcType=VARCHAR},
 			#{createTime,jdbcType=TIMESTAMP},
 			#{updateUserId,jdbcType=VARCHAR},
-			#{updateTime,jdbcType=TIMESTAMP}
+			#{updateTime,jdbcType=TIMESTAMP},
+			#{ambassador,jdbcType=VARCHAR},
+			#{tradeInValue,jdbcType=VARCHAR},
+			#{tradeInMake,jdbcType=VARCHAR},
+			#{tradeInModel,jdbcType=VARCHAR},
+			#{tradeInYear,jdbcType=VARCHAR},
+			#{tradeInMileage,jdbcType=VARCHAR},
+			#{tradeInEc,jdbcType=VARCHAR},
+			#{tradeInIc,jdbcType=VARCHAR}
 		)
 	</insert>
 
@@ -335,7 +358,31 @@
 			UPDATE_USER_ID,
 		</if>
 		<if test="updateTime != null">
-			UPDATE_TIME
+			UPDATE_TIME,
+		</if>
+		<if test="ambassador != null">
+			AMBASSADOR,
+		</if>
+		<if test="tradeInValue != null">
+			TRADE_IN_VALUE,
+		</if>
+		<if test="tradeInMake != null">
+			TRADE_IN_MAKE,
+		</if>
+		<if test="tradeInModel != null">
+			TRADE_IN_MODEL,
+		</if>
+		<if test="tradeInYear != null">
+			TRADE_IN_YEAR,
+		</if>
+		<if test="tradeInMileage != null">
+			TRADE_IN_MILEAGE,
+		</if>
+		<if test="tradeInEc != null">
+			TRADE_IN_EC,
+		</if>
+		<if test="tradeInIc != null">
+			TRADE_IN_IC
 		</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -430,7 +477,31 @@
 				#{updateUserId,jdbcType=VARCHAR},
 		</if>
 		<if test="updateTime != null">
-				#{updateTime,jdbcType=TIMESTAMP}
+				#{updateTime,jdbcType=TIMESTAMP},
+		</if>
+		<if test="ambassador != null">
+				#{ambassador,jdbcType=VARCHAR},
+		</if>
+		<if test="tradeInValue != null">
+				#{tradeInValue,jdbcType=VARCHAR},
+		</if>
+		<if test="tradeInMake != null">
+				#{tradeInMake,jdbcType=VARCHAR},
+		</if>
+		<if test="tradeInModel != null">
+				#{tradeInModel,jdbcType=VARCHAR},
+		</if>
+		<if test="tradeInYear != null">
+				#{tradeInYear,jdbcType=VARCHAR},
+		</if>
+		<if test="tradeInMileage != null">
+				#{tradeInMileage,jdbcType=VARCHAR},
+		</if>
+		<if test="tradeInEc != null">
+				#{tradeInEc,jdbcType=VARCHAR},
+		</if>
+		<if test="tradeInIc != null">
+				#{tradeInIc,jdbcType=VARCHAR}
 		</if>
 		</trim>
 	</insert>
@@ -538,7 +609,31 @@
 		UPDATE_USER_ID = #{updateUserId,jdbcType=VARCHAR},
 	</if>
 	<if test="updateTime != null" >
-		UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
+		UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+	</if>
+	<if test="ambassador != null" >
+		AMBASSADOR = #{ambassador,jdbcType=VARCHAR},
+	</if>
+	<if test="tradeInValue != null" >
+		TRADE_IN_VALUE = #{tradeInValue,jdbcType=VARCHAR},
+	</if>
+	<if test="tradeInMake != null" >
+		TRADE_IN_MAKE = #{tradeInMake,jdbcType=VARCHAR},
+	</if>
+	<if test="tradeInModel != null" >
+		TRADE_IN_MODEL = #{tradeInModel,jdbcType=VARCHAR},
+	</if>
+	<if test="tradeInYear != null" >
+		TRADE_IN_YEAR = #{tradeInYear,jdbcType=VARCHAR},
+	</if>
+	<if test="tradeInMileage != null" >
+		TRADE_IN_MILEAGE = #{tradeInMileage,jdbcType=VARCHAR},
+	</if>
+	<if test="tradeInEc != null" >
+		TRADE_IN_EC = #{tradeInEc,jdbcType=VARCHAR},
+	</if>
+	<if test="tradeInIc != null" >
+		TRADE_IN_IC = #{tradeInIc,jdbcType=VARCHAR}
 	</if>
 		</set>
 		where ID = #{id,jdbcType=VARCHAR}
@@ -577,7 +672,15 @@
 		TRADE_IN = #{tradeIn,jdbcType=VARCHAR},
 		CASE_NO = #{caseNo,jdbcType=VARCHAR},
 		UPDATE_USER_ID = #{updateUserId,jdbcType=VARCHAR},
-		UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
+		UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+		AMBASSADOR = #{ambassador,jdbcType=VARCHAR},
+		TRADE_IN_VALUE = #{tradeInValue,jdbcType=VARCHAR},
+		TRADE_IN_MAKE = #{tradeInMake,jdbcType=VARCHAR},
+		TRADE_IN_MODEL = #{tradeInModel,jdbcType=VARCHAR},
+		TRADE_IN_YEAR = #{tradeInYear,jdbcType=VARCHAR},
+		TRADE_IN_MILEAGE = #{tradeInMileage,jdbcType=VARCHAR},
+		TRADE_IN_EC = #{tradeInEc,jdbcType=VARCHAR},
+		TRADE_IN_IC = #{tradeInIc,jdbcType=VARCHAR}
 		</set>
 		where ID = #{id,jdbcType=VARCHAR}
 		and DELETE_FLAG = ${deleteFlag}

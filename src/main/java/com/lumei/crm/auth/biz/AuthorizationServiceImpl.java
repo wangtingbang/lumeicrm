@@ -40,9 +40,9 @@ public class AuthorizationServiceImpl implements ShiroAuthorizationService {
   @Override
   public List<String> listRoleByUser(String userName) {
     String userId =
-        opAuthUserDao.selectByExample(Example.newExample(TOpAuthUser.class).param("userName", userName)).get(0).getId();
+        opAuthUserDao.selectByExample(Example.newExample(TOpAuthUser.class).paramEqualTo("userName", userName)).get(0).getId();
     List<TOpAuthUserRole> list =
-        opAuthUserRoleDao.selectByExample(Example.newExample(TOpAuthUserRole.class).param("userId", userId).distinct());
+        opAuthUserRoleDao.selectByExample(Example.newExample(TOpAuthUserRole.class).paramEqualTo("userId", userId).distinct());
     List<String> result = new LinkedList<String>();
     for (TOpAuthUserRole tOpAuthUserRole : list) {
       result.add(tOpAuthUserRole.getRoleId());
@@ -58,7 +58,7 @@ public class AuthorizationServiceImpl implements ShiroAuthorizationService {
   @Override
   public ShiroLoginUser findUserByName(String userName) {
     List<TOpAuthUser> opUserList =
-        opAuthUserDao.selectByExample(Example.newExample(TOpAuthUser.class).param("userName", userName));
+        opAuthUserDao.selectByExample(Example.newExample(TOpAuthUser.class).paramEqualTo("userName", userName));
     if (null == opUserList || opUserList.size() == 0) {
       return null;
     }

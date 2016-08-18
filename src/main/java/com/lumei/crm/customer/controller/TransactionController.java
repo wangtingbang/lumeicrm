@@ -41,8 +41,8 @@ public class TransactionController {
       return pg;
     }
 
-    example.param("userId", customerId);
-    example.orderBy("createTime").desc();
+    example.paramEqualTo("userId", customerId);
+    example.orderByDesc("createTime");
     Pagination<Transaction> pg = transactionBusiness.listByPage(example, page, limit);
     return pg;
   }

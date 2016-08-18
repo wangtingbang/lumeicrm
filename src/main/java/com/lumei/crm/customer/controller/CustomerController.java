@@ -57,7 +57,7 @@ public class CustomerController {
 
     Example<TCustomer> example = Example.newExample(TCustomer.class);
     if (!StringUtils.isBlank(sales)) {
-        example.param("salesId", sales);
+        example.paramEqualTo("salesId", sales);
     }
     if (!StringUtils.isBlank(name)) {
       example.paramLikeTo("name", name);
@@ -69,12 +69,13 @@ public class CustomerController {
       example.paramLikeTo("phone", phone);
     }
     if(StringUtils.isNoneBlank(orderColumn)){
-    	example.orderBy(orderColumn);
     	if(orderDesc){
-    		example.desc();
+    		example.orderByDesc(orderColumn);
+    	}else{
+    		example.orderBy(orderColumn);
     	}
     }else{
-    	example.orderBy("createTime").desc();
+    	example.orderBy("createTime");
     }
     Pagination<Customer> profilePagination = customerBusiness.listByPage(example, page, limit);
 

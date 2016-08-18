@@ -1,6 +1,7 @@
 package com.lumei.crm.customer.controller;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -209,6 +210,7 @@ public class CarDealController {
     if ("0".equals(carDeal.getId())) {
     	String id = KeyGenerator.uuid();
         carDeal.setId(id);
+        carDeal.setCaseNo(DateTimeUtil.getCurrentTime("yyyyMMddHHmmss"));
     	carDeal.setCreateTime(now);
     	carDeal.setUpdateTime(now);
     	carDeal.setSalesId(SessionUtil.getCurrentUserId());
@@ -216,11 +218,17 @@ public class CarDealController {
     	carDeal.setUpdateUserId(SessionUtil.getCurrentUserId());
     	carDealBusiness.create(carDeal);
     	Transaction transaction = new Transaction();
+    	List<String> salesIds = new ArrayList<String>();
+        salesIds.add(carDeal.getSalesId());
+        Map<String,OpAuthUser> userMap = userInfoBusiness.getUserInfoById(salesIds);
+        OpAuthUser user0 = userMap.get(carDeal.getSalesId());
+        if (user0 != null) {
+        	carDeal.setSalesName(user0.getNickName());
+        }
         transaction.setServiceId(id);
         transaction.setUserId(carDeal.getCustomerId());
         transaction.setServiceType(LumeiCrmConstants.SERVICE_TYPE.CAR_SELLING.getValue());
-        transaction.setDetails(carDeal.getCaseNo()
-        		+" / "+carDeal.getYears()+" / "+ carDeal.getModel());
+        transaction.setDetails(carDeal.getSalesName());
         transaction.setCreateTime(now);
         transaction.setCreateUserId(SessionUtil.getCurrentUserId());
         transaction.setUpdateTime(now);
@@ -231,12 +239,18 @@ public class CarDealController {
     	carDeal.setUpdateUserId(SessionUtil.getCurrentUserId());
     	carDealBusiness.update(carDeal);
     	Example<TTransaction> example0 = Example.newExample(TTransaction.class);
-        example0.param("serviceId", carDeal.getId());
+        example0.paramEqualTo("serviceId", carDeal.getId());
         List<Transaction> transactions = transactionBusiness.list(example0);
         if(null != transactions && transactions.size() >0){
         Transaction transaction = transactions.get(0);
-        transaction.setDetails(carDeal.getCaseNo()
-        		+" / "+carDeal.getYears()+" / "+ carDeal.getModel());
+        List<String> salesIds = new ArrayList<String>();
+        salesIds.add(carDeal.getSalesId());
+        Map<String,OpAuthUser> userMap = userInfoBusiness.getUserInfoById(salesIds);
+        OpAuthUser user0 = userMap.get(carDeal.getSalesId());
+        if (user0 != null) {
+        	carDeal.setSalesName(user0.getNickName());
+        }
+        transaction.setDetails(carDeal.getSalesName());
         transaction.setUpdateTime(now);
         transaction.setUpdateUserId(SessionUtil.getCurrentUserId());
         transactionBusiness.update(transaction);
@@ -255,7 +269,7 @@ public class CarDealController {
       result = carDealBusiness.delete(id, CarDeal.class);
       log.debug("result:{}", result);
       Example<TTransaction> example0 = Example.newExample(TTransaction.class);
-      example0.param("serviceId", id);
+      example0.paramEqualTo("serviceId", id);
       List<Transaction> transactions = transactionBusiness.list(example0);
       if(null != transactions && transactions.size() >0){
       Transaction transaction = transactions.get(0);
@@ -267,6 +281,8 @@ public class CarDealController {
   @RequestMapping(value = "assign", method = RequestMethod.POST)
   @ResponseBody
   public String assign(String sales, @RequestParam("ids[]") String[] ids) {
+	List<String> salesIds = Arrays.asList(sales);
+    Map<String,OpAuthUser> userMap = userInfoBusiness.getUserInfoById(salesIds);
     Date now = DateTimeUtil.now();
     for (int i = 0; i < ids.length; i++) {
 	CarDeal carDeal = new CarDeal();
@@ -275,6 +291,20 @@ public class CarDealController {
 	carDeal.setUpdateTime(now);
 	carDeal.setUpdateUserId(SessionUtil.getCurrentUserId());
 	carDealBusiness.updateSelective(carDeal);
+	Example<TTransaction> example0 = Example.newExample(TTransaction.class);
+    example0.paramEqualTo("serviceId", carDeal.getId());
+	List<Transaction> transactions = transactionBusiness.list(example0);
+    if(null != transactions && transactions.size() >0){
+	Transaction transaction = transactions.get(0);
+    OpAuthUser user0 = userMap.get(carDeal.getSalesId());
+    if (user0 != null) {
+    	carDeal.setSalesName(user0.getNickName());
+    }
+    transaction.setDetails(carDeal.getSalesName());
+    transaction.setUpdateTime(now);
+    transaction.setUpdateUserId(SessionUtil.getCurrentUserId());
+    transactionBusiness.update(transaction);
+    }
     }
     return sales;
   }

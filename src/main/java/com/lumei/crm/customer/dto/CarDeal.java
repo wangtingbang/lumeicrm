@@ -248,6 +248,46 @@ public class CarDeal extends BaseModel<String> implements Serializable {
   private Date updateTime;
 
   /**
+   * @field ambassador
+   */
+  private String ambassador;
+
+  /**
+   * @field tradeInValue
+   */
+  private String tradeInValue;
+
+  /**
+   * @field tradeInMake
+   */
+  private String tradeInMake;
+
+  /**
+   * @field tradeInModel
+   */
+  private String tradeInModel;
+
+  /**
+   * @field tradeInYear
+   */
+  private String tradeInYear;
+
+  /**
+   * @field tradeInMileage
+   */
+  private String tradeInMileage;
+
+  /**
+   * @field tradeInEc
+   */
+  private String tradeInEc;
+
+  /**
+   * @field tradeInIc
+   */
+  private String tradeInIc;
+
+  /**
    * @return id
    */
   public String getId() {
@@ -655,6 +695,118 @@ public class CarDeal extends BaseModel<String> implements Serializable {
    */
   public void setUpdateTime(Date updateTime) {
     this.updateTime = updateTime;
+  }
+
+  /**
+   * @return ambassador
+   */
+  public String getAmbassador() {
+    return ambassador;
+  }
+
+  /**
+   * @param ambassador
+   */
+  public void setAmbassador(String ambassador) {
+    this.ambassador = ambassador;
+  }
+
+  /**
+   * @return tradeInValue
+   */
+  public String getTradeInValue() {
+    return tradeInValue;
+  }
+
+  /**
+   * @param tradeInValue
+   */
+  public void setTradeInValue(String tradeInValue) {
+    this.tradeInValue = tradeInValue;
+  }
+
+  /**
+   * @return tradeInMake
+   */
+  public String getTradeInMake() {
+    return tradeInMake;
+  }
+
+  /**
+   * @param tradeInMake
+   */
+  public void setTradeInMake(String tradeInMake) {
+    this.tradeInMake = tradeInMake;
+  }
+
+  /**
+   * @return tradeInModel
+   */
+  public String getTradeInModel() {
+    return tradeInModel;
+  }
+
+  /**
+   * @param tradeInModel
+   */
+  public void setTradeInModel(String tradeInModel) {
+    this.tradeInModel = tradeInModel;
+  }
+
+  /**
+   * @return tradeInYear
+   */
+  public String getTradeInYear() {
+    return tradeInYear;
+  }
+
+  /**
+   * @param tradeInYear
+   */
+  public void setTradeInYear(String tradeInYear) {
+    this.tradeInYear = tradeInYear;
+  }
+
+  /**
+   * @return tradeInMileage
+   */
+  public String getTradeInMileage() {
+    return tradeInMileage;
+  }
+
+  /**
+   * @param tradeInMileage
+   */
+  public void setTradeInMileage(String tradeInMileage) {
+    this.tradeInMileage = tradeInMileage;
+  }
+
+  /**
+   * @return tradeInEc
+   */
+  public String getTradeInEc() {
+    return tradeInEc;
+  }
+
+  /**
+   * @param tradeInEc
+   */
+  public void setTradeInEc(String tradeInEc) {
+    this.tradeInEc = tradeInEc;
+  }
+
+  /**
+   * @return tradeInIc
+   */
+  public String getTradeInIc() {
+    return tradeInIc;
+  }
+
+  /**
+   * @param tradeInIc
+   */
+  public void setTradeInIc(String tradeInIc) {
+    this.tradeInIc = tradeInIc;
   }
 
 }

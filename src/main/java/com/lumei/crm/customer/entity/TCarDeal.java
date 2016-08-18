@@ -186,7 +186,47 @@ public class TCarDeal extends BaseEntity<String> {
   private Date updateTime;
 
   /**
-   * @return id
+   * @field AMBASSADOR
+   */
+  private String ambassador;
+
+  /**
+   * @field TRADE_IN_VALUE
+   */
+  private String tradeInValue;
+
+  /**
+   * @field TRADE_IN_MAKE
+   */
+  private String tradeInMake;
+
+  /**
+   * @field TRADE_IN_MODEL
+   */
+  private String tradeInModel;
+
+  /**
+   * @field TRADE_IN_YEAR
+   */
+  private String tradeInYear;
+
+  /**
+   * @field TRADE_IN_MILEAGE
+   */
+  private String tradeInMileage;
+
+  /**
+   * @field TRADE_IN_EC
+   */
+  private String tradeInEc;
+
+  /**
+   * @field TRADE_IN_IC
+   */
+  private String tradeInIc;
+
+  /**
+   * @return ID
    */
   public String getId() {
     return id;
@@ -594,4 +634,117 @@ public class TCarDeal extends BaseEntity<String> {
   public void setUpdateTime(Date updateTime) {
     this.updateTime = updateTime;
   }
+
+  /**
+   * @return AMBASSADOR
+   */
+  public String getAmbassador() {
+    return ambassador;
+  }
+
+  /**
+   * @param AMBASSADOR
+   */
+  public void setAmbassador(String ambassador) {
+    this.ambassador = ambassador;
+  }
+
+  /**
+   * @return TRADE_IN_VALUE
+   */
+  public String getTradeInValue() {
+    return tradeInValue;
+  }
+
+  /**
+   * @param TRADE_IN_VALUE
+   */
+  public void setTradeInValue(String tradeInValue) {
+    this.tradeInValue = tradeInValue;
+  }
+
+  /**
+   * @return TRADE_IN_MAKE
+   */
+  public String getTradeInMake() {
+    return tradeInMake;
+  }
+
+  /**
+   * @param TRADE_IN_MAKE
+   */
+  public void setTradeInMake(String tradeInMake) {
+    this.tradeInMake = tradeInMake;
+  }
+
+  /**
+   * @return TRADE_IN_MODEL
+   */
+  public String getTradeInModel() {
+    return tradeInModel;
+  }
+
+  /**
+   * @param TRADE_IN_MODEL
+   */
+  public void setTradeInModel(String tradeInModel) {
+    this.tradeInModel = tradeInModel;
+  }
+
+  /**
+   * @return TRADE_IN_YEAR
+   */
+  public String getTradeInYear() {
+    return tradeInYear;
+  }
+
+  /**
+   * @param TRADE_IN_YEAR
+   */
+  public void setTradeInYear(String tradeInYear) {
+    this.tradeInYear = tradeInYear;
+  }
+
+  /**
+   * @return TRADE_IN_MILEAGE
+   */
+  public String getTradeInMileage() {
+    return tradeInMileage;
+  }
+
+  /**
+   * @param TRADE_IN_MILEAGE
+   */
+  public void setTradeInMileage(String tradeInMileage) {
+    this.tradeInMileage = tradeInMileage;
+  }
+
+  /**
+   * @return TRADE_IN_EC
+   */
+  public String getTradeInEc() {
+    return tradeInEc;
+  }
+
+  /**
+   * @param TRADE_IN_EC
+   */
+  public void setTradeInEc(String tradeInEc) {
+    this.tradeInEc = tradeInEc;
+  }
+
+  /**
+   * @return TRADE_IN_IC
+   */
+  public String getTradeInIc() {
+    return tradeInIc;
+  }
+
+  /**
+   * @param TRADE_IN_IC
+   */
+  public void setTradeInIc(String tradeInIc) {
+    this.tradeInIc = tradeInIc;
+  }
+
 }
