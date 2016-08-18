@@ -88,6 +88,9 @@ function searchSubmit(){
 				
 				tradeInCheck();
 				
+				fileList(serviceId);
+				fileupload(customerId,serviceId);
+				
 				listNotes();
 			},
 			function(errmsg){
@@ -240,4 +243,9 @@ function addNote(){
 		return;
 	}
 	addNote2(customerId,id,1);
+}
+
+function fileList2(){
+	var serviceId = $("#serviceIdSearch").val();
+	fileList(serviceId);
 }

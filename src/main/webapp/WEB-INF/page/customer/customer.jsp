@@ -143,6 +143,27 @@
     </div>
 	</div>
 
+	<div class="form-group">
+    <label class="col-sm-4 control-label no-padding-right">Files</label>
+    <div class="col-sm-6">
+		<div class="clearfix col-sm-11 no-padding-left">
+    		<input type="file" name="file" id="file">
+    	</div>
+    </div>
+	<div class="col-sm-2">
+    	<div class="clearfix">
+    	<a class="btn btn-info btn-xs pull-right" id="files_btn">
+        <i class="ace-icon fa fa-cloud-upload bigger-110"></i> upload
+        </a>
+		</div>
+ 	</div>
+	</div>
+
+	<div class="form-group">
+    <label class="col-sm-4 control-label no-padding-right"></label>
+    <div class="col-sm-8" id="fileListDiv">
+    </div>
+	</div>
 </div>
 
 <div class="col-sm-6">
@@ -232,3 +253,4 @@
 </script>
 
 <%@ include file="../notes/notes.jsp"%>
+<%@ include file="file.jsp"%>

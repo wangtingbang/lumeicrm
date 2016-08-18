@@ -32,6 +32,8 @@ function searchSubmit(){
 					}
 					addDeal(id);
 				});
+				fileList(customerId);
+				fileupload(customerId,customerId);
 				$page = $('#transaction-content').igrid({
 					url : contextPath + '/transaction/list',
 					param : {customerId:$("#id").val()},
@@ -143,4 +145,9 @@ function viewTran(serviceType,serviceId,customerId){
 	if('1'==serviceType){
 		location.href = contextPath + '/cardeal/get?id='+serviceId+"&customerId="+customerId;
 	}
+}
+
+function fileList2(){
+	var customerId = $("#customerId").val();
+	fileList(customerId);
 }
