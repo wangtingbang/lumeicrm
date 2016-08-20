@@ -19,9 +19,11 @@ import com.lumei.crm.commons.mybatis.support.Example;
 import com.lumei.crm.commons.mybatis.support.Pagination;
 import com.lumei.crm.commons.util.DateTimeUtil;
 import com.lumei.crm.customer.biz.CarDealBusiness;
+import com.lumei.crm.customer.biz.CustomerBusiness;
 import com.lumei.crm.customer.biz.NotesBusiness;
 import com.lumei.crm.customer.biz.UserInfoBusiness;
 import com.lumei.crm.customer.dto.CarDeal;
+import com.lumei.crm.customer.dto.Customer;
 import com.lumei.crm.customer.dto.Notes;
 import com.lumei.crm.customer.entity.TNotes;
 import com.lumei.crm.util.SessionUtil;
@@ -42,6 +44,8 @@ public class NotesController {
   UserInfoBusiness userInfoBusiness;
   @Autowired
   CarDealBusiness carDealBusiness;
+  @Autowired
+  CustomerBusiness customerBusiness;
   
   @RequestMapping(value = "list", method = RequestMethod.POST)
   @ResponseBody
@@ -112,7 +116,12 @@ public class NotesController {
     notes.setCreateUserId(SessionUtil.getCurrentUserId());
     notes.setUpdateUserId(SessionUtil.getCurrentUserId());
     result = notesBusiness.create(notes);
-    if(notes.getNoteServiceType().byteValue() == Byte.valueOf("1").byteValue()){
+    if(notes.getNoteServiceType().byteValue() == Byte.valueOf("0").byteValue()){
+    	Customer c = new Customer();
+    	c.setId(notes.getServiceId());
+    	c.setUpdateTime(DateTimeUtil.now());
+    	customerBusiness.updateSelective(c);
+    }else if(notes.getNoteServiceType().byteValue() == Byte.valueOf("1").byteValue()){
     	CarDeal cd = new CarDeal();
     	cd.setId(notes.getServiceId());
     	cd.setUpdateTime(DateTimeUtil.now());
