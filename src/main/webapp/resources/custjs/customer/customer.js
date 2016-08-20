@@ -19,7 +19,12 @@ function searchSubmit(){
 				$("#profile-content").html(htmlpage);
 				var dealSelectList = '';
 				for(p in datadic['serviceType']){
-					dealSelectList += '<option value="'+p+'">'+datadic['serviceType'][p]+'</option>';
+					if(data.service==p){
+						dealSelectList += '<option selected="selected" value="'+p+'">'
+						+datadic['serviceType'][p]+'</option>';
+					}else{
+						dealSelectList += '<option value="'+p+'">'+datadic['serviceType'][p]+'</option>';
+					}
 				}
 				$('#service').append(dealSelectList);
 				var usStateList = '';
@@ -72,19 +77,6 @@ function saveProfile(){
 		$.ialert("WeChat Required!","error");
 		return;
 	}
-	var carSelling = $("#service-car-selling-checkbox").prop("checked");
-	var emergencyContact = $("#service-emergency-contact-checkbox").prop("checked");
-
-	var service = '';
-	if(carSelling){
-		service+='1,';
-	}
-	if(emergencyContact){
-		service+='2,';
-	}
-	
-	service = service.substring(0,service.length-1);
-	param['service'] = service;
 
 	$.ipost(
 	contextPath + '/customer/save',
