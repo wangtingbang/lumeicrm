@@ -9,7 +9,7 @@
 			<role name="CUSTOMER_MANAGER" />
 		</roles>
 	</menu>
-	<menu id="cardeal" pid="" name="Car Deals" url="cardeal/list"
+	<menu id="carDeal" pid="" name="Car Deals" url="cardeal/list"
 			icon="fa-briefcase" order="200">
 			<roles>
 				<role name="ADMIN" />
@@ -17,6 +17,13 @@
 				<role name="CUSTOMER_SERVICE" />
 				<role name="CUSTOMER_MANAGER" />
 			</roles>
+	</menu>
+	<menu id="salesReview" pid="" name="Sales Review" url="cardeal/list2"
+		icon="fa-tachometer" order="800">
+		<roles>
+			<role name="ADMIN" />
+			<role name="CUSTOMER_MANAGER" />
+		</roles>
 	</menu>
 	<menu id="systemConfig" pid="" name="User Config" url="auth/user/listUserByPage" 
 		icon="fa-cog" order="900">

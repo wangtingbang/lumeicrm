@@ -46,6 +46,7 @@
 		<result column="TRADE_IN_MILEAGE" property="tradeInMileage" jdbcType="VARCHAR" />
 		<result column="TRADE_IN_EC" property="tradeInEc" jdbcType="VARCHAR" />
 		<result column="TRADE_IN_IC" property="tradeInIc" jdbcType="VARCHAR" />
+		<result column="REMARK" property="remark" jdbcType="VARCHAR" />
 	</resultMap>
 
 	<sql id="Base_Column_List">
@@ -88,7 +89,8 @@
 		TRADE_IN_YEAR,
 		TRADE_IN_MILEAGE,
 		TRADE_IN_EC,
-		TRADE_IN_IC
+		TRADE_IN_IC,
+		REMARK
 	</sql>
 
 	<sql id="Example_Where_Clause">
@@ -254,7 +256,8 @@
 			#{tradeInYear,jdbcType=VARCHAR},
 			#{tradeInMileage,jdbcType=VARCHAR},
 			#{tradeInEc,jdbcType=VARCHAR},
-			#{tradeInIc,jdbcType=VARCHAR}
+			#{tradeInIc,jdbcType=VARCHAR},
+			#{remark,jdbcType=VARCHAR}
 		)
 	</insert>
 
@@ -382,7 +385,10 @@
 			TRADE_IN_EC,
 		</if>
 		<if test="tradeInIc != null">
-			TRADE_IN_IC
+			TRADE_IN_IC,
+		</if>
+		<if test="remark != null">
+			REMARK
 		</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -501,7 +507,10 @@
 				#{tradeInEc,jdbcType=VARCHAR},
 		</if>
 		<if test="tradeInIc != null">
-				#{tradeInIc,jdbcType=VARCHAR}
+				#{tradeInIc,jdbcType=VARCHAR},
+		</if>
+		<if test="remark != null">
+				#{remark,jdbcType=VARCHAR}
 		</if>
 		</trim>
 	</insert>
@@ -633,7 +642,10 @@
 		TRADE_IN_EC = #{tradeInEc,jdbcType=VARCHAR},
 	</if>
 	<if test="tradeInIc != null" >
-		TRADE_IN_IC = #{tradeInIc,jdbcType=VARCHAR}
+		TRADE_IN_IC = #{tradeInIc,jdbcType=VARCHAR},
+	</if>
+	<if test="remark != null" >
+		REMARK = #{remark,jdbcType=VARCHAR}
 	</if>
 		</set>
 		where ID = #{id,jdbcType=VARCHAR}
@@ -680,7 +692,8 @@
 		TRADE_IN_YEAR = #{tradeInYear,jdbcType=VARCHAR},
 		TRADE_IN_MILEAGE = #{tradeInMileage,jdbcType=VARCHAR},
 		TRADE_IN_EC = #{tradeInEc,jdbcType=VARCHAR},
-		TRADE_IN_IC = #{tradeInIc,jdbcType=VARCHAR}
+		TRADE_IN_IC = #{tradeInIc,jdbcType=VARCHAR},
+		REMARK = #{remark,jdbcType=VARCHAR}
 		</set>
 		where ID = #{id,jdbcType=VARCHAR}
 		and DELETE_FLAG = ${deleteFlag}
@@ -720,10 +733,34 @@
 		<if test="dealDateEnd != null" >
 			AND CAR_DEAL.DEAL_DATE &lt;= #{dealDateEnd,jdbcType=DATE}
 		</if>
+		<if test="modifiedDateStart != null" >
+			AND CAR_DEAL.UPDATE_TIME &gt;= #{modifiedDateStart,jdbcType=DATE}
+		</if>
+		<if test="modifiedDateEnd != null" >
+			AND CAR_DEAL.UPDATE_TIME &lt;= #{modifiedDateEnd,jdbcType=DATE}
+		</if>
 		<if test="salesId != null" >
 			AND CAR_DEAL.SALES_ID = #{salesId,jdbcType=VARCHAR}
 		</if>
-		order by CAR_DEAL.DEAL_DATE asc, CAR_DEAL.CREATE_TIME desc
+		<if test="salesIds != null" >
+		AND CAR_DEAL.SALES_ID in
+		<foreach collection="salesIds" item="listItem" open="(" close=")" separator=",">
+			<![CDATA[ #{listItem } ]]>
+		</foreach>
+		</if>
+		<trim prefix="order by">
+			<foreach collection="order" item="o" separator=",">
+				<![CDATA[ ${o.column } ]]>
+			<choose>
+				<when test="o.desc">
+					desc
+				</when>
+				<otherwise>
+					asc
+				</otherwise>
+			</choose>
+			</foreach>
+		</trim>
 	</select>
 	
 	<select id="countForList" parameterType="java.util.Map" resultType="java.lang.Integer" >
@@ -756,8 +793,23 @@
 		<if test="dealDateEnd != null" >
 			AND CAR_DEAL.DEAL_DATE &lt;= #{dealDateEnd,jdbcType=DATE}
 		</if>
+		<if test="modifiedDateStart != null" >
+			AND CAR_DEAL.UPDATE_TIME &gt;= #{modifiedDateStart,jdbcType=DATE}
+		</if>
+		<if test="modifiedDateEnd != null" >
+			AND CAR_DEAL.UPDATE_TIME &lt;= #{modifiedDateEnd,jdbcType=DATE}
+		</if>
 		<if test="salesId != null" >
 			AND CAR_DEAL.SALES_ID = #{salesId,jdbcType=VARCHAR}
+		</if>
+		<if test="salesIds != null" >
+			AND CAR_DEAL.SALES_ID in (#{salesIds,jdbcType=VARCHAR})
+		</if>
+		<if test="salesIds != null" >
+		AND CAR_DEAL.SALES_ID in
+		<foreach collection="salesIds" item="listItem" open="(" close=")" separator=",">
+			<![CDATA[ #{listItem } ]]>
+		</foreach>
 		</if>
 	</select>
 </mapper>

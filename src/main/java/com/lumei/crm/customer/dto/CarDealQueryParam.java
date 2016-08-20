@@ -33,8 +33,46 @@ public class CarDealQueryParam implements Serializable {
 
   private Date dealDateEnd;
 
+  private String orderColumn;
+  
+  private boolean orderDesc;
+  
+  private Date modifiedDateStart;
+  private Date modifiedDateEnd;
+  
+  public Date getModifiedDateStart() {
+	return modifiedDateStart;
+}
 
-  public String getCustomerId() {
+public void setModifiedDateStart(Date modifiedDateStart) {
+	this.modifiedDateStart = modifiedDateStart;
+}
+
+public Date getModifiedDateEnd() {
+	return modifiedDateEnd;
+}
+
+public void setModifiedDateEnd(Date modifiedDateEnd) {
+	this.modifiedDateEnd = modifiedDateEnd;
+}
+
+public String getOrderColumn() {
+	return orderColumn;
+}
+
+public void setOrderColumn(String orderColumn) {
+	this.orderColumn = orderColumn;
+}
+
+public boolean isOrderDesc() {
+	return orderDesc;
+}
+
+public void setOrderDesc(boolean orderDesc) {
+	this.orderDesc = orderDesc;
+}
+
+public String getCustomerId() {
     return customerId;
   }
 

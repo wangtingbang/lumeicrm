@@ -21,6 +21,8 @@
 		<result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
 		<result column="UPDATE_USER_ID" property="updateUserId" jdbcType="VARCHAR" />
 		<result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+		<result column="CITY" property="city" jdbcType="VARCHAR" />
+		<result column="STATE" property="state" jdbcType="VARCHAR" />
 	</resultMap>
 
 	<sql id="Base_Column_List">
@@ -41,7 +43,9 @@
 		CREATE_USER_ID,
 		CREATE_TIME,
 		UPDATE_USER_ID,
-		UPDATE_TIME
+		UPDATE_TIME,
+		CITY,
+		STATE
 	</sql>
 
 	<sql id="Example_Where_Clause">
@@ -185,7 +189,9 @@
 			#{createUserId,jdbcType=VARCHAR},
 			#{createTime,jdbcType=TIMESTAMP},
 			#{updateUserId,jdbcType=VARCHAR},
-			#{updateTime,jdbcType=TIMESTAMP}
+			#{updateTime,jdbcType=TIMESTAMP},
+			#{city,jdbcType=VARCHAR},
+			#{state,jdbcType=VARCHAR}
 		)
 	</insert>
 
@@ -247,7 +253,13 @@
 			UPDATE_USER_ID,
 		</if>
 		<if test="updateTime != null">
-			UPDATE_TIME
+			UPDATE_TIME,
+		</if>
+		<if test="city != null">
+			CITY,
+		</if>
+		<if test="state != null">
+			STATE
 		</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -300,7 +312,13 @@
 				#{updateUserId,jdbcType=VARCHAR},
 		</if>
 		<if test="updateTime != null">
-				#{updateTime,jdbcType=TIMESTAMP}
+				#{updateTime,jdbcType=TIMESTAMP},
+		</if>
+		<if test="city != null">
+				#{city,jdbcType=VARCHAR},
+		</if>
+		<if test="state != null">
+				#{state,jdbcType=VARCHAR}
 		</if>
 		</trim>
 	</insert>
@@ -366,7 +384,13 @@
 		UPDATE_USER_ID = #{updateUserId,jdbcType=VARCHAR},
 	</if>
 	<if test="updateTime != null" >
-		UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
+		UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+	</if>
+	<if test="city != null" >
+		CITY = #{city,jdbcType=VARCHAR},
+	</if>
+	<if test="state != null" >
+		STATE = #{state,jdbcType=VARCHAR}
 	</if>
 		</set>
 		where ID = #{id,jdbcType=VARCHAR}
@@ -391,7 +415,9 @@
 		ZIP_CODE = #{zipCode,jdbcType=VARCHAR},
 		SERVICE = #{service,jdbcType=VARCHAR},
 		UPDATE_USER_ID = #{updateUserId,jdbcType=VARCHAR},
-		UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
+		UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+		CITY = #{city,jdbcType=VARCHAR},
+		STATE = #{state,jdbcType=VARCHAR}
 		</set>
 		where ID = #{id,jdbcType=VARCHAR}
 		and DELETE_FLAG = ${deleteFlag}

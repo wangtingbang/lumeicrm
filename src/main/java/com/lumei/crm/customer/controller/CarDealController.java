@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -19,20 +20,27 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.alibaba.fastjson.JSONObject;
+import com.lumei.crm.auth.biz.OpAuthUserBusiness;
 import com.lumei.crm.auth.dto.OpAuthUser;
+import com.lumei.crm.auth.entity.TOpAuthUser;
 import com.lumei.crm.commons.mybatis.support.Example;
 import com.lumei.crm.commons.mybatis.support.Pagination;
 import com.lumei.crm.commons.util.DateTimeUtil;
 import com.lumei.crm.commons.util.KeyGenerator;
 import com.lumei.crm.customer.biz.CarDealBusiness;
 import com.lumei.crm.customer.biz.CustomerBusiness;
+import com.lumei.crm.customer.biz.NotesBusiness;
 import com.lumei.crm.customer.biz.TransactionBusiness;
 import com.lumei.crm.customer.biz.UserInfoBusiness;
 import com.lumei.crm.customer.constants.LumeiCrmConstants;
+import com.lumei.crm.customer.dao.SequenceDao;
 import com.lumei.crm.customer.dto.CarDeal;
 import com.lumei.crm.customer.dto.CarDealQueryParam;
 import com.lumei.crm.customer.dto.Customer;
+import com.lumei.crm.customer.dto.Notes;
 import com.lumei.crm.customer.dto.Transaction;
+import com.lumei.crm.customer.entity.TNotes;
+import com.lumei.crm.customer.entity.TSequence;
 import com.lumei.crm.customer.entity.TTransaction;
 import com.lumei.crm.util.SessionUtil;
 
@@ -56,7 +64,16 @@ public class CarDealController {
 
   @Autowired
   TransactionBusiness transactionBusiness;
+  
+  @Autowired
+  OpAuthUserBusiness opAuthUserBusiness;
 
+  @Autowired
+  NotesBusiness notesBusiness;
+
+  @Autowired
+  SequenceDao sequenceDao;
+  
   @RequestMapping(value = "list", method = RequestMethod.GET)
   public ModelAndView list() {
     ModelAndView mav = new ModelAndView("cardeal/listcardeal");
@@ -67,6 +84,16 @@ public class CarDealController {
     return mav;
   }
 
+  @RequestMapping(value = "list2", method = RequestMethod.GET)
+  public ModelAndView list2() {
+    ModelAndView mav = new ModelAndView("cardeal/listcardeal2");
+    SessionUtil.setAttributes("dateStart", 
+    		DateTimeUtil.fromDate(DateTimeUtil.plusDays(DateTimeUtil.today(), -1), DateTimeUtil.Pattern.DEFAULT_FORMATE_DATE));
+    SessionUtil.setAttributes("dateEnd",
+    		DateTimeUtil.fromDate(DateTimeUtil.plusDays(DateTimeUtil.today(), -1), DateTimeUtil.Pattern.DEFAULT_FORMATE_DATE));
+    return mav;
+  }
+  
   @RequestMapping(value = "list", method = RequestMethod.POST)
   @ResponseBody
   public Pagination<CarDeal> list(CarDealQueryParam carDeal, int page, int limit){
@@ -74,7 +101,98 @@ public class CarDealController {
         page, limit, JSONObject.toJSONString(carDeal));
 
     Map param = new HashMap();
-
+    List<Map> orderList = new LinkedList<Map>();
+    if(StringUtils.isBlank(carDeal.getOrderColumn())){
+    	carDeal.setOrderColumn("UPDATE_TIME");
+    	carDeal.setOrderDesc(true);
+    }
+    if("UPDATE_TIME".equals(carDeal.getOrderColumn())){
+    	Map m1 = new HashMap();
+    	m1.put("column", "CAR_DEAL.UPDATE_TIME");
+    	if(carDeal.isOrderDesc()){
+    		m1.put("desc", true);
+    	}else{
+    		m1.put("desc", false);
+    	}
+    	orderList.add(m1);
+    	Map m2 = new HashMap();
+    	m2.put("column", "CAR_DEAL.SALES_ID");
+    	m2.put("desc", false);
+    	orderList.add(m2);
+    }
+    if("DEAL_DATE".equals(carDeal.getOrderColumn())){
+    	Map m1 = new HashMap();
+    	m1.put("column", "CAR_DEAL.DEAL_DATE");
+    	if(carDeal.isOrderDesc()){
+    		m1.put("desc", true);
+    	}else{
+    		m1.put("desc", false);
+    	}
+    	orderList.add(m1);
+    	Map m2 = new HashMap();
+    	m2.put("column", "CAR_DEAL.SALES_ID");
+    	m2.put("desc", false);
+    	orderList.add(m2);
+    }
+    if("DEAL_STATUS".equals(carDeal.getOrderColumn())){
+    	Map m1 = new HashMap();
+    	m1.put("column", "CAR_DEAL.DEAL_STATUS");
+    	if(carDeal.isOrderDesc()){
+    		m1.put("desc", true);
+    	}else{
+    		m1.put("desc", false);
+    	}
+    	orderList.add(m1);
+    	Map m2 = new HashMap();
+    	m2.put("column", "CAR_DEAL.SALES_ID");
+    	m2.put("desc", false);
+    	orderList.add(m2);
+    }
+    if("RATE".equals(carDeal.getOrderColumn())){
+    	Map m1 = new HashMap();
+    	m1.put("column", "CAR_DEAL.RATE");
+    	if(carDeal.isOrderDesc()){
+    		m1.put("desc", true);
+    	}else{
+    		m1.put("desc", false);
+    	}
+    	orderList.add(m1);
+    	Map m2 = new HashMap();
+    	m2.put("column", "CAR_DEAL.SALES_ID");
+    	m2.put("desc", false);
+    	orderList.add(m2);
+    }
+    if("SALES_ID".equals(carDeal.getOrderColumn())){
+    	Map m1 = new HashMap();
+    	m1.put("column", "CAR_DEAL.SALES_ID");
+    	if(carDeal.isOrderDesc()){
+    		m1.put("desc", true);
+    	}else{
+    		m1.put("desc", false);
+    	}
+    	orderList.add(m1);
+    	Map m2 = new HashMap();
+    	m2.put("column", "CAR_DEAL.DEAL_DATE");
+    	m2.put("desc", true);
+    	orderList.add(m2);
+    }
+    Map m0 = new HashMap();
+    m0.put("column", "CAR_DEAL.CREATE_TIME");
+    m0.put("desc", true);
+    param.put("order", orderList);
+    orderList.add(m0);
+    if (!StringUtils.isBlank(carDeal.getSalesName()) && StringUtils.isBlank(carDeal.getSalesId())) {
+    	Example<TOpAuthUser> example2 = Example.newExample(TOpAuthUser.class);
+    	example2.paramLikeTo("nickName", carDeal.getSalesName());
+    	List<OpAuthUser> l = opAuthUserBusiness.list(example2);
+    	if(l != null && l.size()>0){
+    		List<String> ll = new LinkedList<String>();
+    		for (OpAuthUser id : l) {
+    			ll.add(id.getId());
+    		}
+    		param.put("salesIds", ll);
+    	}
+    }
     if (StringUtils.isNotBlank(carDeal.getSalesId())) {
     	param.put("salesId", carDeal.getSalesId());
     }
@@ -93,23 +211,33 @@ public class CarDealController {
     if (Byte.parseByte("0")!=carDeal.getRating()) {
         param.put("rating", carDeal.getRating());
     }
-    if (null!=carDeal.getRating()) {
+    if (null!=carDeal.getDealDateStart()) {
         param.put("dealDateStart", carDeal.getDealDateStart());
     }
-    if (null!=carDeal.getRating()) {
+    if (null!=carDeal.getDealDateEnd()) {
     	param.put("dealDateEnd", carDeal.getDealDateEnd());
     }
-    param.put("orderBycolumn", "deal_date");
-    
+    if (null!=carDeal.getModifiedDateStart()) {
+        param.put("modifiedDateStart", carDeal.getModifiedDateStart());
+    }
+    if (null!=carDeal.getModifiedDateEnd()) {
+    	param.put("modifiedDateEnd", carDeal.getModifiedDateEnd());
+    }
     Pagination<CarDeal> pg = carDealBusiness.selectForList(param, page, limit);
     
-    if(pg.getResult()==null||pg.getResult().size()<0){
+    if(pg.getResult()==null||pg.getResult().size()==0){
         log.debug("result null");
-      return Pagination.newInstance(1, 1, 0);
+      return pg;
     }else{
       List<CarDeal> carDeal_s = pg.getResult();
       List<String> uids = new ArrayList<>();
       for (CarDeal deal: carDeal_s) {
+    	Example<TNotes> example = Example.newExample(TNotes.class);
+    	example.paramEqualTo("serviceId", deal.getId()).orderByDesc("create_time");
+    	List<Notes> l = notesBusiness.list(example);
+    	if(l!=null && l.size() >0){
+    		deal.setLatestNotes(l.get(0).getContent());
+    	}
         String salesId = deal.getSalesId();
         String createUserId = deal.getCreateUserId();
         String updateUserId = deal.getUpdateUserId();
@@ -210,7 +338,22 @@ public class CarDealController {
     if ("0".equals(carDeal.getId())) {
     	String id = KeyGenerator.uuid();
         carDeal.setId(id);
-        carDeal.setCaseNo(DateTimeUtil.getCurrentTime("yyyyMMddHHmmss"));
+        TSequence record = new TSequence();
+        record.setName(LumeiCrmConstants.CaseNo.CarSale);
+        TSequence record2 = sequenceDao.selectByPrimaryKey(record);
+        if(null == record2){
+        	record2 = new TSequence();
+        	record2.setName(LumeiCrmConstants.CaseNo.CarSale);
+        	record2.setCurrentValue(1);
+        	record2.setIncrement(1);
+        	sequenceDao.insert(record2);
+        }else{
+        	record2.setCurrentValue(record2.getCurrentValue() + 1);
+        	sequenceDao.updateByPrimaryKey(record2);
+        }
+        String caseNo = LumeiCrmConstants.CaseNo.CarSale 
+        		+ String.format("%06d", record2.getCurrentValue());
+        carDeal.setCaseNo(caseNo);
     	carDeal.setCreateTime(now);
     	carDeal.setUpdateTime(now);
     	carDeal.setSalesId(SessionUtil.getCurrentUserId());

@@ -226,7 +226,7 @@ public class Example<T> implements Serializable {
   private Example<T> orderBy(String column, Seq seq) {
     if (column == null || "".equals(column))
       return this;
-    String columnStr = propertyToColumn(column);
+    String columnStr = propertyToColumn(column.toLowerCase());
     if (!fieldSet.contains(columnStr)) {
       throw new RuntimeException("no column [" + columnStr + "] in table");
     }

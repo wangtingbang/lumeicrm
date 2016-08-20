@@ -288,6 +288,11 @@ public class CarDeal extends BaseModel<String> implements Serializable {
   private String tradeInIc;
 
   /**
+   * @field remark
+   */
+  private String remark;
+  
+  /**
    * @return id
    */
   public String getId() {
@@ -809,4 +814,22 @@ public class CarDeal extends BaseModel<String> implements Serializable {
     this.tradeInIc = tradeInIc;
   }
 
+  private String latestNotes;
+
+public String getLatestNotes() {
+	return latestNotes;
+}
+
+public void setLatestNotes(String latestNotes) {
+	this.latestNotes = latestNotes;
+}
+
+	public String getRemark() {
+		return remark;
+	}
+	
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
+  
 }

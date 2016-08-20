@@ -140,4 +140,14 @@ public class LumeiCrmConstants {
     }
   }
   
+  public static class CaseNo{
+	  public static final String CarSale="CS";
+	  public static final String CarTrade="CT";
+	  public static final String CarRental="CR";
+	  public static final String CarInsur="CI";
+	  public static final String EmerCon="EC";
+	  public static final String TempAcc="TA";
+	  public static final String PhoneCard="PC";
+	  public static final String AirportPickup="AP";
+  }
 }

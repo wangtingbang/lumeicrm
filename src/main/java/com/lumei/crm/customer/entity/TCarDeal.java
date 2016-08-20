@@ -226,6 +226,19 @@ public class TCarDeal extends BaseEntity<String> {
   private String tradeInIc;
 
   /**
+   * @field REMARK
+   */
+  private String remark;
+  
+public String getRemark() {
+	return remark;
+}
+
+public void setRemark(String remark) {
+	this.remark = remark;
+}
+
+/**
    * @return ID
    */
   public String getId() {

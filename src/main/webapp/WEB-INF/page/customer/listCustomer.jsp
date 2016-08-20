@@ -26,28 +26,21 @@
         <div class="row">
         <div class="col-xs-12">
         
-        <div class="col-sm-3 form-group">
+        <div class="col-sm-4 form-group">
         <label class="col-sm-4 control-label no-padding-right">Name</label>
         <div class="col-sm-8">
         <input id="name" class="form-control" type="text" name="name"/>
         </div>
         </div>
         	
-		<div class="col-sm-3 form-group">
+		<div class="col-sm-4 form-group">
         <label class="col-sm-4 control-label no-padding-right">WeChat</label>
         <div class="col-sm-8">
         <input id="wechat" class="form-control" type="text" name="wechat"/>
         </div>
         </div>
         
-        <div class="col-sm-3 form-group">
-        <label class="col-sm-4 control-label no-padding-right">Phone</label>
-        <div class="col-sm-8">
-        <input id="phone" class="form-control" type="text" name="phone"/>
-        </div>
-        </div>
-
-        <div class="col-sm-3 form-group pull-right">
+        <div class="col-sm-4 form-group pull-right">
         <a class="btn btn-info btn-sm pull-right" style="margin-left:5px;" id="searchAll_btn">
         <i class="ace-icon fa fa-search-plus bigger-110"></i> Search All
         </a>
@@ -58,10 +51,30 @@
 		
 		</div>
         </div>
+        
+        <div class="row">
+        <div class="col-xs-12">
+        
+        <div class="col-sm-4 form-group">
+        <label class="col-sm-4 control-label no-padding-right">Sales</label>
+        <div class="col-sm-8">
+        <input id="salesName" class="form-control" type="text" name="salesName"/>
+        </div>
+        </div>
+        <div class="col-sm-4 form-group">
+        <label class="col-sm-4 control-label no-padding-right">Phone</label>
+        <div class="col-sm-8">
+        <input id="phone" class="form-control" type="text" name="phone"/>
+        </div>
+        </div>
+        <div class="col-sm-4 form-group"></div>
+        </div>
+        </div>
+        
 		<div class="row">
         <div class="col-xs-12">
                
-       	<div class="col-sm-3 no-padding-left">
+       	<div class="col-sm-4 no-padding-left">
         <a class="btn btn-info btn-sm" id="email_btn">
         <i class="ace-icon fa fa-envelope bigger-110"></i> Send Email
         </a>
@@ -71,14 +84,12 @@
         </a>
         <%} %>
         </div>
-        <div class="col-sm-3 form-group"></div>
-        <div class="col-sm-3 form-group"></div>
-       	<div class="col-sm-3 form-group pull-right">
+        <div class="col-sm-4 form-group"></div>
+        <div class="col-sm-4 form-group pull-right">
         <a class="btn btn-info btn-sm pull-right" id="create_btn">
         <i class="ace-icon fa fa-plus bigger-110"></i> Add Customer
         </a>
         </div>
-        
         </div>
         </div>
         
@@ -108,7 +119,9 @@
         <th>Phone</th>
         <th>Email</th>
 		<th>Service Types</th>
-        <th>Sales</th>
+        <th class="sorting" data="SALES_ID">Sales</th>
+		<th class="sorting" data="UPDATE_TIME">Modified Date</th>
+		<th>Latest Notes</th>
         <th>Operation</th>
         </tr>
         </thead>
@@ -127,6 +140,13 @@
         <td>{{=p.email||''}}</td>
 		<td>{{=serviceTypeDisp(p.service||'')}}</td>
         <td>{{=p.sales||''}}</td>
+		<td>{{=new Date(p.updateTime).toChString()||''}}</td>
+        <td><a href="javascript:void();" class="latest_notes">
+		{{?p.latestNotes}}{{=p.latestNotes.substring(0,10)}}{{?}}</a>
+		<div class="tooltiptext" style="max-width:80px;display: none;">
+    	{{=p.latestNotes}}
+		</div>
+		</td>
         <td><a href="javascript:viewProfile('{{=p.id }}');">profile</a></td>
         </tr>
         {{~}}

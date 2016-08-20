@@ -35,6 +35,7 @@
 		<link rel="stylesheet" href="<%=request.getContextPath() %>/resources/css/iosOverlay.css" />
 		<link rel="stylesheet" href="<%=request.getContextPath() %>/resources/css/sweetalert.css" />
 		<link rel="stylesheet" href="<%=request.getContextPath() %>/resources/css/ifacebook.css" />
+		<link rel="stylesheet" href="<%=request.getContextPath() %>/resources/css/jquery.qtip.min.css" />
 		<!-- ace styles -->
 		<link rel="stylesheet" href="<%=request.getContextPath() %>/resources/css/ace.min.css" />
 
@@ -130,7 +131,8 @@
 		<script src="<%=request.getContextPath() %>/resources/js/jquery.noty.packaged.min.js"></script>
 		<script src="<%=request.getContextPath() %>/resources/js/iosOverlay.js"></script>
 		<script src="<%=request.getContextPath() %>/resources/js/sweetalert.min.js"></script>
-
+		<script src="<%=request.getContextPath() %>/resources/js/jquery.qtip.min.js"></script>
+		
 		<script src="<%=request.getContextPath() %>/resources/js/date-time/bootstrap-datepicker.min.js"></script>
 		<script src="<%=request.getContextPath() %>/resources/js/date-time/locales/bootstrap-datepicker.zh-CN.js"></script>
 		<script src="<%=request.getContextPath() %>/resources/js/date-time/bootstrap-timepicker.min.js"></script>

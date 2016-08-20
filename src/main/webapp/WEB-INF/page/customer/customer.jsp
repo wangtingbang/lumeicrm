@@ -134,9 +134,24 @@
     </div>
 	</div>
 
- 	<div class="form-group">
-    <label class="col-sm-4 control-label no-padding-right">Zip Code</label>
+	<div class="form-group">
+    <label class="col-sm-4 control-label no-padding-right">City</label>
     <div class="col-sm-8">
+		<div class="clearfix">
+    		<input type="text" name="city" id="city" class="form-control col-sm-1 " value="{{=it.city||''}}" {{? it.readonly}}readonly="readonly"{{?}}/>
+    	</div>
+    </div>
+	</div>
+
+ 	<div class="form-group">
+    <label class="col-sm-4 control-label no-padding-right">State</label>
+    <div class="col-sm-3">
+		<div class="clearfix">
+			<select class="form-control" id="state" name="state" {{? it.readonly}}disabled="disabled" readonly="readonly"{{?}}/>
+    	</div>
+    </div>
+	<label class="col-sm-2 control-label no-padding-right">Zip Code</label>
+    <div class="col-sm-3">
 		<div class="clearfix">
     		<input type="text" name="zipCode" id="zipCode" class="form-control col-sm-1 " value="{{=it.zipCode||''}}" {{? it.readonly}}readonly="readonly"{{?}}/>
     	</div>

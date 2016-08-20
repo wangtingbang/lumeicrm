@@ -79,6 +79,13 @@ function searchSubmit(sales) {
 					});
 				}
 			});
+			$(".latest_notes").each(function(){
+				$(this).qtip({
+		             content: {
+		                 text: $(this).next('.tooltiptext')
+		             }
+		         });
+			});
 		}
 	});
 }

@@ -2,6 +2,8 @@ package com.lumei.crm.customer.controller;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -16,14 +18,19 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.lumei.crm.auth.biz.OpAuthUserBusiness;
 import com.lumei.crm.auth.dto.OpAuthUser;
+import com.lumei.crm.auth.entity.TOpAuthUser;
 import com.lumei.crm.commons.mybatis.support.Example;
 import com.lumei.crm.commons.mybatis.support.Pagination;
 import com.lumei.crm.commons.util.DateTimeUtil;
 import com.lumei.crm.customer.biz.CustomerBusiness;
+import com.lumei.crm.customer.biz.NotesBusiness;
 import com.lumei.crm.customer.biz.UserInfoBusiness;
 import com.lumei.crm.customer.dto.Customer;
+import com.lumei.crm.customer.dto.Notes;
 import com.lumei.crm.customer.entity.TCustomer;
+import com.lumei.crm.customer.entity.TNotes;
 import com.lumei.crm.util.SessionUtil;
 
 /**
@@ -38,6 +45,10 @@ public class CustomerController {
   private CustomerBusiness customerBusiness;
   @Autowired
   UserInfoBusiness userInfoBusiness;
+  @Autowired
+  OpAuthUserBusiness opAuthUserBusiness;
+  @Autowired
+  NotesBusiness notesBusiness;
   
   @RequestMapping(value = "list", method = RequestMethod.GET)
   public ModelAndView listCustomer() {
@@ -52,13 +63,27 @@ public class CustomerController {
     String wechat, //
     String phone,  //
     String sales,//
+    String salesName,//
     int page, int limit,//
     String orderColumn, boolean orderDesc) {
 
     Example<TCustomer> example = Example.newExample(TCustomer.class);
-    if (!StringUtils.isBlank(sales)) {
+    if (!StringUtils.isBlank(salesName) && StringUtils.isBlank(sales)) {
+    	Example<TOpAuthUser> example2 = Example.newExample(TOpAuthUser.class);
+    	example2.paramLikeTo("nickName", salesName);
+    	List<OpAuthUser> l = opAuthUserBusiness.list(example2);
+    	if(l != null && l.size()>0){
+    		List<String> ll = new LinkedList<String>();
+    		for (OpAuthUser id : l) {
+    			ll.add(id.getId());
+    		}
+    		example.paramIn("salesId", ll);
+    	}
+    }
+    if (StringUtils.isNotBlank(sales)) {
         example.paramEqualTo("salesId", sales);
     }
+    
     if (!StringUtils.isBlank(name)) {
       example.paramLikeTo("name", name);
     }
@@ -68,15 +93,23 @@ public class CustomerController {
     if (!StringUtils.isBlank(phone)) {
       example.paramLikeTo("phone", phone);
     }
-    if(StringUtils.isNoneBlank(orderColumn)){
+    if("SALES_ID".equals(orderColumn)){
     	if(orderDesc){
     		example.orderByDesc(orderColumn);
     	}else{
     		example.orderBy(orderColumn);
     	}
-    }else{
-    	example.orderBy("createTime");
+    	example.orderBy("UPDATE_TIME");
     }
+    if("UPDATE_TIME".equals(orderColumn)){
+    	if(orderDesc){
+    		example.orderByDesc(orderColumn);
+    	}else{
+    		example.orderBy(orderColumn);
+    	}
+    	example.orderBy("SALES_ID");
+    }
+    example.orderByDesc("CREATE_TIME");
     Pagination<Customer> profilePagination = customerBusiness.listByPage(example, page, limit);
 
     if (profilePagination == null) {
@@ -96,6 +129,12 @@ public class CustomerController {
       Map<String,OpAuthUser> userMap = userInfoBusiness.getUserInfoById(salesIds);
       if(userMap!=null) {
         for (Customer customer : profileList) {
+		Example<TNotes> example2 = Example.newExample(TNotes.class);
+		example2.paramEqualTo("serviceId", customer.getId()).orderByDesc("create_time");
+		List<Notes> l = notesBusiness.list(example2);
+		if(l!=null && l.size() >0){
+			customer.setLatestNotes(l.get(0).getContent());
+		}
           String salesId = customer.getSalesId();
           OpAuthUser user = userMap.get(salesId);
           if (user != null) {

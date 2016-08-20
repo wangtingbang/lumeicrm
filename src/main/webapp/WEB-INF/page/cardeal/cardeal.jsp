@@ -8,7 +8,7 @@
 <div class="page-header">
 	<div class="row">
 	<div class="col-sm-12">
-		<div class="col-sm-20">
+		<div class="col-sm-10">
 			<h1>
 			<small>
 				<i class="ace-icon fa fa-home home-icon"></i>
@@ -18,6 +18,13 @@
 			</small>
 			</h1>
 		</div>
+		<div class="col-sm-2">
+    	<div class="clearfix">
+    	<a class="btn btn-info btn-xs pull-right" id="">
+        <i class="ace-icon fa fa-laptop bigger-110"></i> Add Insurance
+        </a>
+		</div>
+ 	</div>
 	</div>
 	</div>
 </div>
@@ -64,7 +71,7 @@
 	</div>
 
 	<div class="form-group">
-    <label class="col-sm-4 control-label no-padding-right">Date</label>
+    <label class="col-sm-4 control-label no-padding-right">Status Date</label>
     <div class="col-sm-8">
 		<div class="clearfix">
     		<input type="text" name="dealDate" id="dealDate" class="date-timepicker form-control col-sm-1 " value="{{=new Date(it.dealDate).toChString()||''}}" {{? it.readonly}}readonly="readonly"{{?}}/>
@@ -122,6 +129,14 @@
     <div class="col-sm-8">
 		<div class="clearfix">
 		<input type="text" name="ambassador" id="ambassador" class="form-control col-sm-1" value="{{=it.ambassador||''}}" {{? it.readonly}}readonly="readonly"{{?}}/>
+    	</div>
+    </div>
+	</div>
+	<div class="form-group" id="remarkdiv">
+    <label class="col-sm-4 control-label no-padding-right">Remark</label>
+    <div class="col-sm-8">
+		<div class="clearfix">
+		<input type="text" name="remark" id="remark" class="form-control col-sm-1" value="{{=it.remark||''}}" {{? it.readonly}}readonly="readonly"{{?}}/>
     	</div>
     </div>
 	</div>

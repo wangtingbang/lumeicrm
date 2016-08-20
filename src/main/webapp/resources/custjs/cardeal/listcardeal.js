@@ -10,11 +10,11 @@ $(function () {
 	}
 	$('#dealStatus').append(dealStatusList);
 	
-	var dealStatusList = '<option value="0">--</option>';
+	var ratingList = '<option value="0">--</option>';
 	for(p in datadic['customerRating']){
-		dealStatusList += '<option value="'+p+'">'+datadic['customerRating'][p]+'</option>';
+		ratingList += '<option value="'+p+'">'+datadic['customerRating'][p]+'</option>';
 	}
-	$('#rating').append(dealStatusList);
+	$('#rating').append(ratingList);
 	
 	$('.date-timepicker').datetimepicker({
 		language: 'en',
@@ -83,6 +83,13 @@ function searchSubmit(sales) {
 						}
 					});
 				}
+			});
+			$(".latest_notes").each(function(){
+				$(this).qtip({
+		             content: {
+		                 text: $(this).next('.tooltiptext')
+		             }
+		         });
 			});
 		}
 	});

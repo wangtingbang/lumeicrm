@@ -162,6 +162,12 @@ function sourceCheck(){
 		$("#ambassador").val("");
 		$("#ambassadordiv").hide();
 	}
+	if(16==v){
+		$("#remarkdiv").show();
+	}else{
+		$("#remark").val("");
+		$("#remarkdiv").hide();
+	}
 }
 
 function isNewCheck(){

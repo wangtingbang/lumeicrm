@@ -18,8 +18,10 @@ import com.lumei.crm.auth.dto.OpAuthUser;
 import com.lumei.crm.commons.mybatis.support.Example;
 import com.lumei.crm.commons.mybatis.support.Pagination;
 import com.lumei.crm.commons.util.DateTimeUtil;
+import com.lumei.crm.customer.biz.CarDealBusiness;
 import com.lumei.crm.customer.biz.NotesBusiness;
 import com.lumei.crm.customer.biz.UserInfoBusiness;
+import com.lumei.crm.customer.dto.CarDeal;
 import com.lumei.crm.customer.dto.Notes;
 import com.lumei.crm.customer.entity.TNotes;
 import com.lumei.crm.util.SessionUtil;
@@ -38,6 +40,8 @@ public class NotesController {
   NotesBusiness notesBusiness;
   @Autowired
   UserInfoBusiness userInfoBusiness;
+  @Autowired
+  CarDealBusiness carDealBusiness;
   
   @RequestMapping(value = "list", method = RequestMethod.POST)
   @ResponseBody
@@ -108,6 +112,13 @@ public class NotesController {
     notes.setCreateUserId(SessionUtil.getCurrentUserId());
     notes.setUpdateUserId(SessionUtil.getCurrentUserId());
     result = notesBusiness.create(notes);
+    if(notes.getNoteServiceType().byteValue() == Byte.valueOf("1").byteValue()){
+    	CarDeal cd = new CarDeal();
+    	cd.setId(notes.getServiceId());
+    	cd.setUpdateTime(DateTimeUtil.now());
+        carDealBusiness.updateSelective(cd);
+    }
+    
     return 1 == result ? "success" : "fail";
   }
 

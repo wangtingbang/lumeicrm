@@ -22,6 +22,16 @@ function searchSubmit(){
 					dealSelectList += '<option value="'+p+'">'+datadic['serviceType'][p]+'</option>';
 				}
 				$('#service').append(dealSelectList);
+				var usStateList = '';
+				for(p in datadic['usState']){
+					if(data.state==p){
+						usStateList += '<option selected="selected" value="'+p+'">'
+						+datadic['usState'][p]+'</option>';
+					}else{
+						usStateList += '<option value="'+p+'">'+datadic['usState'][p]+'</option>';
+					}
+				}
+				$('#state').append(usStateList);
 				listNotes();
 				$('#addDeal_btn').click(function() {
 					var id = $("#id").val();

@@ -333,4 +333,31 @@ public class TCustomer extends BaseEntity<String> {
   public void setUpdateTime(Date updateTime) {
     this.updateTime = updateTime;
   }
+  
+  /**
+   * @field CITY
+   */
+  private String city;
+
+  /**
+   * @field STATE
+   */
+  private String state;
+
+public String getCity() {
+	return city;
+}
+
+public void setCity(String city) {
+	this.city = city;
+}
+
+public String getState() {
+	return state;
+}
+
+public void setState(String state) {
+	this.state = state;
+}
+  
 }

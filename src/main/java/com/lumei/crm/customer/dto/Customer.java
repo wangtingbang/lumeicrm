@@ -390,4 +390,39 @@ public class Customer extends BaseModel<String> implements Serializable {
 		Readonly = readonly;
 	}
 	
+	  /**
+	   * @field city
+	   */
+	  private String city;
+
+	  /**
+	   * @field state
+	   */
+	  private String state;
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
+	}
+	  
+	  private String latestNotes;
+
+	  public String getLatestNotes() {
+	  	return latestNotes;
+	  }
+
+	  public void setLatestNotes(String latestNotes) {
+	  	this.latestNotes = latestNotes;
+	  }
 }
