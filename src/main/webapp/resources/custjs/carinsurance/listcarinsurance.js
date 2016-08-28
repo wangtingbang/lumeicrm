@@ -1,21 +1,4 @@
 $(function () {
-	var dealStatusList = '<option value="0">--</option>';
-	for(p in datadic['carSaleStatus']){
-		if("1"==p){
-			dealStatusList += '<option selected="selected" value="'+p+'">'
-			+datadic['carSaleStatus'][p]+'</option>';
-		}else{
-			dealStatusList += '<option value="'+p+'">'+datadic['carSaleStatus'][p]+'</option>';
-		}
-	}
-	$('#dealStatus').append(dealStatusList);
-	
-	var ratingList = '<option value="0">--</option>';
-	for(p in datadic['customerRating']){
-		ratingList += '<option value="'+p+'">'+datadic['customerRating'][p]+'</option>';
-	}
-	$('#rating').append(ratingList);
-	
 	$('.date-timepicker').datetimepicker({
 		language: 'en',
 		format:'YYYY-MM-DD'
@@ -66,7 +49,7 @@ function searchSubmit(sales) {
 	var d = new Date();
 	param["timezoneOffset"] = d.getTimezoneOffset();
 	$page = $('#page').igrid({
-		url : contextPath + '/cardeal/list',
+		url : contextPath + '/carinsurance/list',
 		param : param,
 		temp : "grid_temp",
 		rowlist : [10,50,100],
@@ -97,17 +80,17 @@ function searchSubmit(sales) {
 	});
 }
 
-function viewDetails(customerId, cardealId) {
-	location.href = contextPath + '/cardeal/get?id='+cardealId+"&customerId="+customerId;
+function viewDetails(customerId, id) {
+	location.href = contextPath + '/carinsurance/get?id='+id+"&customerId="+customerId;
 }
 
 function addDeal(customerId) {
-	location.href = contextPath + '/cardeal/create?customerId='+customerId;
+	location.href = contextPath + '/carinsurance/create?customerId='+customerId;
 }
 
 function assign2(sales,ids){
 	$.ipost(
-			contextPath + '/cardeal/assign',
+			contextPath + '/carinsurance/assign',
 			{sales:sales,ids:ids},
 			function(data){
 				$.ialert("Assign success!");

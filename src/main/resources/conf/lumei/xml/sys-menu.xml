@@ -18,6 +18,15 @@
 				<role name="CUSTOMER_MANAGER" />
 			</roles>
 	</menu>
+	<menu id="carinsurance" pid="" name="Car Insurance" url="carinsurance/list"
+			icon="fa-desktop" order="300">
+			<roles>
+				<role name="ADMIN" />
+				<role name="SALES" />
+				<role name="CUSTOMER_SERVICE" />
+				<role name="CUSTOMER_MANAGER" />
+			</roles>
+	</menu>
 	<menu id="salesReview" pid="" name="Sales Review" url="cardeal/list2"
 		icon="fa-tachometer" order="800">
 		<roles>

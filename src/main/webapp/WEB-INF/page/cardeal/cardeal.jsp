@@ -20,7 +20,7 @@
 		</div>
 		<div class="col-sm-2">
     	<div class="clearfix">
-    	<a class="btn btn-info btn-xs pull-right" id="">
+    	<a class="btn btn-info btn-xs pull-right" id="" onclick="javascript:addCarInsur();">
         <i class="ace-icon fa fa-laptop bigger-110"></i> Add Insurance
         </a>
 		</div>
@@ -235,6 +235,15 @@
 	</div>
 
 	<div class="form-group">
+    <label class="col-sm-4 control-label no-padding-right">VIN No.</label>
+    <div class="col-sm-8">
+		<div class="clearfix">
+    		<input type="text" name="vinNo" id="vinNo" class="form-control col-sm-1 " value="{{=it.vinNo||''}}" {{? it.readonly}}readonly="readonly"{{?}}/>
+    	</div>
+    </div>
+	</div>
+
+	<div class="form-group">
 	<label class="col-sm-4 control-label no-padding-right" for="comments">Comments:</label>
 	<div class="col-sm-8">
 	<div class="clearfix">
@@ -307,6 +316,17 @@
     		<input type="text" name="monthlyPay" id="monthlyPay" class="form-control col-sm-1 " value="{{=it.monthlyPay||''}}" {{? it.readonly}}readonly="readonly"{{?}}/>
     	</div>
     </div>
+	</div>
+	
+	<div class="form-group" id="qualificationdiv">
+	  <label class="col-sm-4 control-label no-padding-right">Qualification</label>
+	  <div class="col-sm-8">
+		<select class="form-control" id="qualification" name="qualification" {{? it.readonly}}disabled="disabled" readonly="readonly"{{?}}>
+		<option value="1" {{? 1 == it.qualification}}selected="selected"{{?}}>Pending</option>
+		<option value="2" {{? 2 == it.qualification}}selected="selected"{{?}}>Qualified</option>
+		<option value="3" {{? 3 == it.qualification}}selected="selected"{{?}}>Unqualified</option>
+		</select>
+	  </div>
 	</div>
 
 	<div class="form-group">

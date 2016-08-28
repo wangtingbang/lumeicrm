@@ -2,8 +2,6 @@ package com.lumei.crm.customer.dto;
 
 import java.io.Serializable;
 import java.util.Date;
-// import com.cmbchina.commons.biz.support.BaseModel;
-// import org.hibernate.validator.constraints.Length;
 
 import com.lumei.crm.commons.biz.support.BaseModel;
 
@@ -48,6 +46,8 @@ public class CarDeal extends BaseModel<String> implements Serializable {
 
   private boolean readonly;
 
+  private String latestNotes;
+  
   public String getCustomerName() {
     return customerName;
   }
@@ -291,7 +291,17 @@ public class CarDeal extends BaseModel<String> implements Serializable {
    * @field remark
    */
   private String remark;
-  
+
+  /**
+   * @field vinNo
+   */
+  private String vinNo;
+
+  /**
+   * @field qualification
+   */
+  private Byte qualification;
+
   /**
    * @return id
    */
@@ -814,7 +824,47 @@ public class CarDeal extends BaseModel<String> implements Serializable {
     this.tradeInIc = tradeInIc;
   }
 
-  private String latestNotes;
+  /**
+   * @return remark
+   */
+  public String getRemark() {
+    return remark;
+  }
+
+  /**
+   * @param remark
+   */
+  public void setRemark(String remark) {
+    this.remark = remark;
+  }
+
+  /**
+   * @return vinNo
+   */
+  public String getVinNo() {
+    return vinNo;
+  }
+
+  /**
+   * @param vinNo
+   */
+  public void setVinNo(String vinNo) {
+    this.vinNo = vinNo;
+  }
+
+  /**
+   * @return qualification
+   */
+  public Byte getQualification() {
+    return qualification;
+  }
+
+  /**
+   * @param qualification
+   */
+  public void setQualification(Byte qualification) {
+    this.qualification = qualification;
+  }
 
 public String getLatestNotes() {
 	return latestNotes;
@@ -824,12 +874,4 @@ public void setLatestNotes(String latestNotes) {
 	this.latestNotes = latestNotes;
 }
 
-	public String getRemark() {
-		return remark;
-	}
-	
-	public void setRemark(String remark) {
-		this.remark = remark;
-	}
-  
 }

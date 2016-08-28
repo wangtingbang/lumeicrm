@@ -230,6 +230,17 @@ public class TCarDeal extends BaseEntity<String> {
    */
   private String remark;
   
+
+  /**
+   * @field VIN_NO
+   */
+  private String vinNo;
+
+  /**
+   * @field QUALIFICATION
+   */
+  private Byte qualification;
+
 public String getRemark() {
 	return remark;
 }
@@ -760,4 +771,31 @@ public void setRemark(String remark) {
     this.tradeInIc = tradeInIc;
   }
 
+  /**
+   * @return VIN_NO
+   */
+  public String getVinNo() {
+    return vinNo;
+  }
+
+  /**
+   * @param VIN_NO
+   */
+  public void setVinNo(String vinNo) {
+    this.vinNo = vinNo;
+  }
+
+  /**
+   * @return QUALIFICATION
+   */
+  public Byte getQualification() {
+    return qualification;
+  }
+
+  /**
+   * @param QUALIFICATION
+   */
+  public void setQualification(Byte qualification) {
+    this.qualification = qualification;
+  }
 }

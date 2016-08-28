@@ -139,11 +139,13 @@ function methodCheck(){
 		$("#ratediv").hide();
 		$("#termsdiv").hide();
 		$("#monthlyPaydiv").hide();
+		$("#qualificationdiv").hide();
 	}else if(2==v){
 		$("#downPaymentdiv").show();
 		$("#ratediv").show();
 		$("#termsdiv").show();
 		$("#monthlyPaydiv").show();
+		$("#qualificationdiv").show();
 	}else if(3==v){
 		$("#rate").val("");
 		
@@ -151,6 +153,7 @@ function methodCheck(){
 		$("#ratediv").hide();
 		$("#termsdiv").show();
 		$("#monthlyPaydiv").show();
+		$("#qualificationdiv").show();
 	}
 }
 
@@ -254,4 +257,9 @@ function addNote(){
 function fileList2(){
 	var serviceId = $("#serviceIdSearch").val();
 	fileList(serviceId);
+}
+
+function addCarInsur(){
+	var customerId = $("#customerIdSearch").val();
+	location.href=contextPath+'/carinsurance/create?customerId='+customerId;
 }

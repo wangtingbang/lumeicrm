@@ -53,6 +53,7 @@ var datadic = {
 	},
 	serviceType:{
 		"1":"Car Deals",
+		"9":"Car Insurance",
 		"2":"Emergency Contact",
 		"3":"Car Buying",
 		"4":"Car Rental",
@@ -106,6 +107,10 @@ var datadic = {
 		"14":"Temporary Accommodation",
 		"15":"AiM",
 		"16":"Customer Refer"
+	},
+	carInsurStatus:{
+		"1":"Quoted",
+		"2":"Purchased"
 	}
 }
 

@@ -47,6 +47,8 @@
 		<result column="TRADE_IN_EC" property="tradeInEc" jdbcType="VARCHAR" />
 		<result column="TRADE_IN_IC" property="tradeInIc" jdbcType="VARCHAR" />
 		<result column="REMARK" property="remark" jdbcType="VARCHAR" />
+		<result column="VIN_NO" property="vinNo" jdbcType="VARCHAR" />
+		<result column="QUALIFICATION" property="qualification" jdbcType="TINYINT" />
 	</resultMap>
 
 	<sql id="Base_Column_List">
@@ -90,7 +92,9 @@
 		TRADE_IN_MILEAGE,
 		TRADE_IN_EC,
 		TRADE_IN_IC,
-		REMARK
+		REMARK,
+		VIN_NO,
+		QUALIFICATION
 	</sql>
 
 	<sql id="Example_Where_Clause">
@@ -257,7 +261,9 @@
 			#{tradeInMileage,jdbcType=VARCHAR},
 			#{tradeInEc,jdbcType=VARCHAR},
 			#{tradeInIc,jdbcType=VARCHAR},
-			#{remark,jdbcType=VARCHAR}
+			#{remark,jdbcType=VARCHAR},
+			#{vinNo,jdbcType=VARCHAR},
+			#{qualification,jdbcType=TINYINT}
 		)
 	</insert>
 
@@ -388,7 +394,13 @@
 			TRADE_IN_IC,
 		</if>
 		<if test="remark != null">
-			REMARK
+			REMARK,
+		</if>
+		<if test="vinNo != null">
+			VIN_NO,
+		</if>
+		<if test="qualification != null">
+			QUALIFICATION
 		</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -510,7 +522,13 @@
 				#{tradeInIc,jdbcType=VARCHAR},
 		</if>
 		<if test="remark != null">
-				#{remark,jdbcType=VARCHAR}
+				#{remark,jdbcType=VARCHAR},
+		</if>
+		<if test="vinNo != null">
+				#{vinNo,jdbcType=VARCHAR},
+		</if>
+		<if test="qualification != null">
+				#{qualification,jdbcType=TINYINT}
 		</if>
 		</trim>
 	</insert>
@@ -645,7 +663,13 @@
 		TRADE_IN_IC = #{tradeInIc,jdbcType=VARCHAR},
 	</if>
 	<if test="remark != null" >
-		REMARK = #{remark,jdbcType=VARCHAR}
+		REMARK = #{remark,jdbcType=VARCHAR},
+	</if>
+	<if test="vinNo != null" >
+		VIN_NO = #{vinNo,jdbcType=VARCHAR},
+	</if>
+	<if test="qualification != null" >
+		QUALIFICATION = #{qualification,jdbcType=TINYINT}
 	</if>
 		</set>
 		where ID = #{id,jdbcType=VARCHAR}
@@ -693,7 +717,9 @@
 		TRADE_IN_MILEAGE = #{tradeInMileage,jdbcType=VARCHAR},
 		TRADE_IN_EC = #{tradeInEc,jdbcType=VARCHAR},
 		TRADE_IN_IC = #{tradeInIc,jdbcType=VARCHAR},
-		REMARK = #{remark,jdbcType=VARCHAR}
+		REMARK = #{remark,jdbcType=VARCHAR},
+		VIN_NO = #{vinNo,jdbcType=VARCHAR},
+		QUALIFICATION = #{qualification,jdbcType=TINYINT}
 		</set>
 		where ID = #{id,jdbcType=VARCHAR}
 		and DELETE_FLAG = ${deleteFlag}

@@ -2,6 +2,7 @@ package com.lumei.crm.customer.controller;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -96,7 +97,7 @@ public class CarDealController {
   
   @RequestMapping(value = "list", method = RequestMethod.POST)
   @ResponseBody
-  public Pagination<CarDeal> list(CarDealQueryParam carDeal, int page, int limit){
+  public Pagination<CarDeal> list(CarDealQueryParam carDeal, int timezoneOffset, int page, int limit){
       log.debug("list param, page:{}, limit:{}, param:{}",
         page, limit, JSONObject.toJSONString(carDeal));
 
@@ -211,17 +212,23 @@ public class CarDealController {
     if (Byte.parseByte("0")!=carDeal.getRating()) {
         param.put("rating", carDeal.getRating());
     }
+    int serverOffset = Calendar.getInstance().getTimeZone().getOffset(System.currentTimeMillis());
+    serverOffset /= 60000;
     if (null!=carDeal.getDealDateStart()) {
+    	carDeal.setDealDateStart(DateTimeUtil.plusMinutes(carDeal.getDealDateStart(), (serverOffset+timezoneOffset)));
         param.put("dealDateStart", carDeal.getDealDateStart());
     }
     if (null!=carDeal.getDealDateEnd()) {
-    	param.put("dealDateEnd", carDeal.getDealDateEnd());
+    	carDeal.setDealDateEnd(DateTimeUtil.plusMinutes(carDeal.getDealDateEnd(), (serverOffset+timezoneOffset)));
+    	param.put("dealDateEnd", DateTimeUtil.fromDate(DateTimeUtil.plusDays(carDeal.getDealDateEnd(), 1)));
     }
     if (null!=carDeal.getModifiedDateStart()) {
+    	carDeal.setModifiedDateStart(DateTimeUtil.plusMinutes(carDeal.getModifiedDateStart(), (serverOffset+timezoneOffset)));
         param.put("modifiedDateStart", carDeal.getModifiedDateStart());
     }
     if (null!=carDeal.getModifiedDateEnd()) {
-    	param.put("modifiedDateEnd", carDeal.getModifiedDateEnd());
+    	carDeal.setModifiedDateEnd(DateTimeUtil.plusMinutes(carDeal.getModifiedDateEnd(), (serverOffset+timezoneOffset)));
+    	param.put("modifiedDateEnd", DateTimeUtil.fromDate(DateTimeUtil.plusDays(carDeal.getModifiedDateEnd(), 1)));
     }
     Pagination<CarDeal> pg = carDealBusiness.selectForList(param, page, limit);
     

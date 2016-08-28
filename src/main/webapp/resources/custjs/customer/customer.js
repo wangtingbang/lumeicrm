@@ -140,12 +140,16 @@ function addDeal(id){
 	var deal = $("#service").val();
 	if("1"==deal){
 		location.href=contextPath+'/cardeal/create?customerId='+id;
+	}else if("9"==deal){
+		location.href=contextPath+'/carinsurance/create?customerId='+id;
 	}
 }
 
 function viewTran(serviceType,serviceId,customerId){
 	if('1'==serviceType){
 		location.href = contextPath + '/cardeal/get?id='+serviceId+"&customerId="+customerId;
+	}else if('9'==serviceType){
+		location.href = contextPath + '/carinsurance/get?id='+serviceId+"&customerId="+customerId;
 	}
 }
 

@@ -9,7 +9,8 @@ public class LumeiCrmConstants {
     CELLPHONE((byte)5,"Cellphone"),
     AIRPORT_PICKUP((byte)6,"Airport Pickup"),//
     TEMPORARY_HOUSE((byte)7,"Temporary House"),//
-    AIM((byte)8,"AIM");
+    AIM((byte)8,"AIM"),//
+    CAR_INSURANCE((byte)9,"CAR INSURANCE");
 
     private Byte value;
     private String desc;

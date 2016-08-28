@@ -2,7 +2,6 @@ package com.lumei.crm.customer.controller;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -99,7 +98,7 @@ public class CustomerController {
     	}else{
     		example.orderBy(orderColumn);
     	}
-    	example.orderBy("UPDATE_TIME");
+    	example.orderByDesc("UPDATE_TIME");
     }
     if("UPDATE_TIME".equals(orderColumn)){
     	if(orderDesc){

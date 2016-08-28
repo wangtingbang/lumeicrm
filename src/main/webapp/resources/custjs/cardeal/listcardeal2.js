@@ -28,6 +28,8 @@ function searchSubmit(sales) {
 	if(sales){
 		param["salesId"]=sales;
 	}
+	var d = new Date();
+	param["timezoneOffset"] = d.getTimezoneOffset();
 	param["rating"]='0';
 	$page = $('#page').igrid({
 		url : contextPath + '/cardeal/list',
