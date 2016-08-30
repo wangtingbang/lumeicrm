@@ -254,8 +254,13 @@ public class CarInsuranceController {
 
   @RequestMapping(value = "save", method = RequestMethod.POST)
   @ResponseBody
-  public String save(CarInsurance carInsurance){
+  public String save(CarInsurance carInsurance, int timezoneOffset){
 	log.debug("carInsurance, param:{}", carInsurance==null?null:JSONObject.toJSONString(carInsurance));
+	if(null != carInsurance.getEffectiveDate()){
+		int serverOffset = Calendar.getInstance().getTimeZone().getOffset(System.currentTimeMillis());
+	    serverOffset /= 60000;
+	    carInsurance.setEffectiveDate(DateTimeUtil.plusMinutes(carInsurance.getEffectiveDate(), (serverOffset+timezoneOffset)));
+	}
 	Date now = DateTimeUtil.now();
     if ("0".equals(carInsurance.getId())) {
     	String id = KeyGenerator.uuid();

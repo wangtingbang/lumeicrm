@@ -339,8 +339,14 @@ public class CarDealController {
 
   @RequestMapping(value = "save", method = RequestMethod.POST)
   @ResponseBody
-  public String save(CarDeal carDeal){
+  public String save(CarDeal carDeal, int timezoneOffset){
 	log.debug("saveCarDeal, param:{}", carDeal==null?null:JSONObject.toJSONString(carDeal));
+	if(null != carDeal.getDealDate()){
+	int serverOffset = Calendar.getInstance().getTimeZone().getOffset(System.currentTimeMillis());
+    serverOffset /= 60000;
+	carDeal.setDealDate(DateTimeUtil.plusMinutes(carDeal.getDealDate(), (serverOffset+timezoneOffset)));
+	}
+
 	Date now = DateTimeUtil.now();
     if ("0".equals(carDeal.getId())) {
     	String id = KeyGenerator.uuid();
