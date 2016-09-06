@@ -3,11 +3,6 @@
  */
 package com.lumei.crm.commons.util;
 
-/**
- * 金额大小写转换工具类
- * 
- * @author zhangyinyou
- */
 public class MoneyUtil {
 
   /** 大写数字 */

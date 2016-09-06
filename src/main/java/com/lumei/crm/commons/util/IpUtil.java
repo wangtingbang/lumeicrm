@@ -5,10 +5,6 @@ package com.lumei.crm.commons.util;
 
 import javax.servlet.http.HttpServletRequest;
 
-/**
- * @author zhangyinyou
- * 
- */
 public class IpUtil {
 
   public static String getIpAddr(HttpServletRequest request) {

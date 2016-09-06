@@ -27,17 +27,18 @@ public class LumeiCrmConstants {
       return desc;
     }   
   }
-  public static enum CUSTOMER_STATUS{
-    APPOINTMENTED((byte)1,"Appointmented"),//
-    SOLD_BY_LUMEI((byte)2,"Sold by Lumei"),//
-    BUY_FROM_OTHER((byte)3,"Buy from Other"),//
-    NO_RESPONSE((byte)4,"Noresponse"),//
-    STILL_IN_THE_MARKET((byte)5,"Still in the Market");
+  
+  public static enum CAR_DEAL_STATUS{
+	POTENTIAL_TO_BUY((byte)1,"Potential to Buy"),//
+    APPOINTMENT_MADE((byte)2,"Appointment Made"),//
+    SOLD_BY_LUMEI((byte)3,"Sold by Lumei"),//
+    BUY_FROM_OTHER((byte)4,"Bought from Others"),//
+    NO_RESPONSE((byte)5,"No Response");//
 
     private Byte value;
     private String desc;
 
-    private CUSTOMER_STATUS(Byte value, String desc){
+    private CAR_DEAL_STATUS(Byte value, String desc){
         this.value = value;
         this.desc = desc;
     }
@@ -46,6 +47,15 @@ public class LumeiCrmConstants {
     }
     public String getDesc() {
       return desc;
+    }
+    
+    public static String getDesc(Byte value){
+    	for(CAR_DEAL_STATUS e : CAR_DEAL_STATUS.values()){
+    		if(e.getValue().equals(value)){
+    			return e.getDesc();
+    		}
+    	}
+    	return "";
     }
   }
 
@@ -110,7 +120,7 @@ public class LumeiCrmConstants {
   }
   
   public static enum CAR_DEAL_SOURCE {
-    FRIENDS_REFER((byte)1,"Friends refer"),
+    FRIENDS_REFER((byte)1,"Friends Refer"),
     WECHAT_GROUP((byte)2,"WeChat Group"),
     WECHAT_PUBLIC_ACCOUNT ((byte)3,"WeChat Public Account"),
     WEBSITE ((byte)4,"Website"),
@@ -124,7 +134,8 @@ public class LumeiCrmConstants {
     CAR_RENTAL((byte)12,"Car Rental"),
     CELLPHONE((byte)13,"Cellphone"),
     TEMPORARY_ACCOMMODATION ((byte)14,"Temporary Accommodation"),
-    AIM((byte)15,"AiM");
+    AIM((byte)15,"AiM"),
+    CUSTOMER_REFER((byte)16,"Customer Refer");
 
     private Byte value;
     private String desc;
@@ -138,6 +149,15 @@ public class LumeiCrmConstants {
     }
     public String getDesc() {
       return desc;
+    }
+    
+    public static String getDesc(Byte value){
+    	for(CAR_DEAL_SOURCE e : CAR_DEAL_SOURCE.values()){
+    		if(e.getValue().equals(value)){
+    			return e.getDesc();
+    		}
+    	}
+    	return "";
     }
   }
   

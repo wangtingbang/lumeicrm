@@ -28,10 +28,6 @@ import com.lumei.crm.customer.dto.Notes;
 import com.lumei.crm.customer.entity.TNotes;
 import com.lumei.crm.util.SessionUtil;
 
-/**
- * Created by wangtingbang on 16/8/13.
- */
-
 @Controller
 @RequestMapping(value = "notes")
 public class NotesController {

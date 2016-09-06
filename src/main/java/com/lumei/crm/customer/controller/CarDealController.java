@@ -1,5 +1,6 @@
 package com.lumei.crm.customer.controller;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -9,11 +10,14 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -34,6 +38,8 @@ import com.lumei.crm.customer.biz.NotesBusiness;
 import com.lumei.crm.customer.biz.TransactionBusiness;
 import com.lumei.crm.customer.biz.UserInfoBusiness;
 import com.lumei.crm.customer.constants.LumeiCrmConstants;
+import com.lumei.crm.customer.constants.LumeiCrmConstants.CAR_DEAL_SOURCE;
+import com.lumei.crm.customer.constants.LumeiCrmConstants.CAR_DEAL_STATUS;
 import com.lumei.crm.customer.dao.SequenceDao;
 import com.lumei.crm.customer.dto.CarDeal;
 import com.lumei.crm.customer.dto.CarDealQueryParam;
@@ -45,9 +51,6 @@ import com.lumei.crm.customer.entity.TSequence;
 import com.lumei.crm.customer.entity.TTransaction;
 import com.lumei.crm.util.SessionUtil;
 
-/**
- * Created by wangtingbang on 16/8/13.
- */
 @Controller
 @RequestMapping(value = "cardeal")
 public class CarDealController {
@@ -106,8 +109,27 @@ public class CarDealController {
 	@RequestMapping(value = "list", method = RequestMethod.POST)
 	@ResponseBody
 	public Pagination<CarDeal> list(CarDealQueryParam carDeal, int timezoneOffset, int page, int limit) {
+		return process(carDeal, timezoneOffset, page, limit);
+	}
+	
+	@RequestMapping(value = "export")
+	public String export(CarDealQueryParam carDeal, int timezoneOffset, Model model, HttpServletResponse response) throws UnsupportedEncodingException {
+		Pagination<CarDeal> pg = process(carDeal, timezoneOffset, 1, 65535);
+		List result = new ArrayList();
+		if(pg != null && pg.getResult() != null){
+			result = pg.getResult();
+		}
+	    String filename = "Car_Deals_Export.csv";
+	    String downloadName = new String(filename.getBytes("utf-8"), "iso8859-1");
+	    response.setContentType("application/x-msdownload");
+	    response.setHeader("Content-Disposition", "attachment;filename=" + downloadName);
+	    model.addAttribute("result", result);
+	    return "xls/cardeals";
+	}
+	
+	private Pagination<CarDeal> process(CarDealQueryParam carDeal, int timezoneOffset, int page, int limit){
 		log.debug("list param, page:{}, limit:{}, param:{}", page, limit, JSONObject.toJSONString(carDeal));
-
+		
 		Map param = new HashMap();
 		List<Map> orderList = new LinkedList<Map>();
 		if (StringUtils.isBlank(carDeal.getOrderColumn())) {
@@ -261,6 +283,8 @@ public class CarDealController {
 				uids.add(salesId);
 				uids.add(createUserId);
 				uids.add(updateUserId);
+				deal.setSourceString(CAR_DEAL_SOURCE.getDesc(deal.getSource()));
+				deal.setDealStatusString(CAR_DEAL_STATUS.getDesc(deal.getDealStatus()));
 			}
 
 			List<CarDeal> newResult = new ArrayList<>();
@@ -294,7 +318,7 @@ public class CarDealController {
 		}
 		return pg;
 	}
-
+	
 	@RequestMapping(value = "create", method = RequestMethod.GET)
 	public ModelAndView create(String customerId) {
 		ModelAndView mav = new ModelAndView("cardeal/cardeal");

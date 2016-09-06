@@ -1,5 +1,6 @@
 package com.lumei.crm.customer.controller;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -8,11 +9,14 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -90,117 +94,136 @@ public class CarInsuranceController {
   @RequestMapping(value = "list", method = RequestMethod.POST)
   @ResponseBody
   public Pagination<CarInsurance> list(CarInsuranceQueryParam carInsurance, int timezoneOffset, int page, int limit){
-      log.debug("list param, page:{}, limit:{}, param:{}",
-        page, limit, JSONObject.toJSONString(carInsurance));
-    Example<TCarInsurance> example0 = Example.newExample(TCarInsurance.class);
-    
-    if (StringUtils.isNotBlank(carInsurance.getSalesName()) && StringUtils.isBlank(carInsurance.getSalesId())) {
-    	Example<TOpAuthUser> example2 = Example.newExample(TOpAuthUser.class);
-    	example2.paramLikeTo("nickName", carInsurance.getSalesName());
-    	List<OpAuthUser> l = opAuthUserBusiness.list(example2);
-    	if(l != null && l.size()>0){
-    		List<String> ll = new LinkedList<String>();
-    		for (OpAuthUser id : l) {
-    			ll.add(id.getId());
-    		}
-    		example0.paramIn("salesId", ll);
-    	}
-    }
-    
-    if (StringUtils.isNotBlank(carInsurance.getSalesId())) {
-    	example0.paramEqualTo("salesId", carInsurance.getSalesId());
-    }
-    
-//    if(StringUtils.isNotBlank(carInsurance.getCustomerName())
-//    		||StringUtils.isNotBlank(carInsurance.getWechat())
-//    		||StringUtils.isNotBlank(carInsurance.getPhone())){
-    Example<TCustomer> example1 = Example.newExample(TCustomer.class);
-    if (StringUtils.isNotBlank(carInsurance.getCustomerName())) {
-    	example1.paramLikeTo("name", carInsurance.getCustomerName());
-    }
-    if (StringUtils.isNotBlank(carInsurance.getWechat())) {
-    	example1.paramLikeTo("wechat", carInsurance.getWechat());
-    }
-    if (StringUtils.isNotBlank(carInsurance.getPhone())) {
-    	example1.paramLikeTo("phone", carInsurance.getPhone());
-    }
-    List<Customer> custList = customerBusiness.list(example1);
-    if(custList == null || custList.size() == 0){
-    	example0.paramEqualTo("customerId", "0");
-    }else{
-    	List<String> custIds = new LinkedList<String>();
-    	for (Customer customer : custList) {
-    		custIds.add(customer.getId());
-		}
-    	example0.paramIn("customerId", custIds);
-    }
-//    }
-    int serverOffset = Calendar.getInstance().getTimeZone().getOffset(System.currentTimeMillis());
-    serverOffset /= 60000;
-    if (null!=carInsurance.getModifiedDateStart()) {
-    	carInsurance.setModifiedDateStart(DateTimeUtil.plusMinutes(carInsurance.getModifiedDateStart(), (serverOffset+timezoneOffset)));
-    	example0.paramGreaterThanOrEqualTo("effectiveDate", carInsurance.getModifiedDateStart());
-    }
-    if (null!=carInsurance.getModifiedDateEnd()) {
-    	carInsurance.setModifiedDateEnd(DateTimeUtil.plusMinutes(carInsurance.getModifiedDateEnd(), (serverOffset+timezoneOffset)));
-    	example0.paramLessThanOrEqualTo("effectiveDate", DateTimeUtil.fromDate(DateTimeUtil.plusDays(carInsurance.getModifiedDateEnd(), 1)));
-    }
-    
-    if(StringUtils.isNotBlank(carInsurance.getOrderColumn())){
-    	if(carInsurance.isOrderDesc()){
-    		example0.orderByDesc(carInsurance.getOrderColumn());
-    	}else{
-    		example0.orderBy(carInsurance.getOrderColumn());
-    	}
-    }
-    example0.orderByDesc("UPDATE_TIME");
-    
-    Pagination<CarInsurance> pg = carInsuranceBusiness.listByPage(example0, page, limit);
-    
-    if(pg.getResult()==null||pg.getResult().size()==0){
-        log.debug("result null");
-      return pg;
-    }else{
-      List<CarInsurance> carInsurance_s = pg.getResult();
-      List<String> uids = new ArrayList<>();
-      for (CarInsurance deal: carInsurance_s) {
-    	Example<TNotes> example = Example.newExample(TNotes.class);
-    	example.paramEqualTo("serviceId", deal.getId()).orderByDesc("create_time");
-    	List<Notes> l = notesBusiness.list(example);
-    	if(l!=null && l.size() >0){
-    		deal.setLatestNotes(l.get(0).getContent());
-    	}
-    	Customer cust = customerBusiness.find(deal.getCustomerId(), Customer.class);
-    	deal.setCustomerName(cust.getName());
-    	deal.setWechat(cust.getWechat());
-        String salesId = deal.getSalesId();
-        String createUserId = deal.getCreateUserId();
-        String updateUserId = deal.getUpdateUserId();
-        uids.add(salesId);
-        uids.add(createUserId);
-        uids.add(updateUserId);
-      }
-
-      List<CarInsurance> newResult = new ArrayList<>();
-      Map<String,OpAuthUser> userMap = userInfoBusiness.getUserInfoById(uids);
-      if(userMap!=null) {
-        for (CarInsurance deal: carInsurance_s) {
-          String salesId = deal.getSalesId();
-          OpAuthUser sales = userMap.get(salesId);
-          if (sales != null) {
-            deal.setSalesName(sales.getNickName());
-          }
-
-          newResult.add(deal);
-        }
-      }else{
-        newResult = carInsurance_s;
-      }
-      pg.setResult(newResult);
-    }
-    return pg;
+	  return process(carInsurance, timezoneOffset, page, limit);
   }
+  
+  @RequestMapping(value = "export")
+  public String export(CarInsuranceQueryParam carInsurance, int timezoneOffset, Model model, HttpServletResponse response) throws UnsupportedEncodingException {
+		Pagination<CarInsurance> pg = process(carInsurance, timezoneOffset, 1, 65535);
+		List result = new ArrayList();
+		if(pg != null && pg.getResult() != null){
+			result = pg.getResult();
+		}
+	    String filename = "Car_Insurance_Export.csv";
+	    String downloadName = new String(filename.getBytes("utf-8"), "iso8859-1");
+	    response.setContentType("application/x-msdownload");
+	    response.setHeader("Content-Disposition", "attachment;filename=" + downloadName);
+	    model.addAttribute("result", result);
+	    return "xls/carinsurance";
+	}
+  
+  private Pagination<CarInsurance> process(CarInsuranceQueryParam carInsurance, int timezoneOffset, int page, int limit){
+      log.debug("list param, page:{}, limit:{}, param:{}",
+    	        page, limit, JSONObject.toJSONString(carInsurance));
+    	    Example<TCarInsurance> example0 = Example.newExample(TCarInsurance.class);
+    	    
+    	    if (StringUtils.isNotBlank(carInsurance.getSalesName()) && StringUtils.isBlank(carInsurance.getSalesId())) {
+    	    	Example<TOpAuthUser> example2 = Example.newExample(TOpAuthUser.class);
+    	    	example2.paramLikeTo("nickName", carInsurance.getSalesName());
+    	    	List<OpAuthUser> l = opAuthUserBusiness.list(example2);
+    	    	if(l != null && l.size()>0){
+    	    		List<String> ll = new LinkedList<String>();
+    	    		for (OpAuthUser id : l) {
+    	    			ll.add(id.getId());
+    	    		}
+    	    		example0.paramIn("salesId", ll);
+    	    	}
+    	    }
+    	    
+    	    if (StringUtils.isNotBlank(carInsurance.getSalesId())) {
+    	    	example0.paramEqualTo("salesId", carInsurance.getSalesId());
+    	    }
+    	    
+//    	    if(StringUtils.isNotBlank(carInsurance.getCustomerName())
+//    	    		||StringUtils.isNotBlank(carInsurance.getWechat())
+//    	    		||StringUtils.isNotBlank(carInsurance.getPhone())){
+    	    Example<TCustomer> example1 = Example.newExample(TCustomer.class);
+    	    if (StringUtils.isNotBlank(carInsurance.getCustomerName())) {
+    	    	example1.paramLikeTo("name", carInsurance.getCustomerName());
+    	    }
+    	    if (StringUtils.isNotBlank(carInsurance.getWechat())) {
+    	    	example1.paramLikeTo("wechat", carInsurance.getWechat());
+    	    }
+    	    if (StringUtils.isNotBlank(carInsurance.getPhone())) {
+    	    	example1.paramLikeTo("phone", carInsurance.getPhone());
+    	    }
+    	    List<Customer> custList = customerBusiness.list(example1);
+    	    if(custList == null || custList.size() == 0){
+    	    	example0.paramEqualTo("customerId", "0");
+    	    }else{
+    	    	List<String> custIds = new LinkedList<String>();
+    	    	for (Customer customer : custList) {
+    	    		custIds.add(customer.getId());
+    			}
+    	    	example0.paramIn("customerId", custIds);
+    	    }
+//    	    }
+    	    int serverOffset = Calendar.getInstance().getTimeZone().getOffset(System.currentTimeMillis());
+    	    serverOffset /= 60000;
+    	    if (null!=carInsurance.getModifiedDateStart()) {
+    	    	carInsurance.setModifiedDateStart(DateTimeUtil.plusMinutes(carInsurance.getModifiedDateStart(), (serverOffset+timezoneOffset)));
+    	    	example0.paramGreaterThanOrEqualTo("effectiveDate", carInsurance.getModifiedDateStart());
+    	    }
+    	    if (null!=carInsurance.getModifiedDateEnd()) {
+    	    	carInsurance.setModifiedDateEnd(DateTimeUtil.plusMinutes(carInsurance.getModifiedDateEnd(), (serverOffset+timezoneOffset)));
+    	    	example0.paramLessThanOrEqualTo("effectiveDate", DateTimeUtil.fromDate(DateTimeUtil.plusDays(carInsurance.getModifiedDateEnd(), 1)));
+    	    }
+    	    
+    	    if(StringUtils.isNotBlank(carInsurance.getOrderColumn())){
+    	    	if(carInsurance.isOrderDesc()){
+    	    		example0.orderByDesc(carInsurance.getOrderColumn());
+    	    	}else{
+    	    		example0.orderBy(carInsurance.getOrderColumn());
+    	    	}
+    	    }
+    	    example0.orderByDesc("UPDATE_TIME");
+    	    
+    	    Pagination<CarInsurance> pg = carInsuranceBusiness.listByPage(example0, page, limit);
+    	    
+    	    if(pg.getResult()==null||pg.getResult().size()==0){
+    	        log.debug("result null");
+    	      return pg;
+    	    }else{
+    	      List<CarInsurance> carInsurance_s = pg.getResult();
+    	      List<String> uids = new ArrayList<>();
+    	      for (CarInsurance deal: carInsurance_s) {
+    	    	Example<TNotes> example = Example.newExample(TNotes.class);
+    	    	example.paramEqualTo("serviceId", deal.getId()).orderByDesc("create_time");
+    	    	List<Notes> l = notesBusiness.list(example);
+    	    	if(l!=null && l.size() >0){
+    	    		deal.setLatestNotes(l.get(0).getContent());
+    	    	}
+    	    	Customer cust = customerBusiness.find(deal.getCustomerId(), Customer.class);
+    	    	deal.setCustomerName(cust.getName());
+    	    	deal.setWechat(cust.getWechat());
+    	        String salesId = deal.getSalesId();
+    	        String createUserId = deal.getCreateUserId();
+    	        String updateUserId = deal.getUpdateUserId();
+    	        uids.add(salesId);
+    	        uids.add(createUserId);
+    	        uids.add(updateUserId);
+    	      }
 
+    	      List<CarInsurance> newResult = new ArrayList<>();
+    	      Map<String,OpAuthUser> userMap = userInfoBusiness.getUserInfoById(uids);
+    	      if(userMap!=null) {
+    	        for (CarInsurance deal: carInsurance_s) {
+    	          String salesId = deal.getSalesId();
+    	          OpAuthUser sales = userMap.get(salesId);
+    	          if (sales != null) {
+    	            deal.setSalesName(sales.getNickName());
+    	          }
+
+    	          newResult.add(deal);
+    	        }
+    	      }else{
+    	        newResult = carInsurance_s;
+    	      }
+    	      pg.setResult(newResult);
+    	    }
+    	    return pg;
+  }
+  
   @RequestMapping(value = "create", method = RequestMethod.GET)
   public ModelAndView create(String customerId, String carDealId) {
     ModelAndView mav = new ModelAndView("carinsurance/carinsurance");

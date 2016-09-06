@@ -109,6 +109,8 @@ public class CarDeal extends BaseModel<String> implements Serializable {
    */
   private Byte dealStatus;
 
+  private String dealStatusString;
+  
   /**
    * @field dealDate
    */
@@ -136,6 +138,8 @@ public class CarDeal extends BaseModel<String> implements Serializable {
   private Byte isNew;
   
   private Byte source;
+  
+  private String sourceString;
   
   private String mileages;
   
@@ -872,6 +876,22 @@ public String getLatestNotes() {
 
 public void setLatestNotes(String latestNotes) {
 	this.latestNotes = latestNotes;
+}
+
+public String getSourceString() {
+	return sourceString;
+}
+
+public void setSourceString(String sourceString) {
+	this.sourceString = sourceString;
+}
+
+public String getDealStatusString() {
+	return dealStatusString;
+}
+
+public void setDealStatusString(String dealStatusString) {
+	this.dealStatusString = dealStatusString;
 }
 
 }

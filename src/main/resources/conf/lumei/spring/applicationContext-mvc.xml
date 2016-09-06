@@ -52,7 +52,7 @@
 		<property name="order" value="1" />
 	</bean>
 
-<!-- 	<bean class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+	<bean class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
 		<property name="templateLoaderPath" value="/WEB-INF/freemarker/" />
 		<property name="defaultEncoding" value="UTF-8" />
 	</bean>
@@ -60,7 +60,7 @@
 		<property name="suffix" value=".ftl" />
 		<property name="order" value="0" />
 		<property name="cache" value="true" />
-	</bean> -->
+	</bean>
 
 <!-- 	<mvc:view-controller path="/" view-name="common/index" />-->
 	<mvc:view-controller path="/" view-name="customer/listCustomer" />

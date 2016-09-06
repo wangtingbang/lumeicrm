@@ -92,6 +92,9 @@
         <div class="col-xs-12">
                
        	<div class="col-sm-3 no-padding-left">
+       	<a class="btn btn-info btn-sm" id="export_btn">
+        <i class="ace-icon fa fa-share bigger-110"></i> Data Export
+        </a>
         <% if(SessionUtil.assignRight()){ %>
         <a class="btn btn-info btn-sm" id="assign_btn">
         <i class="ace-icon fa fa-check-square-o bigger-110"></i> Assign
@@ -174,5 +177,65 @@
         </tbody>
         </table>
         </script>
+        
+<script id="export-temp" type="text/x-dot-template">
+<form id="export-form" class="form-horizontal" action="#">
+		<div class="row">
+        <div class="col-xs-12">
+        
+        <div class="col-sm-4 form-group">
+        <label class="col-sm-4 control-label no-padding-right">Name</label>
+        <div class="col-sm-8">
+        <input id="name" class="form-control" type="text" name="customerName"/>
+        </div>
+        </div>
+        	
+		<div class="col-sm-4 form-group">
+        <label class="col-sm-4 control-label no-padding-right">WeChat</label>
+        <div class="col-sm-8">
+        <input id="wechat" class="form-control" type="text" name="wechat"/>
+        </div>
+        </div>
+        
+        <div class="col-sm-4 form-group">
+        <label class="col-sm-4 control-label no-padding-right">Phone</label>
+        <div class="col-sm-8">
+        <input id="phone" class="form-control" type="text" name="phone"/>
+        </div>
+        </div>
+
+		</div>
+        </div>
+        
+		<div class="row">
+        <div class="col-xs-12">
+        
+        <div class="col-sm-4 form-group">
+        <label class="col-sm-4 control-label no-padding-right">Effective Date</label>
+        <div class="col-sm-8">
+        <input id="dateStart" class="date-timepicker form-control col-sm-12 " type="text"
+        name="modifiedDateStart" value=""/>
+        </div>
+        </div>
+        
+        <div class="col-sm-4 form-group">
+        <label class="col-sm-4 control-label no-padding-right">To</label>
+        <div class="col-sm-8">
+        <input id="dateEnd" class="date-timepicker form-control col-sm-12 " type="text"
+        name="modifiedDateEnd" value=""/>
+        </div>
+        </div>
+        
+		<div class="col-sm-4 form-group">
+        <label class="col-sm-4 control-label no-padding-right">Sales</label>
+        <div class="col-sm-8">
+        <input id="salesName" class="form-control" type="text" name="salesName"/>
+        </div>
+        </div>
+        
+		</div>
+        </div>
+</form>
+</script>
 <%@ include file="../customer/customerSearch.jsp"%>
 <%@ include file="../customer/assign.jsp"%>

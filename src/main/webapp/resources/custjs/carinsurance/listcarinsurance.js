@@ -19,6 +19,10 @@ $(function () {
 		searchSubmit(sales);
 	});
 	
+	$('#export_btn').click(function() {
+		exportData();
+	});
+	
 	$('#assign_btn').click(function() {
 		var ids = new Array();
 		$("[name=checkItem]:checkbox").each(function(){
@@ -100,4 +104,33 @@ function assign2(sales,ids){
 				$.ialert("assign failed! "+errmsg,"error");
 			}
 	);
+}
+
+function exportData(){
+	var pagefn = doT.template($('#export-temp').text());
+	$.imodal({
+				title:"Data Export Condition",
+				contents:pagefn({}),
+				buttons:[
+						{addClass: 'btn btn-sm btn-default', text: '<i class="ace-icon fa fa-times  bigger-110"></i>Cancel', attr:'data-dismiss="modal"'},
+						{addClass: 'btn btn-sm btn-primary', text: '<i class="ace-icon fa fa-check  bigger-110"></i>Export', onClick: function(msgDom) {
+							var param = "";
+							$($('#export-form').serializeArray()).each(function(k, v){
+								param+= v.name+'='+v.value+'&';
+							});
+							var d = new Date();
+							param+= 'timezoneOffset='+d.getTimezoneOffset();
+							location.href = contextPath + '/carinsurance/export?'+param;
+						}
+						}
+				],
+				afterRender:function(){
+					$('.date-timepicker').datetimepicker({
+						language: 'en',
+						format:'YYYY-MM-DD'
+					}).next().on(ace.click_event, function(){
+						$(this).prev().focus();
+					});
+				}
+			});
 }

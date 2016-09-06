@@ -1,16 +1,20 @@
 package com.lumei.crm.customer.controller;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -32,9 +36,6 @@ import com.lumei.crm.customer.entity.TCustomer;
 import com.lumei.crm.customer.entity.TNotes;
 import com.lumei.crm.util.SessionUtil;
 
-/**
- * Created by wangtingbang on 15/7/30.
- */
 @Controller
 @RequestMapping(value = "customer")
 public class CustomerController {
@@ -54,10 +55,42 @@ public class CustomerController {
     ModelAndView mav = new ModelAndView("customer/listCustomer");
     return mav;
   }
-
+  
   @RequestMapping(value = "list", method = RequestMethod.POST)
   @ResponseBody
   public Pagination<Customer> listCustomer(//
+    String name,  //
+    String wechat, //
+    String phone,  //
+    String sales,//
+    String salesName,//
+    int page, int limit,//
+    String orderColumn, boolean orderDesc) {
+	  return process(name, wechat, phone, sales, salesName, page, limit, orderColumn, orderDesc);
+  }
+  
+  @RequestMapping(value = "export")
+  public String export(
+		  String name,  //
+		String wechat, //
+		String phone,  //
+		String sales,//
+		String salesName,//
+		Model model, HttpServletResponse response)throws UnsupportedEncodingException {
+		Pagination<Customer> pg = process(name, wechat, phone, sales, salesName, 1, 65535, null, false);
+		List result = new ArrayList();
+		if(pg != null && pg.getResult() != null){
+			result = pg.getResult();
+		}
+	    String filename = "Customer.csv";
+	    String downloadName = new String(filename.getBytes("utf-8"), "iso8859-1");
+	    response.setContentType("application/x-msdownload");
+	    response.setHeader("Content-Disposition", "attachment;filename=" + downloadName);
+	    model.addAttribute("result", result);
+	    return "xls/customer";
+	}
+  
+  private Pagination<Customer> process(//
     String name,  //
     String wechat, //
     String phone,  //
