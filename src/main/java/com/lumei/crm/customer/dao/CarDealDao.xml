@@ -754,16 +754,16 @@
 			AND CAR_DEAL.RATING = #{rating,jdbcType=TINYINT}
 		</if>
 		<if test="dealDateStart != null" >
-			AND CAR_DEAL.DEAL_DATE &gt;= #{dealDateStart,jdbcType=DATE}
+			AND CAR_DEAL.DEAL_DATE &gt;= #{dealDateStart,jdbcType=TIMESTAMP}
 		</if>
 		<if test="dealDateEnd != null" >
-			AND CAR_DEAL.DEAL_DATE &lt;= #{dealDateEnd,jdbcType=DATE}
+			AND CAR_DEAL.DEAL_DATE &lt;= #{dealDateEnd,jdbcType=TIMESTAMP}
 		</if>
 		<if test="modifiedDateStart != null" >
-			AND CAR_DEAL.UPDATE_TIME &gt;= #{modifiedDateStart,jdbcType=DATE}
+			AND CAR_DEAL.UPDATE_TIME &gt;= #{modifiedDateStart,jdbcType=TIMESTAMP}
 		</if>
 		<if test="modifiedDateEnd != null" >
-			AND CAR_DEAL.UPDATE_TIME &lt;= #{modifiedDateEnd,jdbcType=DATE}
+			AND CAR_DEAL.UPDATE_TIME &lt;= #{modifiedDateEnd,jdbcType=TIMESTAMP}
 		</if>
 		<if test="salesId != null" >
 			AND CAR_DEAL.SALES_ID = #{salesId,jdbcType=VARCHAR}
@@ -814,16 +814,16 @@
 			AND CAR_DEAL.RATING = #{rating,jdbcType=TINYINT}
 		</if>
 		<if test="dealDateStart != null" >
-			AND CAR_DEAL.DEAL_DATE &gt;= #{dealDateStart,jdbcType=DATE}
+			AND CAR_DEAL.DEAL_DATE &gt;= #{dealDateStart,jdbcType=TIMESTAMP}
 		</if>
 		<if test="dealDateEnd != null" >
-			AND CAR_DEAL.DEAL_DATE &lt;= #{dealDateEnd,jdbcType=DATE}
+			AND CAR_DEAL.DEAL_DATE &lt;= #{dealDateEnd,jdbcType=TIMESTAMP}
 		</if>
 		<if test="modifiedDateStart != null" >
-			AND CAR_DEAL.UPDATE_TIME &gt;= #{modifiedDateStart,jdbcType=DATE}
+			AND CAR_DEAL.UPDATE_TIME &gt;= #{modifiedDateStart,jdbcType=TIMESTAMP}
 		</if>
 		<if test="modifiedDateEnd != null" >
-			AND CAR_DEAL.UPDATE_TIME &lt;= #{modifiedDateEnd,jdbcType=DATE}
+			AND CAR_DEAL.UPDATE_TIME &lt;= #{modifiedDateEnd,jdbcType=TIMESTAMP}
 		</if>
 		<if test="salesId != null" >
 			AND CAR_DEAL.SALES_ID = #{salesId,jdbcType=VARCHAR}

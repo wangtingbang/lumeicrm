@@ -77,9 +77,13 @@ public class CarInsuranceController {
   public ModelAndView list() {
     ModelAndView mav = new ModelAndView("carinsurance/listcarinsurance");
     SessionUtil.setAttributes("dateStart", 
-    		DateTimeUtil.fromDate(DateTimeUtil.today(), DateTimeUtil.Pattern.DEFAULT_FORMATE_DATE));
+    		DateTimeUtil.fromDate(
+					DateTimeUtil.plusMonths(DateTimeUtil.plusHours(DateTimeUtil.now(), -15), -1),
+					DateTimeUtil.Pattern.DEFAULT_FORMATE_DATE));
     SessionUtil.setAttributes("dateEnd",
-    		DateTimeUtil.fromDate(DateTimeUtil.plusMonths(DateTimeUtil.today(), 1), DateTimeUtil.Pattern.DEFAULT_FORMATE_DATE));
+    		DateTimeUtil.fromDate(
+					DateTimeUtil.plusMonths(DateTimeUtil.plusHours(DateTimeUtil.now(), -15), 1),
+					DateTimeUtil.Pattern.DEFAULT_FORMATE_DATE));
     return mav;
   }
   
@@ -107,9 +111,9 @@ public class CarInsuranceController {
     	example0.paramEqualTo("salesId", carInsurance.getSalesId());
     }
     
-    if(StringUtils.isNotBlank(carInsurance.getCustomerName())
-    		||StringUtils.isNotBlank(carInsurance.getWechat())
-    		||StringUtils.isNotBlank(carInsurance.getPhone())){
+//    if(StringUtils.isNotBlank(carInsurance.getCustomerName())
+//    		||StringUtils.isNotBlank(carInsurance.getWechat())
+//    		||StringUtils.isNotBlank(carInsurance.getPhone())){
     Example<TCustomer> example1 = Example.newExample(TCustomer.class);
     if (StringUtils.isNotBlank(carInsurance.getCustomerName())) {
     	example1.paramLikeTo("name", carInsurance.getCustomerName());
@@ -130,7 +134,7 @@ public class CarInsuranceController {
 		}
     	example0.paramIn("customerId", custIds);
     }
-    }
+//    }
     int serverOffset = Calendar.getInstance().getTimeZone().getOffset(System.currentTimeMillis());
     serverOffset /= 60000;
     if (null!=carInsurance.getModifiedDateStart()) {

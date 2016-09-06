@@ -185,6 +185,8 @@ function saveProfile(){
 	$($('#submit-form').serializeArray()).each(function(k, v){
 			param[v.name]=v.value;
 	});
+	var d = new Date();
+	param["timezoneOffset"] = d.getTimezoneOffset();
 	if(param['dealDate'] == ''){
 		$.ialert("Date Required!","error");
 		return;
