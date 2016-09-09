@@ -82,9 +82,8 @@ public class CustomerController {
 		if(pg != null && pg.getResult() != null){
 			result = pg.getResult();
 		}
-	    String filename = "Customer.csv";
+	    String filename = "Customer.xls";
 	    String downloadName = new String(filename.getBytes("utf-8"), "iso8859-1");
-	    response.setContentType("application/x-msdownload");
 	    response.setHeader("Content-Disposition", "attachment;filename=" + downloadName);
 	    model.addAttribute("result", result);
 	    return "xls/customer";

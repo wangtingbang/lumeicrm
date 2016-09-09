@@ -57,6 +57,7 @@
 		<property name="defaultEncoding" value="UTF-8" />
 	</bean>
 	<bean class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+		<property name="contentType" value="application/x-msdownload; charset=UTF-8" />
 		<property name="suffix" value=".ftl" />
 		<property name="order" value="0" />
 		<property name="cache" value="true" />
